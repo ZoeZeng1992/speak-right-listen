@@ -790,6 +790,7 @@ $("nextBtn").onclick=()=>{
   else { stopLoop(); render(); }
 };
 if($("restartBtn")) $("restartBtn").onclick=()=>{
+  if(!confirm("确定从头开始？将回到第 1 句。")) return;
   stopLoop();
   state.idx=0;
   savePrefs();
