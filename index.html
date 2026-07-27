@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<title>错题听练 · Speak Right</title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#fff; --ink:#161a2b; --muted:#6b7280; --line:#e7e9f0;
+    --brand:#4f46e5; --brand-weak:#eef2ff; --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.45;
+    padding:16px 16px calc(24px + env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:520px;margin:0 auto}
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+  h1{margin:0;font-size:20px;letter-spacing:-.2px}
+  .sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px 16px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 10px 28px rgba(16,24,40,.06)}
+  .meta{font-size:13px;color:var(--muted);font-weight:650;margin-bottom:10px}
+  .en{font-size:26px;font-weight:750;letter-spacing:-.3px;line-height:1.35;min-height:2.6em;margin:8px 0 12px}
+  .panel{margin-top:10px;padding:12px 13px;border-radius:12px;background:#f7f8fc;border:1px solid var(--line);font-size:15px;line-height:1.55;display:none;white-space:pre-wrap}
+  .panel.show{display:block}
+  .panel.cn{font-weight:650}
+  .panel.note{color:#5c4a12;background:#fffaf0;border-color:#f0d488}
+  .toggles{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+  .tog,.btn{
+    border:1px solid var(--line);background:#fff;border-radius:12px;height:44px;padding:0 14px;
+    font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;
+  }
+  .tog.on{background:var(--brand-weak);border-color:#c7cff8;color:var(--brand)}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.block{width:100%}
+  .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .row .btn{flex:1 1 30%;min-width:96px}
+  .loops{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 6px}
+  .loops span{font-size:12px;font-weight:750;color:var(--muted)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+  .seg button{border:0;background:transparent;height:36px;padding:0 12px;font-size:14px;font-weight:750;color:var(--muted)}
+  .seg button.on{background:var(--brand);color:#fff}
+  .status{font-size:13px;font-weight:650;color:var(--brand);min-height:1.2em;margin-top:6px}
+  .setup{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+  .setup label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin:10px 0 6px}
+  .setup label:first-child{margin-top:0}
+  .setup input,.setup textarea{
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;font-family:inherit;
+  }
+  .setup input{height:44px}
+  .setup textarea{min-height:72px;resize:vertical}
+  .setup .hint{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+  .msg{font-size:13px;color:var(--muted);margin-top:8px;min-height:1.2em}
+  .msg.err{color:#dc2626}
+  .msg.ok{color:#15803d}
+  .empty{padding:28px 8px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>错题听练</h1>
+      <p class="sub" id="updated">电脑同步错题后，手机循环听</p>
+    </div>
+    <button class="btn" type="button" id="refreshBtn">刷新</button>
+  </header>
+
+  <section class="setup" id="setup">
+    <label for="syncIdInput">云同步码（电脑生成一次，手机保存即可）</label>
+    <input id="syncIdInput" inputmode="text" autocomplete="off" placeholder="粘贴同步码" />
+    <div class="row">
+      <button class="btn primary block" type="button" id="saveSyncBtn">保存并拉取最新</button>
+    </div>
+    <p class="hint">
+      配对一次后：电脑改错题会自动上传；手机<strong>联网打开或点刷新</strong>就会更新。<br>
+      没网时继续用手机缓存离线听。同步码若以 <code>bin:</code> 开头，走 Jsonbin。<br>
+      备用：同一 Wi‑Fi 可直接拉本机文件，或导入 json。
+    </p>
+    <details style="margin-top:10px">
+      <summary style="font-size:13px;font-weight:700;color:var(--muted);cursor:pointer">备用：导入文件 / 粘贴 JSON</summary>
+      <label style="margin-top:10px">听练包文件</label>
+      <input type="file" id="fileInput" accept="application/json,.json" />
+      <label>粘贴完整 JSON</label>
+      <textarea id="pasteInput" placeholder='{"v":1,"items":[...]}'></textarea>
+      <div class="row"><button class="btn block" type="button" id="importBtn">导入</button></div>
+    </details>
+    <div class="msg" id="setupMsg"></div>
+  </section>
+
+  <section class="card" id="player" style="display:none">
+    <div class="meta" id="counter">0 / 0</div>
+    <div class="en" id="en"></div>
+    <div class="toggles">
+      <button type="button" class="tog" id="showCnBtn">显示中文</button>
+      <button type="button" class="tog" id="showNoteBtn">显示备注</button>
+    </div>
+    <div class="panel cn" id="cnPanel"></div>
+    <div class="panel note" id="notePanel"></div>
+
+    <div class="loops">
+      <span>排序</span>
+      <div class="seg" id="sortSeg">
+        <button type="button" data-sort="fails" class="on">按错误次数</button>
+        <button type="button" data-sort="recent">按收藏时间</button>
+      </div>
+    </div>
+    <div class="loops" style="align-items:flex-start">
+      <span style="margin-top:10px">发音</span>
+      <div style="flex:1;min-width:0">
+        <select id="voiceSel" style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:14px;background:#fff;color:var(--ink)"></select>
+        <div id="voiceHint" style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5"></div>
+      </div>
+    </div>
+    <div class="loops">
+      <span>循环</span>
+      <div class="seg" id="loopSeg">
+        <button type="button" data-loop="1">1</button>
+        <button type="button" data-loop="2">2</button>
+        <button type="button" data-loop="3">3</button>
+        <button type="button" data-loop="5">5</button>
+        <button type="button" data-loop="0" title="本句一直循环">∞</button>
+      </div>
+    </div>
+    <div class="status" id="status"></div>
+
+    <div class="row">
+      <button class="btn primary" type="button" id="playBtn" style="flex:1 1 100%">播放</button>
+    </div>
+    <div class="row">
+      <button class="btn" type="button" id="slowBtn">慢速播放</button>
+      <button class="btn" type="button" id="prevBtn">上一句</button>
+      <button class="btn" type="button" id="nextBtn">下一句</button>
+    </div>
+    <div class="row">
+      <button class="btn" type="button" id="restartBtn">重新开始</button>
+    </div>
+    <div class="msg" id="playMsg"></div>
+  </section>
+
+  <div class="empty" id="empty" style="display:none">还没有句子。<br>请先导入电脑同步的听练包。</div>
+</div>
+
+<script>
+const CACHE_KEY="sr_listen_pack_cache";
+const PREF_KEY="sr_fav_listen_prefs";
+const SYNC_KEY="sr_fav_sync_id";
+const JSONBIN_API="https://api.jsonbin.io/v3/b";
+const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
+
+const $ = id => document.getElementById(id);
+const state = {
+  items: [],
+  idx: 0,
+  showCn: false,
+  showNote: false,
+  loop: 3,
+  sort: "fails",
+  voiceURI: "",
+  updatedAt: 0
+};
+
+let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
+let voices=[];
+
+// 美式年轻女声优先
+const US_YOUNG_FEMALE = [
+  "ava","nicky","zoe","allison","joelle","samantha","susan","stephanie",
+  "google us english","us english female"
+];
+const BAD_VOICE = /bahh|albert|whisper|zarvox|evil|fred|junior|bells|boing|bubbles|cellos|good news|jester|organ|pipe|ralph|trinoids|princess|superstar|deranged|hysterical|bad news|wobble|daniel|arthur|gordon|rishi|oliver|james|aaron|eddy|reed|rocko|grandma|grandpa|\bmale\b|ting-ting|mei-jia|sin-ji|yu-shu|tian-tian|liyue/i;
+
+function parseFavSyncId(raw){
+  const s=String(raw||"").trim();
+  if(!s) return { provider:"", id:"" };
+  if(/^bin:/i.test(s)) return { provider:"jsonbin", id:s.slice(4).trim() };
+  if(/^blob:/i.test(s)) return { provider:"jsonblob", id:s.slice(5).trim() };
+  if(/^[a-f0-9]{24}$/i.test(s)) return { provider:"jsonbin", id:s };
+  return { provider:"jsonblob", id:s };
+}
+
+function loadPrefs(){
+  try{
+    const p=JSON.parse(localStorage.getItem(PREF_KEY)||"{}");
+    if(typeof p.loop==="number") state.loop=p.loop;
+    state.showCn=!!p.showCn;
+    state.showNote=!!p.showNote;
+    if(typeof p.idx==="number") state.idx=p.idx;
+    if(p.sort==="recent" || p.sort==="fails") state.sort=p.sort;
+    if(typeof p.voiceURI==="string") state.voiceURI=p.voiceURI;
+  }catch(e){}
+}
+function savePrefs(){
+  localStorage.setItem(PREF_KEY, JSON.stringify({
+    loop: state.loop, showCn: state.showCn, showNote: state.showNote,
+    idx: state.idx, sort: state.sort, voiceURI: state.voiceURI
+  }));
+}
+function esc(s){
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function cleanName(n){ return String(n||"").replace(/\s*\(.*\)\s*/g,"").trim(); }
+function isUs(v){ return /en(-|_)US/i.test(v.lang||""); }
+function isEn(v){ return /^en/i.test(v.lang||""); }
+function voiceScore(v){
+  const n=(v.name||"").toLowerCase();
+  let s=0;
+  if(BAD_VOICE.test(n)) return -9999;
+  if(/premium/.test(n)) s+=1000;
+  else if(/enhanced|compact|neural|natural/.test(n)) s+=700;
+  if(/google/.test(n)) s+=450;
+  const idx=US_YOUNG_FEMALE.findIndex(f=>n.includes(f));
+  if(idx>=0) s+=400-idx*12;
+  if(/female/.test(n)) s+=80;
+  if(isUs(v)) s+=120;
+  else if(isEn(v)) s+=20;
+  if(/^samantha$/i.test(cleanName(v.name)) && !/premium|enhanced/i.test(n)) s-=40;
+  return s;
+}
+function candidateVoices(){
+  const all=(voices||[]).filter(v=>isEn(v) && voiceScore(v)>-1000);
+  const us=all.filter(isUs).sort((a,b)=>voiceScore(b)-voiceScore(a));
+  if(us.length) return us;
+  return all.sort((a,b)=>voiceScore(b)-voiceScore(a));
+}
+function allEnVoices(){
+  // 下拉显示 Safari 能用的全部英语声（系统 Premium 常不出现在这里）
+  return (voices||[]).filter(isEn).slice().sort((a,b)=>{
+    const ds=voiceScore(b)-voiceScore(a);
+    if(ds) return ds;
+    return String(a.name||"").localeCompare(String(b.name||""));
+  });
+}
+function pickVoice(){
+  const list=candidateVoices();
+  if(state.voiceURI){
+    const chosen=(voices||[]).find(v=>v.voiceURI===state.voiceURI);
+    if(chosen && isEn(chosen)) return chosen;
+  }
+  return list[0] || (voices||[]).find(isUs) || (voices||[]).find(isEn) || null;
+}
+function buildVoiceSelect(){
+  const sel=$("voiceSel");
+  if(!sel) return;
+  const list=allEnVoices();
+  sel.innerHTML = list.length
+    ? list.map(v=>`<option value="${v.voiceURI}">${v.name} · ${v.lang}</option>`).join("")
+    : `<option value="">系统默认</option>`;
+  const preferred = (state.voiceURI && list.find(v=>v.voiceURI===state.voiceURI))
+    ? state.voiceURI
+    : (candidateVoices()[0] && candidateVoices()[0].voiceURI) || (list[0] && list[0].voiceURI) || "";
+  if(preferred){
+    sel.value=preferred;
+    state.voiceURI=preferred;
+  }
+  updateVoiceHint();
+}
+function updateVoiceHint(){
+  const el=$("voiceHint");
+  if(!el) return;
+  const v=pickVoice();
+  const hasAva=(voices||[]).some(x=>/ava/i.test(x.name||""));
+  if(!v){
+    el.textContent="未找到英语语音。";
+    return;
+  }
+  if(hasAva){
+    el.innerHTML="当前：<b>"+esc(v.name)+"</b>。可在上方切换。";
+  }else{
+    el.innerHTML="当前：<b>"+esc(v.name)+"</b>。<span style='color:#b45309'>说明：系统里的 Ava Premium 通常不会开放给 Safari 网页</span>，网页只能用浏览器列出的声音。可选列表里最自然的美式女声；或用电脑 Chrome 听。";
+  }
+}
+function loadVoices(){
+  voices = window.speechSynthesis ? (speechSynthesis.getVoices()||[]) : [];
+  const best=candidateVoices()[0];
+  if(best && (!state.voiceURI || !(voices||[]).some(v=>v.voiceURI===state.voiceURI))){
+    state.voiceURI=best.voiceURI;
+    savePrefs();
+  }
+  buildVoiceSelect();
+}
+function sortItems(keepCurrent){
+  const cur=keepCurrent ? (state.items[state.idx]&&state.items[state.idx].en) : "";
+  const arr=state.items.slice();
+  if(state.sort==="recent"){
+    arr.sort((a,b)=>((b.addedAt||0)-(a.addedAt||0)) || ((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
+  }else{
+    arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || ((b.addedAt||0)-(a.addedAt||0)) || String(a.en).localeCompare(String(b.en)));
+  }
+  state.items=arr;
+  if(cur){
+    const i=arr.findIndex(x=>x.en===cur);
+    state.idx=i>=0 ? i : 0;
+  }
+}
+function applyPack(pack, source){
+  if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
+  state.items=pack.items.filter(x=>x&&x.en);
+  state.updatedAt=pack.updatedAt||Date.now();
+  sortItems(false);
+  if(state.idx>=state.items.length) state.idx=0;
+  localStorage.setItem(CACHE_KEY, JSON.stringify({
+    v:2, updatedAt:state.updatedAt, items:state.items, source:source||""
+  }));
+  savePrefs();
+  render();
+  $("setupMsg").textContent="已载入 "+state.items.length+" 句"+(source?" · "+source:"");
+  $("setupMsg").className="msg ok";
+  // 不自动朗读：等用户点「播放」
+}
+function loadCache(){
+  try{
+    const pack=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");
+    if(pack && Array.isArray(pack.items) && pack.items.length){
+      state.items=pack.items.filter(x=>x&&x.en);
+      state.updatedAt=pack.updatedAt||0;
+      sortItems(true);
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+async function fetchWithTimeout(url, init, ms){
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(), ms||8000);
+  try{
+    return await fetch(url, Object.assign({}, init||{}, { signal:ctrl.signal }));
+  }finally{
+    clearTimeout(t);
+  }
+}
+async function fetchCloud(id){
+  const parsed=parseFavSyncId(id);
+  if(!parsed.id) throw new Error("同步码无效");
+  if(parsed.provider==="jsonbin"){
+    const res=await fetchWithTimeout(JSONBIN_API+"/"+encodeURIComponent(parsed.id)+"/latest", {
+      headers:{ "Accept":"application/json" }
+    }, 8000);
+    if(!res.ok) throw new Error("Jsonbin 拉取失败 ("+res.status+")");
+    const j=await res.json();
+    return j.record || j;
+  }
+  const res=await fetchWithTimeout(JSONBLOB_API+"/"+encodeURIComponent(parsed.id), {
+    headers:{ "Accept":"application/json" }
+  }, 8000);
+  if(!res.ok) throw new Error("云拉取失败 ("+res.status+")");
+  return res.json();
+}
+async function fetchLocalFile(){
+  const res=await fetchWithTimeout("fav-listen-data.json?ts="+Date.now(), { cache:"no-store" }, 3000);
+  if(!res.ok) throw new Error("本地文件不存在");
+  return res.json();
+}
+
+function stopLoop(){
+  loopToken++;
+  loopPlaying=false;
+  loopCount=0;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  updatePlayUI();
+}
+function current(){ return state.items[state.idx]||null; }
+function updatePlayUI(){
+  const lim=state.loop;
+  $("status").textContent = loopPlaying
+    ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
+    : "";
+  $("playBtn").textContent = loopPlaying ? "暂停" : "播放";
+  $("playBtn").classList.toggle("primary", !loopPlaying);
+  document.querySelectorAll("#loopSeg button").forEach(b=>{
+    b.classList.toggle("on", +b.dataset.loop===state.loop);
+  });
+  document.querySelectorAll("#sortSeg button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.sort===state.sort);
+  });
+  $("showCnBtn").classList.toggle("on", state.showCn);
+  $("showNoteBtn").classList.toggle("on", state.showNote);
+}
+function startLoop(rate){
+  if(!window.speechSynthesis){
+    $("playMsg").textContent="当前浏览器不支持朗读";
+    $("playMsg").className="msg err";
+    return;
+  }
+  if(!current()||!current().en){
+    $("playMsg").textContent="没有可播放的句子";
+    $("playMsg").className="msg err";
+    return;
+  }
+  stopLoop();
+  const token=++loopToken;
+  loopPlaying=true;
+  loopCount=0;
+  const lim=state.loop;
+  const playRate = rate ?? playRateNow ?? 1;
+  playRateNow=playRate;
+  updatePlayUI();
+  $("playMsg").textContent="";
+  $("playMsg").className="msg";
+  render();
+  const s=current();
+  if(!s||!s.en){ stopLoop(); return; }
+
+  const finishOrNext=()=>{
+    if(token!==loopToken) return;
+    loopPlaying=false;
+    if(lim>0 && state.idx < state.items.length-1){
+      updatePlayUI();
+      setTimeout(()=>{
+        if(token!==loopToken) return;
+        state.idx++;
+        savePrefs();
+        render();
+        startLoop(playRate);
+      }, 500);
+      return;
+    }
+    updatePlayUI();
+    if(lim>0 && state.idx >= state.items.length-1) $("status").textContent="已到最后一句";
+  };
+
+  const playOnce=()=>{
+    if(token!==loopToken) return;
+    if(lim>0 && loopCount>=lim){ finishOrNext(); return; }
+    loopCount++;
+    updatePlayUI();
+    try{ speechSynthesis.resume(); }catch(e){}
+    const u=new SpeechSynthesisUtterance(s.en);
+    const v=pickVoice();
+    if(v){ u.voice=v; u.lang=v.lang||"en-US"; }
+    else { u.lang="en-US"; }
+    u.rate=playRate;
+    u.pitch=1;
+    u.onend=()=>{ if(token!==loopToken) return; setTimeout(playOnce, 450); };
+    u.onerror=()=>{ if(token!==loopToken) return; loopPlaying=false; updatePlayUI(); };
+    speechSynthesis.speak(u);
+  };
+  playOnce();
+}
+
+function render(){
+  const has=state.items.length>0;
+  $("player").style.display=has?"block":"none";
+  $("empty").style.display=has?"none":"block";
+  if(!has){ stopLoop(); return; }
+  if(state.idx>=state.items.length) state.idx=state.items.length-1;
+  if(state.idx<0) state.idx=0;
+  const s=current();
+  const sortLabel=state.sort==="recent"?"收藏新→旧":"错多→少";
+  $("counter").textContent = `${state.idx+1} / ${state.items.length}` + (s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
+  $("en").textContent = s.en||"";
+  $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
+  $("cnPanel").classList.toggle("show", state.showCn);
+  const note=(s.note||"").trim();
+  $("notePanel").innerHTML = note ? esc(note) : "这句还没有备注";
+  $("notePanel").classList.toggle("show", state.showNote);
+  if(state.updatedAt){
+    $("updated").textContent = "已缓存 · "+new Date(state.updatedAt).toLocaleString();
+  }
+  updatePlayUI();
+}
+
+async function refreshAll(opts){
+  const quiet=!!(opts&&opts.quiet);
+  if(!quiet){
+    $("setupMsg").textContent="刷新中…";
+    $("setupMsg").className="msg";
+  }
+  const id=(localStorage.getItem(SYNC_KEY)||"").trim() || (new URLSearchParams(location.search).get("id")||"").trim();
+  if(id){
+    localStorage.setItem(SYNC_KEY, id);
+    if($("syncIdInput")) $("syncIdInput").value=id;
+    try{
+      const pack=await fetchCloud(id);
+      applyPack(pack, "云同步");
+      return;
+    }catch(e){
+      const tip=(e&&e.name==="AbortError")?"云同步超时":((e&&e.message)||"云同步失败");
+      if(loadCache()){
+        render();
+        $("setupMsg").textContent=tip+"，已用缓存（"+state.items.length+" 句）。没网也能继续听。";
+        $("setupMsg").className="msg err";
+        return;
+      }
+      $("setupMsg").textContent=tip+"（国内网络可能需代理）";
+      $("setupMsg").className="msg err";
+      return;
+    }
+  }
+  // 无同步码时：尝试局域网文件
+  try{
+    const pack=await fetchLocalFile();
+    applyPack(pack, "局域网文件");
+    return;
+  }catch(e){}
+  if(loadCache()){
+    render();
+    $("setupMsg").textContent="已加载缓存。保存同步码后可联网自动更新。";
+    $("setupMsg").className="msg ok";
+    return;
+  }
+  $("setupMsg").textContent="请先粘贴并保存电脑上的同步码";
+  $("setupMsg").className="msg err";
+}
+
+function saveSyncAndPull(){
+  const raw=($("syncIdInput").value||"").trim();
+  if(!raw){
+    $("setupMsg").textContent="请填写同步码";
+    $("setupMsg").className="msg err";
+    return;
+  }
+  if(raw.startsWith("{")){
+    try{ applyPack(JSON.parse(raw), "粘贴导入"); }catch(e){
+      $("setupMsg").textContent="JSON 解析失败"; $("setupMsg").className="msg err";
+    }
+    return;
+  }
+  localStorage.setItem(SYNC_KEY, raw);
+  const u=new URL(location.href);
+  u.searchParams.set("id", raw);
+  history.replaceState(null, "", u.pathname+u.search+u.hash);
+  refreshAll();
+}
+
+function importPasteJson(){
+  const raw=($("pasteInput")&&$("pasteInput").value||"").trim();
+  if(!raw){
+    $("setupMsg").textContent="请粘贴听练包 JSON";
+    $("setupMsg").className="msg err";
+    return;
+  }
+  try{ applyPack(JSON.parse(raw), "粘贴导入"); }
+  catch(e){ $("setupMsg").textContent="JSON 解析失败"; $("setupMsg").className="msg err"; }
+}
+
+if($("fileInput")) $("fileInput").onchange=async e=>{
+  const f=e.target.files&&e.target.files[0];
+  if(!f) return;
+  try{
+    const text=await f.text();
+    applyPack(JSON.parse(text), "文件导入");
+  }catch(err){
+    $("setupMsg").textContent="文件读取失败";
+    $("setupMsg").className="msg err";
+  }
+};
+if($("importBtn")) $("importBtn").onclick=()=>importPasteJson();
+if($("saveSyncBtn")) $("saveSyncBtn").onclick=()=>saveSyncAndPull();
+$("refreshBtn").onclick=()=>refreshAll();
+$("showCnBtn").onclick=()=>{ state.showCn=!state.showCn; savePrefs(); render(); };
+$("showNoteBtn").onclick=()=>{ state.showNote=!state.showNote; savePrefs(); render(); };
+$("loopSeg").onclick=e=>{
+  const b=e.target.closest("button[data-loop]");
+  if(!b) return;
+  state.loop=+b.dataset.loop;
+  savePrefs();
+  updatePlayUI();
+  if(loopPlaying) startLoop();
+};
+if($("sortSeg")) $("sortSeg").onclick=e=>{
+  const b=e.target.closest("button[data-sort]");
+  if(!b) return;
+  const next=b.dataset.sort==="recent"?"recent":"fails";
+  if(next===state.sort) return;
+  state.sort=next;
+  sortItems(true);
+  savePrefs();
+  render();
+  if(loopPlaying) startLoop();
+};
+$("playBtn").onclick=()=>{ if(loopPlaying) stopLoop(); else startLoop(); };
+if($("slowBtn")) $("slowBtn").onclick=()=>{ if(loopPlaying) stopLoop(); startLoop(0.65); };
+$("prevBtn").onclick=()=>{
+  const wasPlaying=loopPlaying;
+  const rate=playRateNow||1;
+  if(state.idx>0) state.idx--;
+  savePrefs();
+  if(wasPlaying) startLoop(rate);
+  else { stopLoop(); render(); }
+};
+$("nextBtn").onclick=()=>{
+  const wasPlaying=loopPlaying;
+  const rate=playRateNow||1;
+  if(state.idx<state.items.length-1) state.idx++;
+  savePrefs();
+  if(wasPlaying) startLoop(rate);
+  else { stopLoop(); render(); }
+};
+if($("restartBtn")) $("restartBtn").onclick=()=>{
+  stopLoop();
+  state.idx=0;
+  savePrefs();
+  render();
+};
+if($("voiceSel")) $("voiceSel").onchange=e=>{
+  state.voiceURI=e.target.value||"";
+  savePrefs();
+  updateVoiceHint();
+  if(loopPlaying) startLoop();
+};
+
+document.addEventListener("visibilitychange", ()=>{
+  if(document.visibilityState==="visible" && navigator.onLine) refreshAll({ quiet:true });
+});
+window.addEventListener("online", ()=>refreshAll({ quiet:true }));
+
+loadPrefs();
+if(window.speechSynthesis){
+  loadVoices();
+  speechSynthesis.onvoiceschanged=loadVoices;
+  // iOS 有时首次 getVoices 为空，稍后再拉一次
+  setTimeout(loadVoices, 400);
+  setTimeout(loadVoices, 1200);
+}
+const bootId=(new URLSearchParams(location.search).get("id")||localStorage.getItem(SYNC_KEY)||"").trim();
+if($("syncIdInput") && bootId) $("syncIdInput").value=bootId;
+if(loadCache()) render();
+else render();
+refreshAll();
+</script>
+</body>
+</html>
