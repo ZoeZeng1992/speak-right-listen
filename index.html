@@ -470,12 +470,19 @@ function loadVoices(){
 function sortItems(keepCurrent){
   const cur=keepCurrent ? (state.items[state.idx]&&state.items[state.idx].en) : "";
   const arr=state.items.slice();
+  const hasTime=arr.some(x=>(x.addedAt||0)>0);
   if(state.sort==="recent"){
-    arr.sort((a,b)=>((b.addedAt||0)-(a.addedAt||0)) || ((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
+    // 最新收藏在前；无时间戳时退回按 fails，避免“两种排序看起来一样却说不清”
+    if(hasTime){
+      arr.sort((a,b)=>((b.addedAt||0)-(a.addedAt||0)) || ((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
+    }else{
+      arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
+    }
   }else{
     arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || ((b.addedAt||0)-(a.addedAt||0)) || String(a.en).localeCompare(String(b.en)));
   }
   state.items=arr;
+  state._sortHasTime=hasTime;
   if(cur){
     const i=arr.findIndex(x=>x.en===cur);
     state.idx=i>=0 ? i : 0;
@@ -483,18 +490,30 @@ function sortItems(keepCurrent){
 }
 function applyPack(pack, source){
   if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
-  state.items=pack.items.filter(x=>x&&x.en);
+  // 保留原始字段，按当前排序选项重排
+  state.items=pack.items.filter(x=>x&&x.en).map(x=>({
+    en:x.en,
+    cn:x.cn||"",
+    note:x.note||"",
+    mode:x.mode||"",
+    fails:+(x.fails||0)||0,
+    addedAt:+(x.addedAt||0)||0
+  }));
   state.updatedAt=pack.updatedAt||Date.now();
   sortItems(false);
-  if(state.idx>=state.items.length) state.idx=0;
+  state.idx=0;
   localStorage.setItem(CACHE_KEY, JSON.stringify({
-    v:2, updatedAt:state.updatedAt, items:state.items, source:source||""
+    v:3, updatedAt:state.updatedAt, items:state.items, source:source||""
   }));
   savePrefs();
   render();
-  $("setupMsg").textContent="已载入 "+state.items.length+" 句"+(source?" · "+source:"");
+  const timed=state.items.filter(x=>(x.addedAt||0)>1).length;
+  let msg="已载入 "+state.items.length+" 句"+(source?" · "+source:"");
+  if(timed<Math.min(3, state.items.length)){
+    msg+="。收藏时间数据不足，请电脑重新点「生成 / 更新云同步」后再刷新。";
+  }
+  $("setupMsg").textContent=msg;
   $("setupMsg").className="msg ok";
-  // 不自动朗读：等用户点「播放」
 }
 function loadCache(){
   try{
@@ -637,8 +656,15 @@ function render(){
   if(state.idx>=state.items.length) state.idx=state.items.length-1;
   if(state.idx<0) state.idx=0;
   const s=current();
-  const sortLabel=state.sort==="recent"?"新收藏优先":"易错优先";
+  const sortLabel=state.sort==="recent"?"最新收藏":"易错优先";
   $("counter").textContent = `${state.idx+1} / ${state.items.length}` + (s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
+  if(state.sort==="recent" && state._sortHasTime===false && $("playMsg")){
+    $("playMsg").textContent="缺少收藏时间：请电脑重新「生成 / 更新云同步」后，手机点刷新。";
+    $("playMsg").className="msg err";
+  }else if($("playMsg") && /缺少收藏时间/.test($("playMsg").textContent||"")){
+    $("playMsg").textContent="";
+    $("playMsg").className="msg";
+  }
   $("en").textContent = s.en||"";
   const fill=$("progressFill");
   if(fill){
@@ -765,11 +791,15 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
   if(!b) return;
   const next=b.dataset.sort==="recent"?"recent":"fails";
   if(next===state.sort) return;
+  const wasPlaying=loopPlaying;
+  const rate=playRateNow||1;
   state.sort=next;
-  sortItems(true);
+  // 切换排序时回到第 1 句，才能明显看到新顺序
+  sortItems(false);
+  state.idx=0;
   savePrefs();
   render();
-  if(loopPlaying) startLoop();
+  if(wasPlaying) startLoop(rate);
 };
 $("playBtn").onclick=()=>{ if(loopPlaying) stopLoop(); else startLoop(); };
 if($("slowBtn")) $("slowBtn").onclick=()=>{ if(loopPlaying) stopLoop(); startLoop(0.65); };
