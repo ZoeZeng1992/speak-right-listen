@@ -11,85 +11,257 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
 <title>Speak Right</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#f5f6fb; --card:#fff; --ink:#161a2b; --muted:#6b7280; --line:#e7e9f0;
-    --brand:#4f46e5; --brand-weak:#eef2ff; --radius:18px;
+    --bg0:#eef2ef;
+    --bg1:#f7f6f2;
+    --ink:#1c1917;
+    --muted:#78716c;
+    --line:rgba(28,25,23,.08);
+    --line-strong:rgba(28,25,23,.14);
+    --surface:rgba(255,255,255,.72);
+    --surface-solid:#fffcf8;
+    --accent:#0f766e;
+    --accent-soft:rgba(15,118,110,.1);
+    --warn:#b45309;
+    --bad:#b91c1c;
+    --good:#15803d;
+    --radius:22px;
+    --shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 18px 40px rgba(28,25,23,.06);
+    --font-ui:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif;
+    --font-en:"Instrument Serif",Georgia,"Times New Roman",serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;min-height:100%}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--bg); color:var(--ink); line-height:1.45;
-    padding:16px 16px calc(24px + env(safe-area-inset-bottom));
+    font-family:var(--font-ui);
+    color:var(--ink);
+    line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(900px 520px at 12% -8%, #d7e6df 0%, transparent 55%),
+      radial-gradient(760px 480px at 100% 0%, #ebe4d6 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg0), var(--bg1) 42%, #f3f1ec);
+    padding: max(14px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
   }
-  .wrap{max-width:520px;margin:0 auto}
-  header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
-  h1{margin:0;font-size:20px;letter-spacing:-.2px}
-  .sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px 16px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 10px 28px rgba(16,24,40,.06)}
-  .meta{font-size:13px;color:var(--muted);font-weight:650;margin-bottom:10px}
-  .en{font-size:26px;font-weight:750;letter-spacing:-.3px;line-height:1.35;min-height:2.6em;margin:8px 0 12px}
-  .panel{margin-top:10px;padding:12px 13px;border-radius:12px;background:#f7f8fc;border:1px solid var(--line);font-size:15px;line-height:1.55;display:none;white-space:pre-wrap}
-  .panel.show{display:block}
-  .panel.cn{font-weight:650}
-  .panel.note{color:#5c4a12;background:#fffaf0;border-color:#f0d488}
-  .toggles{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
-  .tog,.btn{
-    border:1px solid var(--line);background:#fff;border-radius:12px;height:44px;padding:0 14px;
-    font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;
+  .wrap{max-width:440px;margin:0 auto}
+
+  .top{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;margin-bottom:18px;
   }
-  .tog.on{background:var(--brand-weak);border-color:#c7cff8;color:var(--brand)}
-  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .brand{
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .brand strong{
+    font-size:15px;font-weight:700;letter-spacing:.02em;
+  }
+  .brand span, .sub{
+    font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .icon-btn{
+    height:40px;padding:0 14px;border-radius:999px;
+    border:1px solid var(--line-strong);
+    background:var(--surface);backdrop-filter:blur(10px);
+    color:var(--ink);font:600 13px/1 var(--font-ui);
+    cursor:pointer;
+  }
+  .icon-btn:active{transform:scale(.98)}
+
+  .setup{
+    background:var(--surface);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .setup.compact summary{list-style:none}
+  .setup.compact summary::-webkit-details-marker{display:none}
+  .setup label{
+    display:block;font-size:11px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin:12px 0 7px;
+  }
+  .setup label:first-of-type{margin-top:0}
+  .setup input,.setup textarea,.field select{
+    width:100%;border:1px solid var(--line-strong);border-radius:14px;
+    padding:12px 14px;font:500 15px/1.4 var(--font-ui);color:var(--ink);
+    background:var(--surface-solid);
+  }
+  .setup input{height:46px}
+  .setup textarea{min-height:78px;resize:vertical}
+  .setup .hint{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+  .setup details{margin-top:12px}
+  .setup summary{
+    cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);
+  }
+
+  .player{
+    display:none;
+    animation:rise .45s ease both;
+  }
+  @keyframes rise{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:none}
+  }
+  .stage{
+    background:var(--surface);
+    backdrop-filter:blur(16px);
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:22px 20px 18px;
+    box-shadow:var(--shadow);
+    min-height:280px;
+    display:flex;flex-direction:column;
+  }
+  .progress{
+    height:3px;border-radius:99px;background:rgba(28,25,23,.08);
+    overflow:hidden;margin-bottom:16px;
+  }
+  .progress > i{
+    display:block;height:100%;width:0%;
+    background:linear-gradient(90deg, #0f766e, #1d9a8f);
+    border-radius:inherit;
+    transition:width .35s ease;
+  }
+  .meta{
+    font-size:12px;font-weight:600;color:var(--muted);
+    letter-spacing:.04em;margin-bottom:14px;
+  }
+  .en{
+    font-family:var(--font-en);
+    font-size:clamp(28px, 7.2vw, 36px);
+    font-weight:400;
+    letter-spacing:-.02em;
+    line-height:1.28;
+    color:var(--ink);
+    margin:0 0 auto;
+    min-height:3.2em;
+  }
+  .toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .tog{
+    border:0;height:36px;padding:0 14px;border-radius:999px;
+    background:rgba(28,25,23,.05);color:var(--muted);
+    font:600 13px/1 var(--font-ui);cursor:pointer;
+  }
+  .tog.on{background:var(--accent-soft);color:var(--accent)}
+  .panel{
+    margin-top:12px;padding:12px 0 0;border-top:1px solid var(--line);
+    font-size:15px;line-height:1.6;color:var(--ink);display:none;white-space:pre-wrap;
+  }
+  .panel.show{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .panel.cn{font-weight:600}
+  .panel.note{color:#78561f;font-size:14px}
+
+  .status{
+    min-height:1.2em;margin:14px 0 4px;
+    font-size:12.5px;font-weight:600;color:var(--accent);
+    text-align:center;
+  }
+
+  .transport{
+    display:grid;
+    grid-template-columns:1fr 1.35fr 1fr;
+    gap:10px;
+    margin-top:8px;
+  }
+  .btn{
+    height:52px;border-radius:16px;border:1px solid var(--line-strong);
+    background:var(--surface-solid);color:var(--ink);
+    font:650 14px/1 var(--font-ui);cursor:pointer;
+  }
+  .btn:active{transform:scale(.985)}
+  .btn.primary{
+    background:var(--ink);border-color:var(--ink);color:#fff;
+    box-shadow:0 12px 28px rgba(28,25,23,.18);
+  }
+  .btn.primary.is-playing{
+    background:var(--accent);border-color:var(--accent);
+    box-shadow:0 12px 28px rgba(15,118,110,.22);
+  }
+  .btn.ghost{
+    background:transparent;border-color:transparent;color:var(--muted);
+    height:44px;font-weight:600;
+  }
   .btn.block{width:100%}
-  .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-  .row .btn{flex:1 1 30%;min-width:96px}
-  .loops{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 6px}
-  .loops span{font-size:12px;font-weight:750;color:var(--muted)}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
-  .seg button{border:0;background:transparent;height:36px;padding:0 12px;font-size:14px;font-weight:750;color:var(--muted)}
-  .seg button.on{background:var(--brand);color:#fff}
-  .status{font-size:13px;font-weight:650;color:var(--brand);min-height:1.2em;margin-top:6px}
-  .setup{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
-  .setup label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin:10px 0 6px}
-  .setup label:first-child{margin-top:0}
-  .setup input,.setup textarea{
-    width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;font-family:inherit;
+  .row{display:flex;gap:8px;margin-top:8px}
+  .row .btn{flex:1}
+  .secondary{
+    display:flex;gap:8px;margin-top:8px;
   }
-  .setup input{height:44px}
-  .setup textarea{min-height:72px;resize:vertical}
-  .setup .hint{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
-  .msg{font-size:13px;color:var(--muted);margin-top:8px;min-height:1.2em}
-  .msg.err{color:#dc2626}
-  .msg.ok{color:#15803d}
-  .empty{padding:28px 8px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+  .secondary .btn{flex:1;height:44px;border-radius:14px;font-size:13px;background:transparent}
+
+  .opts{
+    margin-top:14px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.55);
+    padding:4px 14px 12px;
+  }
+  .opts > summary{
+    list-style:none;cursor:pointer;
+    font-size:13px;font-weight:650;color:var(--muted);
+    padding:12px 0;
+  }
+  .opts > summary::-webkit-details-marker{display:none}
+  .opts > summary::after{content:"设置";float:right;color:var(--accent);font-weight:700}
+  .field{margin-top:10px}
+  .field .label{
+    display:block;font-size:11px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+  }
+  .seg{
+    display:flex;gap:4px;padding:4px;border-radius:14px;
+    background:rgba(28,25,23,.05);
+  }
+  .seg button{
+    flex:1;border:0;background:transparent;height:36px;border-radius:11px;
+    font:650 12.5px/1 var(--font-ui);color:var(--muted);cursor:pointer;
+  }
+  .seg button.on{
+    background:#fff;color:var(--ink);
+    box-shadow:0 1px 2px rgba(28,25,23,.06), 0 6px 16px rgba(28,25,23,.05);
+  }
+  #voiceHint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+  #voiceHint b{color:var(--ink);font-weight:650}
+
+  .msg{font-size:12.5px;color:var(--muted);margin-top:10px;min-height:1.2em;line-height:1.5}
+  .msg.err{color:var(--bad)}
+  .msg.ok{color:var(--good)}
+  .empty{
+    display:none;text-align:center;padding:48px 12px;
+    color:var(--muted);font-size:14px;line-height:1.7;
+  }
+  .playMsg{text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <div>
-      <h1>错题听练</h1>
-      <p class="sub" id="updated">电脑同步错题后，手机循环听</p>
+  <header class="top">
+    <div class="brand">
+      <strong>Speak Right</strong>
+      <span class="sub" id="updated">听练</span>
     </div>
-    <button class="btn" type="button" id="refreshBtn">刷新</button>
+    <button class="icon-btn" type="button" id="refreshBtn">刷新</button>
   </header>
 
   <section class="setup" id="setup">
-    <label for="syncIdInput">云同步码（电脑生成一次，手机保存即可）</label>
+    <label for="syncIdInput">云同步码</label>
     <input id="syncIdInput" inputmode="text" autocomplete="off" placeholder="粘贴同步码" />
-    <div class="row">
+    <div class="row" style="margin-top:12px">
       <button class="btn primary block" type="button" id="saveSyncBtn">保存并拉取最新</button>
     </div>
     <p class="hint">
-      配对一次后：电脑改错题会自动上传；手机<strong>联网打开或点刷新</strong>就会更新。<br>
-      没网时继续用手机缓存离线听。同步码若以 <code>bin:</code> 开头，走 Jsonbin。<br>
-      备用：同一 Wi‑Fi 可直接拉本机文件，或导入 json。
+      配对一次即可。之后电脑改错题会上传；手机联网打开或点刷新即可更新。离线用缓存听。
     </p>
-    <details style="margin-top:10px">
-      <summary style="font-size:13px;font-weight:700;color:var(--muted);cursor:pointer">备用：导入文件 / 粘贴 JSON</summary>
-      <label style="margin-top:10px">听练包文件</label>
+    <details>
+      <summary>备用导入</summary>
+      <label>听练包文件</label>
       <input type="file" id="fileInput" accept="application/json,.json" />
       <label>粘贴完整 JSON</label>
       <textarea id="pasteInput" placeholder='{"v":1,"items":[...]}'></textarea>
@@ -98,57 +270,63 @@
     <div class="msg" id="setupMsg"></div>
   </section>
 
-  <section class="card" id="player" style="display:none">
-    <div class="meta" id="counter">0 / 0</div>
-    <div class="en" id="en"></div>
-    <div class="toggles">
-      <button type="button" class="tog" id="showCnBtn">显示中文</button>
-      <button type="button" class="tog" id="showNoteBtn">显示备注</button>
+  <section class="player" id="player">
+    <div class="stage">
+      <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+      <div class="meta" id="counter">0 / 0</div>
+      <p class="en" id="en"></p>
+      <div class="toggles">
+        <button type="button" class="tog" id="showCnBtn">中文</button>
+        <button type="button" class="tog" id="showNoteBtn">备注</button>
+      </div>
+      <div class="panel cn" id="cnPanel"></div>
+      <div class="panel note" id="notePanel"></div>
     </div>
-    <div class="panel cn" id="cnPanel"></div>
-    <div class="panel note" id="notePanel"></div>
 
-    <div class="loops">
-      <span>排序</span>
-      <div class="seg" id="sortSeg">
-        <button type="button" data-sort="fails" class="on">按错误次数</button>
-        <button type="button" data-sort="recent">按收藏时间</button>
-      </div>
-    </div>
-    <div class="loops" style="align-items:flex-start">
-      <span style="margin-top:10px">发音</span>
-      <div style="flex:1;min-width:0">
-        <select id="voiceSel" style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:14px;background:#fff;color:var(--ink)"></select>
-        <div id="voiceHint" style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5"></div>
-      </div>
-    </div>
-    <div class="loops">
-      <span>循环</span>
-      <div class="seg" id="loopSeg">
-        <button type="button" data-loop="1">1</button>
-        <button type="button" data-loop="2">2</button>
-        <button type="button" data-loop="3">3</button>
-        <button type="button" data-loop="5">5</button>
-        <button type="button" data-loop="0" title="本句一直循环">∞</button>
-      </div>
-    </div>
     <div class="status" id="status"></div>
 
-    <div class="row">
-      <button class="btn primary" type="button" id="playBtn" style="flex:1 1 100%">播放</button>
-    </div>
-    <div class="row">
-      <button class="btn" type="button" id="slowBtn">慢速播放</button>
+    <div class="transport">
       <button class="btn" type="button" id="prevBtn">上一句</button>
+      <button class="btn primary" type="button" id="playBtn">播放</button>
       <button class="btn" type="button" id="nextBtn">下一句</button>
     </div>
-    <div class="row">
-      <button class="btn" type="button" id="restartBtn">重新开始</button>
+    <div class="secondary">
+      <button class="btn" type="button" id="slowBtn">慢速</button>
+      <button class="btn" type="button" id="restartBtn">从头</button>
     </div>
-    <div class="msg" id="playMsg"></div>
+    <div class="msg playMsg" id="playMsg"></div>
+
+    <details class="opts">
+      <summary>听练选项</summary>
+      <div class="field">
+        <span class="label">排序</span>
+        <div class="seg" id="sortSeg">
+          <button type="button" data-sort="fails" class="on">错误次数</button>
+          <button type="button" data-sort="recent">收藏时间</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">每句循环</span>
+        <div class="seg" id="loopSeg">
+          <button type="button" data-loop="1">1</button>
+          <button type="button" data-loop="2">2</button>
+          <button type="button" data-loop="3">3</button>
+          <button type="button" data-loop="5">5</button>
+          <button type="button" data-loop="0" title="本句一直循环">∞</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">发音</span>
+        <select id="voiceSel"></select>
+        <div id="voiceHint"></div>
+      </div>
+      <div class="field">
+        <button class="btn block" type="button" id="openSetupBtn" style="height:44px">同步 / 导入设置</button>
+      </div>
+    </details>
   </section>
 
-  <div class="empty" id="empty" style="display:none">还没有句子。<br>请先导入电脑同步的听练包。</div>
+  <div class="empty" id="empty">还没有句子。<br>请先保存同步码，或导入听练包。</div>
 </div>
 
 <script>
@@ -377,7 +555,8 @@ function updatePlayUI(){
     ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
     : "";
   $("playBtn").textContent = loopPlaying ? "暂停" : "播放";
-  $("playBtn").classList.toggle("primary", !loopPlaying);
+  $("playBtn").classList.toggle("primary", true);
+  $("playBtn").classList.toggle("is-playing", !!loopPlaying);
   document.querySelectorAll("#loopSeg button").forEach(b=>{
     b.classList.toggle("on", +b.dataset.loop===state.loop);
   });
@@ -453,20 +632,26 @@ function render(){
   const has=state.items.length>0;
   $("player").style.display=has?"block":"none";
   $("empty").style.display=has?"none":"block";
+  if($("setup")) $("setup").style.display = has ? "none" : "block";
   if(!has){ stopLoop(); return; }
   if(state.idx>=state.items.length) state.idx=state.items.length-1;
   if(state.idx<0) state.idx=0;
   const s=current();
-  const sortLabel=state.sort==="recent"?"收藏新→旧":"错多→少";
+  const sortLabel=state.sort==="recent"?"新收藏优先":"易错优先";
   $("counter").textContent = `${state.idx+1} / ${state.items.length}` + (s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
   $("en").textContent = s.en||"";
+  const fill=$("progressFill");
+  if(fill){
+    const pct = state.items.length ? ((state.idx+1)/state.items.length)*100 : 0;
+    fill.style.width = pct.toFixed(2)+"%";
+  }
   $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
   $("cnPanel").classList.toggle("show", state.showCn);
   const note=(s.note||"").trim();
   $("notePanel").innerHTML = note ? esc(note) : "这句还没有备注";
   $("notePanel").classList.toggle("show", state.showNote);
   if(state.updatedAt){
-    $("updated").textContent = "已缓存 · "+new Date(state.updatedAt).toLocaleString();
+    $("updated").textContent = "已同步 · "+new Date(state.updatedAt).toLocaleString();
   }
   updatePlayUI();
 }
@@ -558,6 +743,12 @@ if($("fileInput")) $("fileInput").onchange=async e=>{
 };
 if($("importBtn")) $("importBtn").onclick=()=>importPasteJson();
 if($("saveSyncBtn")) $("saveSyncBtn").onclick=()=>saveSyncAndPull();
+if($("openSetupBtn")) $("openSetupBtn").onclick=()=>{
+  if($("setup")){
+    $("setup").style.display="block";
+    $("setup").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+};
 $("refreshBtn").onclick=()=>refreshAll();
 $("showCnBtn").onclick=()=>{ state.showCn=!state.showCn; savePrefs(); render(); };
 $("showNoteBtn").onclick=()=>{ state.showNote=!state.showNote; savePrefs(); render(); };
@@ -630,5 +821,6 @@ if(loadCache()) render();
 else render();
 refreshAll();
 </script>
+
 </body>
 </html>
