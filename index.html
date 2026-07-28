@@ -340,6 +340,7 @@ const $ = id => document.getElementById(id);
 const state = {
   items: [],
   idx: 0,
+  currentEn: "",
   showCn: false,
   showNote: false,
   loop: 3,
@@ -349,6 +350,8 @@ const state = {
 };
 
 let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
+let userWantsPlay=false;
+let wakeLock=null, wakeKeepAlive=null, speechKeepAlive=null;
 let voices=[];
 
 // 美式年轻女声优先
@@ -374,15 +377,47 @@ function loadPrefs(){
     state.showCn=!!p.showCn;
     state.showNote=!!p.showNote;
     if(typeof p.idx==="number") state.idx=p.idx;
+    if(typeof p.currentEn==="string") state.currentEn=p.currentEn;
     if(p.sort==="recent" || p.sort==="fails") state.sort=p.sort;
     if(typeof p.voiceURI==="string") state.voiceURI=p.voiceURI;
   }catch(e){}
 }
 function savePrefs(){
+  const cur=current();
+  if(cur&&cur.en) state.currentEn=cur.en;
   localStorage.setItem(PREF_KEY, JSON.stringify({
     loop: state.loop, showCn: state.showCn, showNote: state.showNote,
-    idx: state.idx, sort: state.sort, voiceURI: state.voiceURI
+    idx: state.idx, currentEn: state.currentEn||"",
+    sort: state.sort, voiceURI: state.voiceURI
   }));
+}
+async function acquireWakeLock(){
+  try{
+    if(!("wakeLock" in navigator)) return;
+    if(wakeLock) return;
+    wakeLock=await navigator.wakeLock.request("screen");
+    wakeLock.addEventListener("release", ()=>{ wakeLock=null; });
+  }catch(e){ wakeLock=null; }
+}
+function releaseWakeLock(){
+  try{ if(wakeLock) wakeLock.release(); }catch(e){}
+  wakeLock=null;
+}
+function startKeepAlives(){
+  stopKeepAlives();
+  // 部分机型 TTS 会自己暂停；定期 resume 续播
+  speechKeepAlive=setInterval(()=>{
+    if(!userWantsPlay) return;
+    try{ if(speechSynthesis.paused) speechSynthesis.resume(); }catch(e){}
+  }, 8000);
+  // 息屏后 Wake Lock 会丢，可见时再要一次
+  wakeKeepAlive=setInterval(()=>{
+    if(userWantsPlay && document.visibilityState==="visible") acquireWakeLock();
+  }, 15000);
+}
+function stopKeepAlives(){
+  if(speechKeepAlive){ clearInterval(speechKeepAlive); speechKeepAlive=null; }
+  if(wakeKeepAlive){ clearInterval(wakeKeepAlive); wakeKeepAlive=null; }
 }
 function esc(s){
   return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -488,8 +523,12 @@ function sortItems(keepCurrent){
     state.idx=i>=0 ? i : 0;
   }
 }
-function applyPack(pack, source){
+function applyPack(pack, source, opts){
   if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
+  const resetIdx=!!(opts&&opts.resetIdx);
+  const prevEn = resetIdx ? "" : (
+    (current()&&current().en) || state.currentEn || ""
+  );
   // 保留原始字段，按当前排序选项重排
   state.items=pack.items.filter(x=>x&&x.en).map(x=>({
     en:x.en,
@@ -501,7 +540,16 @@ function applyPack(pack, source){
   }));
   state.updatedAt=pack.updatedAt||Date.now();
   sortItems(false);
-  state.idx=0;
+  if(prevEn){
+    const i=state.items.findIndex(x=>x.en===prevEn);
+    state.idx = i>=0 ? i : Math.min(Math.max(0, state.idx), Math.max(0, state.items.length-1));
+  }else if(resetIdx){
+    state.idx=0;
+  }else if(typeof state.idx==="number" && state.items.length){
+    state.idx=Math.min(Math.max(0, state.idx), state.items.length-1);
+  }else{
+    state.idx=0;
+  }
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     v:3, updatedAt:state.updatedAt, items:state.items, source:source||""
   }));
@@ -521,7 +569,14 @@ function loadCache(){
     if(pack && Array.isArray(pack.items) && pack.items.length){
       state.items=pack.items.filter(x=>x&&x.en);
       state.updatedAt=pack.updatedAt||0;
-      sortItems(true);
+      sortItems(false);
+      if(state.currentEn){
+        const i=state.items.findIndex(x=>x.en===state.currentEn);
+        if(i>=0) state.idx=i;
+        else state.idx=Math.min(Math.max(0, state.idx), state.items.length-1);
+      }else{
+        state.idx=Math.min(Math.max(0, state.idx), state.items.length-1);
+      }
       return true;
     }
   }catch(e){}
@@ -560,10 +615,16 @@ async function fetchLocalFile(){
   return res.json();
 }
 
-function stopLoop(){
+function stopLoop(opts){
+  const keepWant=!!(opts&&opts.keepWant);
   loopToken++;
   loopPlaying=false;
   loopCount=0;
+  if(!keepWant){
+    userWantsPlay=false;
+    stopKeepAlives();
+    releaseWakeLock();
+  }
   try{ speechSynthesis.cancel(); }catch(e){}
   updatePlayUI();
 }
@@ -596,16 +657,20 @@ function startLoop(rate){
     $("playMsg").className="msg err";
     return;
   }
-  stopLoop();
+  stopLoop({ keepWant:true });
   const token=++loopToken;
+  userWantsPlay=true;
   loopPlaying=true;
   loopCount=0;
   const lim=state.loop;
   const playRate = rate ?? playRateNow ?? 1;
   playRateNow=playRate;
+  acquireWakeLock();
+  startKeepAlives();
   updatePlayUI();
   $("playMsg").textContent="";
   $("playMsg").className="msg";
+  savePrefs();
   render();
   const s=current();
   if(!s||!s.en){ stopLoop(); return; }
@@ -624,6 +689,9 @@ function startLoop(rate){
       }, 500);
       return;
     }
+    userWantsPlay=false;
+    stopKeepAlives();
+    releaseWakeLock();
     updatePlayUI();
     if(lim>0 && state.idx >= state.items.length-1) $("status").textContent="已到最后一句";
   };
@@ -641,7 +709,12 @@ function startLoop(rate){
     u.rate=playRate;
     u.pitch=1;
     u.onend=()=>{ if(token!==loopToken) return; setTimeout(playOnce, 450); };
-    u.onerror=()=>{ if(token!==loopToken) return; loopPlaying=false; updatePlayUI(); };
+    u.onerror=()=>{
+      if(token!==loopToken) return;
+      // 息屏/切走时常见 interrupted，保留进度；回来再续播
+      loopPlaying=false;
+      updatePlayUI();
+    };
     speechSynthesis.speak(u);
   };
   playOnce();
@@ -833,10 +906,21 @@ if($("voiceSel")) $("voiceSel").onchange=e=>{
   if(loopPlaying) startLoop();
 };
 
-document.addEventListener("visibilitychange", ()=>{
-  if(document.visibilityState==="visible" && navigator.onLine) refreshAll({ quiet:true });
+document.addEventListener("visibilitychange", async ()=>{
+  if(document.visibilityState!=="visible") return;
+  savePrefs();
+  const wasWant=userWantsPlay;
+  if(navigator.onLine){
+    try{ await refreshAll({ quiet:true }); }catch(e){}
+  }
+  if(wasWant && document.visibilityState==="visible"){
+    acquireWakeLock();
+    startLoop(playRateNow||1);
+  }
 });
 window.addEventListener("online", ()=>refreshAll({ quiet:true }));
+window.addEventListener("pagehide", ()=>savePrefs());
+window.addEventListener("beforeunload", ()=>savePrefs());
 
 loadPrefs();
 if(window.speechSynthesis){
