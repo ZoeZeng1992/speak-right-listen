@@ -196,6 +196,24 @@
   }
   .secondary .btn{flex:1;height:44px;border-radius:14px;font-size:13px;background:transparent}
 
+  .grade{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;
+  }
+  .grade .btn{height:48px;border-radius:14px;font-size:14px}
+  .btn.bad{
+    background:rgba(185,28,28,.08);border-color:rgba(185,28,28,.22);color:var(--bad);
+  }
+  .btn.good{
+    background:rgba(21,128,61,.08);border-color:rgba(21,128,61,.22);color:var(--good);
+  }
+  .statsline{
+    text-align:center;margin-top:10px;
+    font-size:13px;font-weight:650;color:var(--muted);
+  }
+  .statsline .fail{color:var(--bad)}
+  .statsline .got{color:var(--good)}
+  .syncTip{font-size:12px;text-align:center;color:var(--muted);min-height:1.2em;margin-top:6px}
+
   .opts{
     margin-top:14px;
     border-radius:20px;
@@ -257,8 +275,10 @@
       <button class="btn primary block" type="button" id="saveSyncBtn">保存并拉取最新</button>
     </div>
     <p class="hint">
-      配对一次即可。之后电脑改错题会上传；手机联网打开或点刷新即可更新。离线用缓存听。
+      配对一次即可。电脑改错题会上传；手机点「不会 / 会了」也会回写次数到电脑（需下方同一把 Jsonbin Key）。
     </p>
+    <label for="jsonbinKeyInput">Jsonbin Master Key（回写错误次数）</label>
+    <input id="jsonbinKeyInput" type="password" autocomplete="off" placeholder="与电脑设置里同一把 Key" />
     <details>
       <summary>备用导入</summary>
       <label>听练包文件</label>
@@ -294,6 +314,12 @@
       <button class="btn" type="button" id="slowBtn">慢速</button>
       <button class="btn" type="button" id="restartBtn">从头</button>
     </div>
+    <div class="grade">
+      <button class="btn bad" type="button" id="missBtn">不会</button>
+      <button class="btn good" type="button" id="gotBtn">会了</button>
+    </div>
+    <div class="statsline" id="statsLine">错 0 · 对 0</div>
+    <div class="syncTip" id="syncTip"></div>
     <div class="msg playMsg" id="playMsg"></div>
 
     <details class="opts">
@@ -333,6 +359,7 @@
 const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
+const JSONBIN_KEY="sr_jsonbin_key";
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
 
@@ -346,13 +373,15 @@ const state = {
   loop: 3,
   sort: "fails",
   voiceURI: "",
-  updatedAt: 0
+  updatedAt: 0,
+  jsonbinKey: ""
 };
 
 let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
 let userWantsPlay=false;
 let wakeLock=null, wakeKeepAlive=null, speechKeepAlive=null;
 let voices=[];
+let _pushTimer=null, _pushBusy=false;
 
 // 美式年轻女声优先
 const US_YOUNG_FEMALE = [
@@ -381,6 +410,7 @@ function loadPrefs(){
     if(p.sort==="recent" || p.sort==="fails") state.sort=p.sort;
     if(typeof p.voiceURI==="string") state.voiceURI=p.voiceURI;
   }catch(e){}
+  try{ state.jsonbinKey=(localStorage.getItem(JSONBIN_KEY)||"").trim(); }catch(e){}
 }
 function savePrefs(){
   const cur=current();
@@ -390,6 +420,10 @@ function savePrefs(){
     idx: state.idx, currentEn: state.currentEn||"",
     sort: state.sort, voiceURI: state.voiceURI
   }));
+}
+function saveJsonbinKey(key){
+  state.jsonbinKey=String(key||"").trim();
+  try{ localStorage.setItem(JSONBIN_KEY, state.jsonbinKey); }catch(e){}
 }
 async function acquireWakeLock(){
   try{
@@ -511,10 +545,10 @@ function sortItems(keepCurrent){
     if(hasTime){
       arr.sort((a,b)=>((b.addedAt||0)-(a.addedAt||0)) || ((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
     }else{
-      arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || String(a.en).localeCompare(String(b.en)));
+      arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || ((a.gots||0)-(b.gots||0)) || String(a.en).localeCompare(String(b.en)));
     }
   }else{
-    arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || ((b.addedAt||0)-(a.addedAt||0)) || String(a.en).localeCompare(String(b.en)));
+    arr.sort((a,b)=>((b.fails||0)-(a.fails||0)) || ((a.gots||0)-(b.gots||0)) || ((b.addedAt||0)-(a.addedAt||0)) || String(a.en).localeCompare(String(b.en)));
   }
   state.items=arr;
   state._sortHasTime=hasTime;
@@ -523,21 +557,29 @@ function sortItems(keepCurrent){
     state.idx=i>=0 ? i : 0;
   }
 }
+function mergeItemStats(cloudItems, localItems){
+  const prev=new Map((localItems||[]).map(x=>[x.en, x]));
+  return (cloudItems||[]).filter(x=>x&&x.en).map(x=>{
+    const p=prev.get(x.en);
+    return {
+      en:x.en,
+      cn:x.cn||"",
+      note:x.note||"",
+      mode:x.mode||"",
+      fails:Math.max(+(x.fails||0)||0, +(p&&p.fails||0)||0),
+      gots:Math.max(+(x.gots||0)||0, +(p&&p.gots||0)||0),
+      addedAt:+(x.addedAt||0)||0
+    };
+  });
+}
 function applyPack(pack, source, opts){
   if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
   const resetIdx=!!(opts&&opts.resetIdx);
   const prevEn = resetIdx ? "" : (
     (current()&&current().en) || state.currentEn || ""
   );
-  // 保留原始字段，按当前排序选项重排
-  state.items=pack.items.filter(x=>x&&x.en).map(x=>({
-    en:x.en,
-    cn:x.cn||"",
-    note:x.note||"",
-    mode:x.mode||"",
-    fails:+(x.fails||0)||0,
-    addedAt:+(x.addedAt||0)||0
-  }));
+  const prevItems=state.items.slice();
+  state.items=mergeItemStats(pack.items, prevItems);
   state.updatedAt=pack.updatedAt||Date.now();
   sortItems(false);
   if(prevEn){
@@ -551,7 +593,7 @@ function applyPack(pack, source, opts){
     state.idx=0;
   }
   localStorage.setItem(CACHE_KEY, JSON.stringify({
-    v:3, updatedAt:state.updatedAt, items:state.items, source:source||""
+    v:4, updatedAt:state.updatedAt, items:state.items, source:source||""
   }));
   savePrefs();
   render();
@@ -608,6 +650,102 @@ async function fetchCloud(id){
   }, 8000);
   if(!res.ok) throw new Error("云拉取失败 ("+res.status+")");
   return res.json();
+}
+function buildLocalPack(){
+  return {
+    v:4,
+    updatedAt:Date.now(),
+    items: state.items.map(x=>({
+      en:x.en, cn:x.cn||"", note:x.note||"", mode:x.mode||"",
+      fails:+(x.fails||0)||0, gots:+(x.gots||0)||0, addedAt:+(x.addedAt||0)||0
+    }))
+  };
+}
+async function putCloud(pack, rawId){
+  const parsed=parseFavSyncId(rawId);
+  if(!parsed.id) throw new Error("同步码无效");
+  const body=JSON.stringify(pack);
+  if(parsed.provider==="jsonbin"){
+    const key=(state.jsonbinKey||"").trim();
+    if(!key) throw new Error("请先在设置里填写 Jsonbin Master Key（与电脑相同）");
+    const res=await fetchWithTimeout(JSONBIN_API+"/"+encodeURIComponent(parsed.id), {
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json",
+        "X-Master-Key":key,
+        "X-Bin-Private":"false"
+      },
+      body
+    }, 10000);
+    if(!res.ok){
+      let tip="回写失败 "+res.status;
+      try{ const j=await res.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
+      throw new Error(tip);
+    }
+    return;
+  }
+  const res=await fetchWithTimeout(JSONBLOB_API+"/"+encodeURIComponent(parsed.id), {
+    method:"PUT",
+    headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+    body
+  }, 10000);
+  if(!res.ok) throw new Error("回写失败 "+res.status);
+}
+async function pushStatsToCloud(opts){
+  const quiet=!!(opts&&opts.quiet);
+  const id=(localStorage.getItem(SYNC_KEY)||"").trim() || (new URLSearchParams(location.search).get("id")||"").trim();
+  if(!id){
+    if(!quiet && $("syncTip")) $("syncTip").textContent="本地已记次数；保存同步码后可回写电脑";
+    return false;
+  }
+  if(_pushBusy) return false;
+  _pushBusy=true;
+  if(!quiet && $("syncTip")) $("syncTip").textContent="正在同步到电脑…";
+  try{
+    let pack=null;
+    try{ pack=await fetchCloud(id); }catch(e){ pack=null; }
+    if(!pack || !Array.isArray(pack.items)) pack=buildLocalPack();
+    else{
+      pack.items=mergeItemStats(pack.items, state.items);
+      pack.v=4;
+      pack.updatedAt=Date.now();
+    }
+    await putCloud(pack, id);
+    // 用合并结果刷新本地（保留进度）
+    state.items=mergeItemStats(pack.items, state.items);
+    state.updatedAt=pack.updatedAt||Date.now();
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      v:4, updatedAt:state.updatedAt, items:state.items, source:"回写"
+    }));
+    if($("syncTip")) $("syncTip").textContent="已同步到电脑 · "+new Date().toLocaleTimeString();
+    return true;
+  }catch(e){
+    const tip=(e&&e.message)||"同步失败";
+    if($("syncTip")) $("syncTip").textContent=tip+"（次数已保存在手机）";
+    return false;
+  }finally{
+    _pushBusy=false;
+  }
+}
+function schedulePushStats(){
+  clearTimeout(_pushTimer);
+  _pushTimer=setTimeout(()=>pushStatsToCloud({ quiet:false }), 900);
+}
+function recordPractice(missed){
+  const s=current();
+  if(!s||!s.en) return;
+  if(missed) s.fails=(+(s.fails||0)||0)+1;
+  else s.gots=(+(s.gots||0)||0)+1;
+  // 写回 state.items 引用已是同一对象
+  localStorage.setItem(CACHE_KEY, JSON.stringify({
+    v:4, updatedAt:Date.now(), items:state.items, source:"local"
+  }));
+  savePrefs();
+  if(state.sort==="fails"){
+    sortItems(true);
+  }
+  render();
+  schedulePushStats();
 }
 async function fetchLocalFile(){
   const res=await fetchWithTimeout("fav-listen-data.json?ts="+Date.now(), { cache:"no-store" }, 3000);
@@ -744,6 +882,10 @@ function render(){
     const pct = state.items.length ? ((state.idx+1)/state.items.length)*100 : 0;
     fill.style.width = pct.toFixed(2)+"%";
   }
+  if($("statsLine")){
+    $("statsLine").innerHTML =
+      `<span class="fail">错 ${+(s.fails||0)||0}</span> · <span class="got">对 ${+(s.gots||0)||0}</span>`;
+  }
   $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
   $("cnPanel").classList.toggle("show", state.showCn);
   const note=(s.note||"").trim();
@@ -805,6 +947,7 @@ function saveSyncAndPull(){
     $("setupMsg").className="msg err";
     return;
   }
+  if($("jsonbinKeyInput")) saveJsonbinKey($("jsonbinKeyInput").value);
   if(raw.startsWith("{")){
     try{ applyPack(JSON.parse(raw), "粘贴导入"); }catch(e){
       $("setupMsg").textContent="JSON 解析失败"; $("setupMsg").className="msg err";
@@ -899,6 +1042,13 @@ if($("restartBtn")) $("restartBtn").onclick=()=>{
   savePrefs();
   render();
 };
+if($("missBtn")) $("missBtn").onclick=()=>recordPractice(true);
+if($("gotBtn")) $("gotBtn").onclick=()=>recordPractice(false);
+if($("jsonbinKeyInput")){
+  $("jsonbinKeyInput").value=state.jsonbinKey||"";
+  $("jsonbinKeyInput").onchange=e=>saveJsonbinKey(e.target.value);
+  $("jsonbinKeyInput").onblur=e=>saveJsonbinKey(e.target.value);
+}
 if($("voiceSel")) $("voiceSel").onchange=e=>{
   state.voiceURI=e.target.value||"";
   savePrefs();
@@ -923,6 +1073,7 @@ window.addEventListener("pagehide", ()=>savePrefs());
 window.addEventListener("beforeunload", ()=>savePrefs());
 
 loadPrefs();
+if($("jsonbinKeyInput")) $("jsonbinKeyInput").value=state.jsonbinKey||"";
 if(window.speechSynthesis){
   loadVoices();
   speechSynthesis.onvoiceschanged=loadVoices;
