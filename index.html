@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Speak Right" />
@@ -36,16 +36,26 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;min-height:100%}
+  html{
+    touch-action:manipulation;
+    -webkit-text-size-adjust:100%;
+  }
   body{
     font-family:var(--font-ui);
     color:var(--ink);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    touch-action:manipulation;
+    overscroll-behavior:contain;
     background:
       radial-gradient(900px 520px at 12% -8%, #d7e6df 0%, transparent 55%),
       radial-gradient(760px 480px at 100% 0%, #ebe4d6 0%, transparent 50%),
       linear-gradient(180deg, var(--bg0), var(--bg1) 42%, #f3f1ec);
     padding: max(14px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+  }
+  button, .btn, .tog, .icon-btn, .seg button, summary, a, label{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
   }
   .wrap{max-width:440px;margin:0 auto}
 
@@ -89,7 +99,7 @@
   .setup label:first-of-type{margin-top:0}
   .setup input,.setup textarea,.field select{
     width:100%;border:1px solid var(--line-strong);border-radius:14px;
-    padding:12px 14px;font:500 15px/1.4 var(--font-ui);color:var(--ink);
+    padding:12px 14px;font:500 16px/1.4 var(--font-ui);color:var(--ink);
     background:var(--surface-solid);
   }
   .setup input{height:46px}
