@@ -197,21 +197,17 @@
   .secondary .btn{flex:1;height:44px;border-radius:14px;font-size:13px;background:transparent}
 
   .grade{
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;
+    display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;
   }
   .grade .btn{height:48px;border-radius:14px;font-size:14px}
   .btn.bad{
     background:rgba(185,28,28,.08);border-color:rgba(185,28,28,.22);color:var(--bad);
-  }
-  .btn.good{
-    background:rgba(21,128,61,.08);border-color:rgba(21,128,61,.22);color:var(--good);
   }
   .statsline{
     text-align:center;margin-top:10px;
     font-size:13px;font-weight:650;color:var(--muted);
   }
   .statsline .fail{color:var(--bad)}
-  .statsline .got{color:var(--good)}
   .syncTip{font-size:12px;text-align:center;color:var(--muted);min-height:1.2em;margin-top:6px}
 
   .opts{
@@ -275,7 +271,7 @@
       <button class="btn primary block" type="button" id="saveSyncBtn">保存并拉取最新</button>
     </div>
     <p class="hint">
-      配对一次即可。电脑改错题会上传；手机点「不会 / 会了」也会回写次数到电脑（需下方同一把 Jsonbin Key）。
+      配对一次即可。电脑改错题会上传；手机点「不会」会把错误次数回写到电脑错题集（需下方同一把 Jsonbin Key）。
     </p>
     <label for="jsonbinKeyInput">Jsonbin Master Key（回写错误次数）</label>
     <input id="jsonbinKeyInput" type="password" autocomplete="off" placeholder="与电脑设置里同一把 Key" />
@@ -316,9 +312,8 @@
     </div>
     <div class="grade">
       <button class="btn bad" type="button" id="missBtn">不会</button>
-      <button class="btn good" type="button" id="gotBtn">会了</button>
     </div>
-    <div class="statsline" id="statsLine">错 0 · 对 0</div>
+    <div class="statsline" id="statsLine">错 0</div>
     <div class="syncTip" id="syncTip"></div>
     <div class="msg playMsg" id="playMsg"></div>
 
@@ -731,12 +726,10 @@ function schedulePushStats(){
   clearTimeout(_pushTimer);
   _pushTimer=setTimeout(()=>pushStatsToCloud({ quiet:false }), 900);
 }
-function recordPractice(missed){
+function recordPractice(){
   const s=current();
   if(!s||!s.en) return;
-  if(missed) s.fails=(+(s.fails||0)||0)+1;
-  else s.gots=(+(s.gots||0)||0)+1;
-  // 写回 state.items 引用已是同一对象
+  s.fails=(+(s.fails||0)||0)+1;
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     v:4, updatedAt:Date.now(), items:state.items, source:"local"
   }));
@@ -883,8 +876,7 @@ function render(){
     fill.style.width = pct.toFixed(2)+"%";
   }
   if($("statsLine")){
-    $("statsLine").innerHTML =
-      `<span class="fail">错 ${+(s.fails||0)||0}</span> · <span class="got">对 ${+(s.gots||0)||0}</span>`;
+    $("statsLine").innerHTML = `<span class="fail">错 ${+(s.fails||0)||0}</span>`;
   }
   $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
   $("cnPanel").classList.toggle("show", state.showCn);
@@ -1042,8 +1034,7 @@ if($("restartBtn")) $("restartBtn").onclick=()=>{
   savePrefs();
   render();
 };
-if($("missBtn")) $("missBtn").onclick=()=>recordPractice(true);
-if($("gotBtn")) $("gotBtn").onclick=()=>recordPractice(false);
+if($("missBtn")) $("missBtn").onclick=()=>recordPractice();
 if($("jsonbinKeyInput")){
   $("jsonbinKeyInput").value=state.jsonbinKey||"";
   $("jsonbinKeyInput").onchange=e=>saveJsonbinKey(e.target.value);
