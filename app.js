@@ -865,3 +865,21 @@ if(loadCache()){
 }else render();
 refreshAll({ quiet:true, resort:false });
 toast("听练页已加载 · "+APP_BUILD, false);
+
+(async function checkHomescreenFreshness(){
+  try{
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || !!window.navigator.standalone;
+    const res=await fetch("version.json?v="+Date.now(), { cache:"no-store" });
+    if(!res.ok) return;
+    const j=await res.json();
+    if(j && j.build && j.build!==APP_BUILD){
+      const bar=document.getElementById("updateBar");
+      if(bar) bar.classList.add("show");
+      toast("发现新版本，请删掉桌面图标后重新添加", true);
+    }else if(isStandalone){
+      const tag=document.getElementById("buildTag");
+      if(tag) tag.textContent="版本 "+APP_BUILD+" · 桌面";
+    }
+  }catch(e){}
+})();
+
