@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260731-homescreen5";
+const APP_BUILD="20260731-homescreen6";
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
 
@@ -277,21 +277,23 @@ function applyPack(pack, source, opts){
   setFeedback(msg, false);
   return msg;
 }
-function setFeedback(text, isErr){
+function setFeedback(text, isErr, opts){
   const t=String(text||"");
+  const wantToast=!!(opts&&opts.toast);
   if($("setupMsg")){
     $("setupMsg").textContent=t;
     $("setupMsg").className=isErr?"msg err":"msg ok";
   }
-  if($("syncTip")) $("syncTip").textContent=t;
+  // 主界面只显示一处，避免 syncTip + playMsg 各写一句
+  if($("syncTip")){
+    $("syncTip").textContent=t;
+    $("syncTip").style.color=isErr?"var(--bad)":(t?"var(--good)":"");
+  }
   if($("playMsg")){
-    $("playMsg").textContent=t;
-    $("playMsg").className=isErr?"msg err playMsg":"msg ok playMsg";
+    $("playMsg").textContent="";
+    $("playMsg").className="msg playMsg";
   }
-  if($("updated") && t){
-    $("updated").textContent=t;
-  }
-  if(t) toast(t, !!isErr);
+  if(wantToast && t) toast(t, !!isErr);
 }
 function loadCache(){
   try{
