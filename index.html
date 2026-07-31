@@ -372,8 +372,7 @@
     </div>
     <div class="statsline" id="statsLine">错 0</div>
     <div class="syncTip" id="syncTip"></div>
-    <div class="msg playMsg" id="playMsg"></div>
-
+    
     <details class="opts">
       <summary>听练选项</summary>
       <div class="field">
@@ -411,33 +410,38 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>
 (function(){
-  // 每次打开都拉最新 app.js，避免桌面图标锁死旧逻辑
-  var s = document.createElement("script");
-  s.src = "app.js?v=" + Date.now();
-  s.async = false;
-  s.onerror = function(){
-    var t = document.getElementById("toast");
-    if(t){ t.textContent = "脚本加载失败，请用 Safari 打开 GitHub 链接并重新添加到主屏幕"; t.className = "toast err show"; }
+  function showUpdateBar(msg){
     var bar = document.getElementById("updateBar");
     if(bar) bar.classList.add("show");
-  };
-  s.onload = function(){
-    // 若仍是极老缓存壳且没有 srRefresh，提示重建桌面图标
-    setTimeout(function(){
-      if(!window.srRefresh){
-        var bar = document.getElementById("updateBar");
-        if(bar) bar.classList.add("show");
-      }
-    }, 0);
-  };
-  document.head.appendChild(s);
+    var t = document.getElementById("toast");
+    if(t && msg){ t.textContent = msg; t.className = "toast err show"; }
+  }
+  // 用 fetch + 新文件名，避开 iOS 对 app.js 的路径缓存
+  fetch("app-h7.js?t=" + Date.now(), { cache: "no-store" })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
+    .then(function(code){
+      var blob = new Blob([code], { type: "text/javascript" });
+      var url = URL.createObjectURL(blob);
+      var s = document.createElement("script");
+      s.src = url;
+      s.onload = function(){
+        URL.revokeObjectURL(url);
+        var tag = document.getElementById("buildTag");
+        if(tag && window.APP_BUILD) tag.textContent = "版本 " + window.APP_BUILD;
+        if(!window.srRefresh) showUpdateBar("页面未更新成功，请删掉桌面图标后重装");
+      };
+      s.onerror = function(){ showUpdateBar("脚本执行失败，请用 Safari 重开"); };
+      document.head.appendChild(s);
+    })
+    .catch(function(){ showUpdateBar("脚本加载失败，请用 Safari 打开并重新添加到主屏幕"); });
 
   var fresh = document.getElementById("openFreshBtn");
   if(fresh){
     fresh.onclick = function(){
-      var u = new URL(location.href);
+      var u = new URL("https://ZoeZeng1992.github.io/speak-right-listen/");
+      var id = new URLSearchParams(location.search).get("id") || localStorage.getItem("sr_fav_sync_id") || "";
+      if(id) u.searchParams.set("id", id);
       u.searchParams.set("v", String(Date.now()));
-      // 保留同步码
       location.replace(u.toString());
     };
   }
