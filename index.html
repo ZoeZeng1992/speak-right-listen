@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Speak Right" />
@@ -80,6 +82,10 @@
     cursor:pointer;
   }
   .icon-btn:active{transform:scale(.98)}
+  .icon-btn:disabled{opacity:.55;cursor:default;transform:none}
+  .icon-btn.is-busy{color:var(--accent);border-color:rgba(15,118,110,.35)}
+  .icon-btn.is-ok{color:var(--good);border-color:rgba(21,128,61,.3)}
+  .icon-btn.is-err{color:var(--bad);border-color:rgba(185,28,28,.3)}
 
   .setup{
     background:var(--surface);
@@ -365,6 +371,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
+const APP_BUILD="20260731-order3";
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
 
@@ -542,7 +549,9 @@ function loadVoices(){
   buildVoiceSelect();
 }
 function sortItems(keepCurrent){
-  const cur=keepCurrent ? (state.items[state.idx]&&state.items[state.idx].en) : "";
+  const cur=typeof keepCurrent==="string"
+    ? keepCurrent
+    : (keepCurrent ? (state.items[state.idx]&&state.items[state.idx].en) : "");
   const arr=state.items.slice();
   const hasTime=arr.some(x=>(x.addedAt||0)>0);
   if(state.sort==="recent"){
@@ -595,17 +604,17 @@ function mergeKeepingOrder(orderItems, otherItems){
 function applyPack(pack, source, opts){
   if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
   const resetIdx=!!(opts&&opts.resetIdx);
+  // 手动刷新 / 首次载入：按当前排序重排；后台静默同步：只合并次数、不打乱听练顺序
   const forceResort=!!(opts&&opts.resort);
   const prevEn = resetIdx ? "" : (
     (current()&&current().en) || state.currentEn || ""
   );
   const prevItems=state.items.slice();
-  // 已有听练列表时：保留当前顺序，只合并云端次数（避免点「不会」同步后顺序被云端打乱）
   if(prevItems.length && !forceResort){
     state.items=mergeKeepingOrder(prevItems, pack.items);
   }else{
     state.items=mergeKeepingOrder(pack.items, prevItems);
-    sortItems(false);
+    sortItems(prevEn && !resetIdx ? prevEn : false);
   }
   state.updatedAt=pack.updatedAt||Date.now();
   if(prevEn){
@@ -619,7 +628,7 @@ function applyPack(pack, source, opts){
     state.idx=0;
   }
   localStorage.setItem(CACHE_KEY, JSON.stringify({
-    v:4, updatedAt:state.updatedAt, items:state.items, source:source||""
+    v:4, updatedAt:state.updatedAt, items:state.items, source:source||"", build:APP_BUILD
   }));
   savePrefs();
   render();
@@ -628,8 +637,24 @@ function applyPack(pack, source, opts){
   if(timed<Math.min(3, state.items.length)){
     msg+="。收藏时间数据不足，请电脑重新点「生成 / 更新云同步」后再刷新。";
   }
-  $("setupMsg").textContent=msg;
-  $("setupMsg").className="msg ok";
+  setFeedback(msg, false);
+  return msg;
+}
+function setFeedback(text, isErr){
+  const t=String(text||"");
+  if($("setupMsg")){
+    $("setupMsg").textContent=t;
+    $("setupMsg").className=isErr?"msg err":"msg ok";
+  }
+  // 播放中设置区是隐藏的，反馈必须露在主界面
+  if($("syncTip")) $("syncTip").textContent=t;
+  if($("playMsg")){
+    $("playMsg").textContent=t;
+    $("playMsg").className=isErr?"msg err playMsg":"msg ok playMsg";
+  }
+  if($("updated") && t){
+    $("updated").textContent=t;
+  }
 }
 function loadCache(){
   try{
@@ -932,51 +957,50 @@ function render(){
   $("notePanel").classList.toggle("show", state.showNote);
   if(state.updatedAt){
     $("updated").textContent = "已同步 · "+new Date(state.updatedAt).toLocaleString();
+  }else{
+    $("updated").textContent = "听练 · "+APP_BUILD;
   }
   updatePlayUI();
 }
 
 async function refreshAll(opts){
   const quiet=!!(opts&&opts.quiet);
-  if(!quiet){
-    $("setupMsg").textContent="刷新中…";
-    $("setupMsg").className="msg";
-  }
+  // 手动点刷新：重新按排序规则排；后台静默：只合并次数
+  const resort=opts&&Object.prototype.hasOwnProperty.call(opts,"resort") ? !!opts.resort : !quiet;
+  if(!quiet) setFeedback("正在刷新…", false);
   const id=(localStorage.getItem(SYNC_KEY)||"").trim() || (new URLSearchParams(location.search).get("id")||"").trim();
   if(id){
     localStorage.setItem(SYNC_KEY, id);
     if($("syncIdInput")) $("syncIdInput").value=id;
     try{
       const pack=await fetchCloud(id);
-      applyPack(pack, "云同步");
-      return;
+      const msg=applyPack(pack, "云同步", { resort });
+      if(!quiet) setFeedback((msg||("已刷新 "+state.items.length+" 句"))+" · "+new Date().toLocaleTimeString(), false);
+      return true;
     }catch(e){
       const tip=(e&&e.name==="AbortError")?"云同步超时":((e&&e.message)||"云同步失败");
       if(loadCache()){
         render();
-        $("setupMsg").textContent=tip+"，已用缓存（"+state.items.length+" 句）。没网也能继续听。";
-        $("setupMsg").className="msg err";
-        return;
+        setFeedback(tip+"，已用缓存（"+state.items.length+" 句）", true);
+        return false;
       }
-      $("setupMsg").textContent=tip+"（国内网络可能需代理）";
-      $("setupMsg").className="msg err";
-      return;
+      setFeedback(tip+"（国内网络可能需代理）", true);
+      return false;
     }
   }
-  // 无同步码时：尝试局域网文件
   try{
     const pack=await fetchLocalFile();
-    applyPack(pack, "局域网文件");
-    return;
+    applyPack(pack, "局域网文件", { resort });
+    if(!quiet) setFeedback("已从局域网刷新 · "+new Date().toLocaleTimeString(), false);
+    return true;
   }catch(e){}
   if(loadCache()){
     render();
-    $("setupMsg").textContent="已加载缓存。保存同步码后可联网自动更新。";
-    $("setupMsg").className="msg ok";
-    return;
+    setFeedback("已加载缓存。保存同步码后可联网自动更新。", !quiet);
+    return false;
   }
-  $("setupMsg").textContent="请先粘贴并保存电脑上的同步码";
-  $("setupMsg").className="msg err";
+  setFeedback("请先粘贴并保存电脑上的同步码", true);
+  return false;
 }
 
 function saveSyncAndPull(){
@@ -1030,7 +1054,35 @@ if($("openSetupBtn")) $("openSetupBtn").onclick=()=>{
     $("setup").scrollIntoView({ behavior:"smooth", block:"start" });
   }
 };
-$("refreshBtn").onclick=()=>refreshAll();
+$("refreshBtn").onclick=async ()=>{
+  const btn=$("refreshBtn");
+  if(btn.disabled) return;
+  const label=btn.textContent||"刷新";
+  btn.disabled=true;
+  btn.classList.remove("is-ok","is-err");
+  btn.classList.add("is-busy");
+  btn.textContent="刷新中…";
+  setFeedback("正在刷新云端句子…", false);
+  try{
+    const ok=await refreshAll({ quiet:false, resort:true });
+    btn.classList.remove("is-busy");
+    btn.classList.add(ok?"is-ok":"is-err");
+    btn.textContent=ok?"已更新":"失败";
+    if(ok){
+      setFeedback("已刷新 "+state.items.length+" 句 · 已按「"+(state.sort==="recent"?"收藏时间":"错误次数")+"」重新排序 · "+new Date().toLocaleTimeString(), false);
+    }
+  }catch(e){
+    btn.classList.remove("is-busy");
+    btn.classList.add("is-err");
+    btn.textContent="失败";
+    setFeedback((e&&e.message)||"刷新失败", true);
+  }
+  setTimeout(()=>{
+    btn.disabled=false;
+    btn.classList.remove("is-busy","is-ok","is-err");
+    btn.textContent=label;
+  }, 1600);
+};
 $("showCnBtn").onclick=()=>{ state.showCn=!state.showCn; savePrefs(); render(); };
 $("showNoteBtn").onclick=()=>{ state.showNote=!state.showNote; savePrefs(); render(); };
 $("loopSeg").onclick=e=>{
