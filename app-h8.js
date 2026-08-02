@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260802-speak1";
+const APP_BUILD="20260802-speak2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -527,49 +527,60 @@ function setRefreshBtn(stateName, text){
 }
 function updatePlayUI(){
   const lim=state.loop;
-  $("status").textContent = loopPlaying
-    ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
-    : "";
-  $("playBtn").textContent = loopPlaying ? "暂停" : "播放";
-  $("playBtn").classList.toggle("primary", true);
-  $("playBtn").classList.toggle("is-playing", !!loopPlaying);
+  if($("status")){
+    $("status").textContent = loopPlaying
+      ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
+      : "";
+  }
+  if($("playBtn")){
+    $("playBtn").textContent = loopPlaying ? "暂停" : "播放";
+    $("playBtn").classList.toggle("primary", true);
+    $("playBtn").classList.toggle("is-playing", !!loopPlaying);
+  }
   document.querySelectorAll("#loopSeg button").forEach(b=>{
     b.classList.toggle("on", +b.dataset.loop===state.loop);
   });
   document.querySelectorAll("#sortSeg button").forEach(b=>{
     b.classList.toggle("on", b.dataset.sort===state.sort);
   });
-  $("showCnBtn").classList.toggle("on", state.showCn);
-  $("showNoteBtn").classList.toggle("on", state.showNote);
+  if($("showCnBtn")) $("showCnBtn").classList.toggle("on", state.showCn);
+  if($("showNoteBtn")) $("showNoteBtn").classList.toggle("on", state.showNote);
+}
+function unlockSpeech(){
+  if(!window.speechSynthesis || unlockSpeech.done) return;
+  try{
+    const warm=new SpeechSynthesisUtterance("");
+    warm.volume=0; warm.rate=1;
+    speechSynthesis.speak(warm);
+    speechSynthesis.cancel();
+    unlockSpeech.done=true;
+  }catch(e){}
 }
 function startLoop(rate){
   if(!window.speechSynthesis){
-    setPlayMsg("当前浏览器不支持朗读", "msg err");
     toast("当前浏览器不支持朗读", true);
     return;
   }
-  if(!current()||!current().en){
-    setPlayMsg("没有可播放的句子", "msg err");
+  const s0=current();
+  if(!s0||!s0.en){
     toast("没有可播放的句子", true);
     return;
   }
-  // 先占住 token，避免 stopLoop 的 cancel 与本次 speak 打架
+  unlockSpeech();
+  // 点击手势内同步 speak；不要 setTimeout，否则 iOS 会静音失败
   const token=++loopToken;
   try{ speechSynthesis.cancel(); }catch(e){}
+  try{ speechSynthesis.resume(); }catch(e){}
   userWantsPlay=true;
   loopPlaying=true;
   loopCount=0;
   const lim=state.loop;
   const playRate = rate ?? playRateNow ?? 1;
   playRateNow=playRate;
+  const text=s0.en;
   acquireWakeLock();
   startKeepAlives();
-  updatePlayUI();
-  setPlayMsg("", "msg");
   savePrefs();
-  render();
-  const s=current();
-  if(!s||!s.en){ stopLoop(); return; }
 
   const finishOrNext=()=>{
     if(token!==loopToken) return;
@@ -582,52 +593,65 @@ function startLoop(rate){
         savePrefs();
         render();
         startLoop(playRate);
-      }, 500);
+      }, 350);
       return;
     }
     userWantsPlay=false;
     stopKeepAlives();
     releaseWakeLock();
     updatePlayUI();
-    if(lim>0 && state.idx >= state.items.length-1) $("status").textContent="已到最后一句";
+    if($("status") && lim>0 && state.idx >= state.items.length-1) $("status").textContent="已到最后一句";
   };
 
-  const playOnce=()=>{
+  const playOnce=(isFirst)=>{
     if(token!==loopToken) return;
     if(lim>0 && loopCount>=lim){ finishOrNext(); return; }
     loopCount++;
     updatePlayUI();
-    const u=new SpeechSynthesisUtterance(s.en);
+    const u=new SpeechSynthesisUtterance(text);
     const v=pickVoice();
     if(v){ u.voice=v; u.lang=v.lang||"en-US"; }
     else { u.lang="en-US"; }
     u.rate=playRate;
     u.pitch=1;
-    u.onend=()=>{ if(token!==loopToken) return; setTimeout(playOnce, 450); };
+    u.volume=1;
+    u.onend=()=>{ if(token!==loopToken) return; setTimeout(()=>playOnce(false), 400); };
     u.onerror=ev=>{
       if(token!==loopToken) return;
       const err=(ev&&ev.error)||"";
-      // 息屏/切走/被 cancel 时常见，不弹错
       if(err==="interrupted" || err==="canceled" || err==="cancelled"){
-        loopPlaying=false;
-        updatePlayUI();
+        // 本轮主动 cancel 时忽略
         return;
       }
       loopPlaying=false;
       updatePlayUI();
-      toast("朗读失败"+(err?("："+err):"")+"。请把静音拨片打开再试", true);
+      toast("朗读失败"+(err?("："+err):"")+"。请关闭静音拨片后重试", true);
     };
-    const kick=()=>{
-      if(token!==loopToken) return;
-      try{ speechSynthesis.resume(); }catch(e){}
-      try{ speechSynthesis.speak(u); }
-      catch(e){ toast("朗读启动失败", true); loopPlaying=false; updatePlayUI(); }
-    };
-    // iOS：cancel 后立刻 speak 会被丢掉，必须稍等
-    setTimeout(kick, 60);
+    try{
+      if(!isFirst){ try{ speechSynthesis.resume(); }catch(e){} }
+      speechSynthesis.speak(u);
+    }catch(e){
+      toast("朗读启动失败", true);
+      loopPlaying=false;
+      updatePlayUI();
+    }
   };
-  playOnce();
+  // 先更新「第 1 遍」，再在同一个点击调用栈里 speak
+  playOnce(true);
+  render();
 }
+window.srPlay = function srPlay(ev){
+  if(ev&&ev.preventDefault) ev.preventDefault();
+  if(loopPlaying) stopLoop();
+  else startLoop();
+  return false;
+};
+window.srSlow = function srSlow(ev){
+  if(ev&&ev.preventDefault) ev.preventDefault();
+  if(loopPlaying) stopLoop();
+  startLoop(0.65);
+  return false;
+};
 
 function render(){
   const has=state.items.length>0;
@@ -808,8 +832,8 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
   render();
   if(wasPlaying) startLoop(rate);
 };
-if($("playBtn")) $("playBtn").onclick=()=>{ if(loopPlaying) stopLoop(); else startLoop(); };
-if($("slowBtn")) $("slowBtn").onclick=()=>{ if(loopPlaying) stopLoop(); startLoop(0.65); };
+if($("playBtn")) $("playBtn").onclick=window.srPlay;
+if($("slowBtn")) $("slowBtn").onclick=window.srSlow;
 $("prevBtn").onclick=()=>{
   const wasPlaying=loopPlaying;
   const rate=playRateNow||1;

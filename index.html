@@ -360,11 +360,11 @@
 
     <div class="transport">
       <button class="btn" type="button" id="prevBtn">上一句</button>
-      <button class="btn primary" type="button" id="playBtn">播放</button>
+      <button class="btn primary" type="button" id="playBtn" onclick="return window.srPlay ? window.srPlay(event) : (alert('脚本未加载，请关掉重开'), false)">播放</button>
       <button class="btn" type="button" id="nextBtn">下一句</button>
     </div>
     <div class="secondary">
-      <button class="btn" type="button" id="slowBtn">慢速</button>
+      <button class="btn" type="button" id="slowBtn" onclick="return window.srSlow ? window.srSlow(event) : false">慢速</button>
       <button class="btn" type="button" id="restartBtn">从头</button>
     </div>
     <div class="grade">
@@ -418,7 +418,7 @@
   }
   // 用普通 script 标签加载（不要 blob：iOS 上 blob 脚本会导致朗读失效）
   var s = document.createElement("script");
-  s.src = "app-h8.js?t=" + Date.now();
+  s.src = "app-h9.js?t=" + Date.now();
   s.async = false;
   s.onload = function(){
     var tag = document.getElementById("buildTag");
