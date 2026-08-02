@@ -416,24 +416,17 @@
     var t = document.getElementById("toast");
     if(t && msg){ t.textContent = msg; t.className = "toast err show"; }
   }
-  // 用 fetch + 新文件名，避开 iOS 对 app.js 的路径缓存
-  fetch("app-h7.js?t=" + Date.now(), { cache: "no-store" })
-    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
-    .then(function(code){
-      var blob = new Blob([code], { type: "text/javascript" });
-      var url = URL.createObjectURL(blob);
-      var s = document.createElement("script");
-      s.src = url;
-      s.onload = function(){
-        URL.revokeObjectURL(url);
-        var tag = document.getElementById("buildTag");
-        if(tag && window.APP_BUILD) tag.textContent = "版本 " + window.APP_BUILD;
-        if(!window.srRefresh) showUpdateBar("页面未更新成功，请删掉桌面图标后重装");
-      };
-      s.onerror = function(){ showUpdateBar("脚本执行失败，请用 Safari 重开"); };
-      document.head.appendChild(s);
-    })
-    .catch(function(){ showUpdateBar("脚本加载失败，请用 Safari 打开并重新添加到主屏幕"); });
+  // 用普通 script 标签加载（不要 blob：iOS 上 blob 脚本会导致朗读失效）
+  var s = document.createElement("script");
+  s.src = "app-h8.js?t=" + Date.now();
+  s.async = false;
+  s.onload = function(){
+    var tag = document.getElementById("buildTag");
+    if(tag && window.APP_BUILD) tag.textContent = "版本 " + window.APP_BUILD;
+    if(!window.srRefresh) showUpdateBar("页面未更新成功，请删掉桌面图标后重装");
+  };
+  s.onerror = function(){ showUpdateBar("脚本加载失败，请用 Safari 打开并重新添加到主屏幕"); };
+  document.head.appendChild(s);
 
   var fresh = document.getElementById("openFreshBtn");
   if(fresh){
