@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260802-speak2";
+const APP_BUILD="20260802-speak3";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -265,11 +265,12 @@ function applyPack(pack, source, opts){
   state.updatedAt=pack.updatedAt||Date.now();
   if(resetIdx){
     state.idx=0;
-  }else if(prevEn){
-    const i=(state.playOrder||[]).indexOf(prevEn);
-    state.idx = i>=0 ? i : 0;
   }else{
-    state.idx=Math.min(Math.max(0, state.idx), Math.max(0,(state.playOrder||state.items).length-1));
+    // 优先用此刻正在看的句子（避免拉取期间点了下一句又被拽回）
+    const liveEn=(state.currentEn||"") || prevEn;
+    const i=liveEn ? (state.playOrder||[]).indexOf(liveEn) : -1;
+    if(i>=0) state.idx=i;
+    else state.idx=Math.min(Math.max(0, state.idx), Math.max(0,(state.playOrder||state.items).length-1));
   }
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     v:4, updatedAt:state.updatedAt, items:state.items, source:source||"", build:APP_BUILD
@@ -385,6 +386,10 @@ async function putCloud(pack, rawId){
   }, 10000);
   if(!res.ok) throw new Error("回写失败 "+res.status);
 }
+function playLen(){
+  const n=(state.playOrder&&state.playOrder.length)||state.items.length||0;
+  return n;
+}
 async function pushStatsToCloud(opts){
   const quiet=!!(opts&&opts.quiet);
   const id=(localStorage.getItem(SYNC_KEY)||"").trim() || (new URLSearchParams(location.search).get("id")||"").trim();
@@ -395,20 +400,22 @@ async function pushStatsToCloud(opts){
   if(_pushBusy) return false;
   _pushBusy=true;
   if(!quiet && $("syncTip")) $("syncTip").textContent="正在同步到电脑…";
-  const orderSnap=state.items.slice();
-  const curEn=(current()&&current().en)||state.currentEn||"";
+  // 按 playOrder 导出，且异步回来后绝不改 idx（否则点下一句会被拽回去）
+  const orderSnap=(state.playOrder&&state.playOrder.length)
+    ? state.playOrder.map(en=>state.items.find(x=>x&&x.en===en)).filter(Boolean)
+    : state.items.slice();
+  const keptIdx=state.idx;
+  const keptEn=(current()&&current().en)||state.currentEn||"";
   try{
     let pack=null;
     try{ pack=await fetchCloud(id); }catch(e){ pack=null; }
     if(!pack || !Array.isArray(pack.items)) pack=buildLocalPack();
     else{
-      // 上传包也按手机当前听练顺序，避免写回云端后再拉下来顺序乱
       pack.items=mergeKeepingOrder(orderSnap, pack.items);
       pack.v=4;
       pack.updatedAt=Date.now();
     }
     await putCloud(pack, id);
-    // 只就地更新次数，绝不替换列表顺序
     const byEn=new Map((pack.items||[]).filter(x=>x&&x.en).map(x=>[x.en,x]));
     state.items.forEach(it=>{
       const c=byEn.get(it.en);
@@ -419,9 +426,14 @@ async function pushStatsToCloud(opts){
       if(!it.note && c.note) it.note=c.note;
       if((c.addedAt||0)>(it.addedAt||0)) it.addedAt=c.addedAt;
     });
-    if(curEn){
-      const i=(state.playOrder||[]).indexOf(curEn);
+    // 保留用户同步期间点到的句子；不要用开始时的 curEn 覆写 idx
+    const liveEn=(current()&&current().en)||state.currentEn||keptEn;
+    if(liveEn && state.playOrder&&state.playOrder.length){
+      const i=state.playOrder.indexOf(liveEn);
       if(i>=0) state.idx=i;
+      else state.idx=Math.min(Math.max(0, keptIdx), Math.max(0, playLen()-1));
+    }else{
+      state.idx=Math.min(Math.max(0, keptIdx), Math.max(0, playLen()-1));
     }
     state.updatedAt=pack.updatedAt||Date.now();
     localStorage.setItem(CACHE_KEY, JSON.stringify({
@@ -585,7 +597,7 @@ function startLoop(rate){
   const finishOrNext=()=>{
     if(token!==loopToken) return;
     loopPlaying=false;
-    if(lim>0 && state.idx < state.items.length-1){
+    if(lim>0 && state.idx < playLen()-1){
       updatePlayUI();
       setTimeout(()=>{
         if(token!==loopToken) return;
@@ -600,7 +612,7 @@ function startLoop(rate){
     stopKeepAlives();
     releaseWakeLock();
     updatePlayUI();
-    if($("status") && lim>0 && state.idx >= state.items.length-1) $("status").textContent="已到最后一句";
+    if($("status") && lim>0 && state.idx >= playLen()-1) $("status").textContent="已到最后一句";
   };
 
   const playOnce=(isFirst)=>{
@@ -659,11 +671,12 @@ function render(){
   $("empty").style.display=has?"none":"block";
   if($("setup")) $("setup").style.display = has ? "none" : "block";
   if(!has){ stopLoop(); return; }
-  if(state.idx>=state.items.length) state.idx=state.items.length-1;
+  const len=playLen();
+  if(state.idx>=len) state.idx=Math.max(0, len-1);
   if(state.idx<0) state.idx=0;
   const s=current();
   const sortLabel=state.sort==="recent"?"最新收藏":"易错优先";
-  $("counter").textContent = `${state.idx+1} / ${state.items.length}` + (s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
+  $("counter").textContent = `${state.idx+1} / ${len}` + (s&&s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
   if(state.sort==="recent" && state._sortHasTime===false){
     setPlayMsg("缺少收藏时间：请电脑重新「生成 / 更新云同步」后，手机点刷新。", "msg err");
   }
@@ -845,7 +858,7 @@ $("prevBtn").onclick=()=>{
 $("nextBtn").onclick=()=>{
   const wasPlaying=loopPlaying;
   const rate=playRateNow||1;
-  if(state.idx<state.items.length-1) state.idx++;
+  if(state.idx<playLen()-1) state.idx++;
   savePrefs();
   if(wasPlaying) startLoop(rate);
   else { stopLoop(); render(); }
