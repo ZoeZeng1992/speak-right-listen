@@ -384,6 +384,7 @@
         <div class="seg" id="sortSeg">
           <button type="button" data-sort="fails" class="on">错误次数</button>
           <button type="button" data-sort="recent">收藏时间</button>
+          <button type="button" data-sort="random">随机</button>
         </div>
       </div>
       <div class="field">
@@ -422,7 +423,7 @@
   }
   // 用普通 script 标签加载（不要 blob：iOS 上 blob 脚本会导致朗读失效）
   var s = document.createElement("script");
-  s.src = "app-h14.js?t=" + Date.now();
+  s.src = "app-h15.js?t=" + Date.now();
   s.async = false;
   s.onload = function(){
     var tag = document.getElementById("buildTag");
