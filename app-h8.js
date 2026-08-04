@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260802-speak3";
+const APP_BUILD="20260802-speak4";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -482,9 +482,11 @@ function stopLoop(opts){
     userWantsPlay=false;
     stopKeepAlives();
     releaseWakeLock();
+    stopMediaAudio();
   }
   try{ speechSynthesis.cancel(); }catch(e){}
   updatePlayUI();
+  updateMediaSession();
 }
 function rebuildPlayOrder(keepEn){
   const en = keepEn || (currentSafeEn()) || state.currentEn || "";
@@ -537,6 +539,94 @@ function setRefreshBtn(stateName, text){
   if(text!=null) btn.textContent=text;
   btn.disabled = stateName==="is-busy";
 }
+
+/** 近乎静音的循环音频：让 iOS 把耳机「下一曲」交给 Media Session */
+let _mediaAudio=null, _mediaSessionReady=false;
+function silentAudioSrc(){
+  // 很短的静音 WAV，loop 播放以维持系统媒体会话
+  return "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+}
+function ensureMediaAudio(){
+  if(_mediaAudio) return _mediaAudio;
+  const a=new Audio(silentAudioSrc());
+  a.loop=true;
+  a.preload="auto";
+  a.volume=0.001;
+  _mediaAudio=a;
+  return a;
+}
+function startMediaAudio(){
+  try{
+    const a=ensureMediaAudio();
+    const p=a.play();
+    if(p&&p.catch) p.catch(()=>{});
+  }catch(e){}
+}
+function stopMediaAudio(){
+  try{
+    if(!_mediaAudio) return;
+    _mediaAudio.pause();
+    _mediaAudio.currentTime=0;
+  }catch(e){}
+}
+function updateMediaSession(){
+  if(!("mediaSession" in navigator)) return;
+  const s=current();
+  const title=(s&&s.en)||"Speak Right";
+  const len=playLen();
+  try{
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title: title.length>80 ? title.slice(0,77)+"…" : title,
+      artist: "Speak Right 听练",
+      album: (len? ((state.idx+1)+" / "+len) : "听练")
+    });
+    navigator.mediaSession.playbackState = (loopPlaying||userWantsPlay) ? "playing" : "paused";
+  }catch(e){}
+}
+function goPrev(fromRemote){
+  const wasPlaying=loopPlaying||userWantsPlay;
+  const rate=playRateNow||1;
+  if(state.idx>0) state.idx--;
+  else if(fromRemote){ toast("已经是第一句", false); return; }
+  savePrefs();
+  updateMediaSession();
+  if(wasPlaying) startLoop(rate);
+  else { stopLoop(); render(); }
+}
+function goNext(fromRemote){
+  const wasPlaying=loopPlaying||userWantsPlay;
+  const rate=playRateNow||1;
+  if(state.idx<playLen()-1) state.idx++;
+  else if(fromRemote){ toast("已经是最后一句", false); return; }
+  savePrefs();
+  updateMediaSession();
+  if(wasPlaying) startLoop(rate);
+  else { stopLoop(); render(); }
+}
+function setupMediaSession(){
+  if(_mediaSessionReady || !("mediaSession" in navigator)) return;
+  _mediaSessionReady=true;
+  const bind=(action, fn)=>{
+    try{ navigator.mediaSession.setActionHandler(action, fn); }catch(e){}
+  };
+  bind("nexttrack", ()=>goNext(true));
+  bind("previoustrack", ()=>goPrev(true));
+  bind("play", ()=>{
+    startMediaAudio();
+    if(!loopPlaying) startLoop(playRateNow||1);
+    updateMediaSession();
+  });
+  bind("pause", ()=>{
+    if(loopPlaying||userWantsPlay) stopLoop();
+    stopMediaAudio();
+    updateMediaSession();
+  });
+  bind("stop", ()=>{
+    stopLoop();
+    stopMediaAudio();
+    updateMediaSession();
+  });
+}
 function updatePlayUI(){
   const lim=state.loop;
   if($("status")){
@@ -557,6 +647,7 @@ function updatePlayUI(){
   });
   if($("showCnBtn")) $("showCnBtn").classList.toggle("on", state.showCn);
   if($("showNoteBtn")) $("showNoteBtn").classList.toggle("on", state.showNote);
+  updateMediaSession();
 }
 function unlockSpeech(){
   if(!window.speechSynthesis || unlockSpeech.done) return;
@@ -579,6 +670,8 @@ function startLoop(rate){
     return;
   }
   unlockSpeech();
+  setupMediaSession();
+  startMediaAudio();
   // 点击手势内同步 speak；不要 setTimeout，否则 iOS 会静音失败
   const token=++loopToken;
   try{ speechSynthesis.cancel(); }catch(e){}
@@ -593,6 +686,7 @@ function startLoop(rate){
   acquireWakeLock();
   startKeepAlives();
   savePrefs();
+  updateMediaSession();
 
   const finishOrNext=()=>{
     if(token!==loopToken) return;
@@ -611,7 +705,9 @@ function startLoop(rate){
     userWantsPlay=false;
     stopKeepAlives();
     releaseWakeLock();
+    stopMediaAudio();
     updatePlayUI();
+    updateMediaSession();
     if($("status") && lim>0 && state.idx >= playLen()-1) $("status").textContent="已到最后一句";
   };
 
@@ -847,22 +943,8 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
 };
 if($("playBtn")) $("playBtn").onclick=window.srPlay;
 if($("slowBtn")) $("slowBtn").onclick=window.srSlow;
-$("prevBtn").onclick=()=>{
-  const wasPlaying=loopPlaying;
-  const rate=playRateNow||1;
-  if(state.idx>0) state.idx--;
-  savePrefs();
-  if(wasPlaying) startLoop(rate);
-  else { stopLoop(); render(); }
-};
-$("nextBtn").onclick=()=>{
-  const wasPlaying=loopPlaying;
-  const rate=playRateNow||1;
-  if(state.idx<playLen()-1) state.idx++;
-  savePrefs();
-  if(wasPlaying) startLoop(rate);
-  else { stopLoop(); render(); }
-};
+if($("prevBtn")) $("prevBtn").onclick=()=>goPrev(false);
+if($("nextBtn")) $("nextBtn").onclick=()=>goNext(false);
 if($("restartBtn")) $("restartBtn").onclick=()=>{
   if(!confirm("确定从头开始？将回到第 1 句。")) return;
   stopLoop();
@@ -900,6 +982,7 @@ window.addEventListener("pagehide", ()=>savePrefs());
 window.addEventListener("beforeunload", ()=>savePrefs());
 
 loadPrefs();
+setupMediaSession();
 if($("jsonbinKeyInput")) $("jsonbinKeyInput").value=state.jsonbinKey||"";
 if(window.speechSynthesis){
   loadVoices();

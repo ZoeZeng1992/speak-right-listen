@@ -375,6 +375,7 @@
     
     <details class="opts">
       <summary>听练选项</summary>
+      <p class="hint" style="margin:0 0 8px">播放中可用耳机线控/AirPods「下一曲」（通常双击）切换句子；需系统里把双击设为下一曲。</p>
       <div class="field">
         <span class="label">排序</span>
         <div class="seg" id="sortSeg">
@@ -418,7 +419,7 @@
   }
   // 用普通 script 标签加载（不要 blob：iOS 上 blob 脚本会导致朗读失效）
   var s = document.createElement("script");
-  s.src = "app-h9.js?t=" + Date.now();
+  s.src = "app-h10.js?t=" + Date.now();
   s.async = false;
   s.onload = function(){
     var tag = document.getElementById("buildTag");
