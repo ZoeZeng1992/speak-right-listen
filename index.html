@@ -427,7 +427,10 @@
   s.onload = function(){
     var tag = document.getElementById("buildTag");
     if(tag && window.APP_BUILD) tag.textContent = "版本 " + window.APP_BUILD;
-    if(!window.srRefresh) showUpdateBar("页面未更新成功，请删掉桌面图标后重装");
+    // 给 trampoline / 慢网一点时间；真正失败再亮黄条
+    setTimeout(function(){
+      if(!window.srRefresh) showUpdateBar("页面未更新成功，请删掉桌面图标后重装");
+    }, 1200);
   };
   s.onerror = function(){ showUpdateBar("脚本加载失败，请用 Safari 打开并重新添加到主屏幕"); };
   document.head.appendChild(s);

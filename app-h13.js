@@ -1126,16 +1126,18 @@ toast("听练页已加载 · "+APP_BUILD, false);
 (async function checkHomescreenFreshness(){
   try{
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches || !!window.navigator.standalone;
+    const bar=document.getElementById("updateBar");
     const res=await fetch("version.json?v="+Date.now(), { cache:"no-store" });
     if(!res.ok) return;
     const j=await res.json();
     if(j && j.build && j.build!==APP_BUILD){
-      const bar=document.getElementById("updateBar");
       if(bar) bar.classList.add("show");
-      toast("发现新版本，请删掉桌面图标后重新添加", true);
-    }else if(isStandalone){
+      toast("发现新版本 "+j.build+"，当前 "+APP_BUILD+"。请删掉桌面图标后重新添加", true);
+    }else{
+      // 版本已对齐：清掉误报黄条（旧 HTML + trampoline 竞态会误亮）
+      if(bar) bar.classList.remove("show");
       const tag=document.getElementById("buildTag");
-      if(tag) tag.textContent="版本 "+APP_BUILD+" · 桌面";
+      if(tag) tag.textContent="版本 "+APP_BUILD+(isStandalone?" · 桌面":"");
     }
   }catch(e){}
 })();
