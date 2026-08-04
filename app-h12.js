@@ -31,6 +31,7 @@ const state = {
 
 let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
 let userWantsPlay=false;
+let _mediaHold=false; // 听练会话中（含暂停）：保住 Now Playing，供耳机单击恢复播放
 let wakeLock=null, wakeKeepAlive=null, speechKeepAlive=null;
 let voices=[];
 let _pushTimer=null, _pushBusy=false;
@@ -576,7 +577,6 @@ function setRefreshBtn(stateName, text){
 /** 极低音量循环音频：让 iOS 把网页登记为「正在播放」，耳机键才能进 Media Session。
  *  纯 speechSynthesis 在 Safari 上通常拿不到 AirPods 下一曲（网易云是原生 AVPlayer）。 */
 let _mediaAudio=null, _mediaSessionBound=false, _mediaAudioOk=false;
-let _mediaHold=false; // 听练会话中（含暂停）：保住 Now Playing，供耳机单击恢复播放
 function ensureMediaAudio(){
   if(_mediaAudio) return _mediaAudio;
   let a=$("mediaKeeper");
