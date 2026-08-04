@@ -343,6 +343,9 @@
     <div class="msg" id="setupMsg"></div>
   </section>
 
+  <!-- 极轻循环音：维持 iOS「正在播放」，AirPods 下一曲才能进网页 -->
+  <audio id="mediaKeeper" src="silence.wav" loop preload="auto" playsinline webkit-playsinline style="display:none"></audio>
+
   <section class="player" id="player">
     <div class="stage">
       <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
@@ -375,7 +378,7 @@
     
     <details class="opts">
       <summary>听练选项</summary>
-      <p class="hint" style="margin:0 0 8px">播放中可用耳机线控/AirPods「下一曲」（通常双击）切换句子；需系统里把双击设为下一曲。</p>
+      <p class="hint" style="margin:0 0 8px">播放中可用耳机：单击播放/暂停，双击下一句，三击上一句（与网易云默认相同）。锁屏控制中心也应出现 Speak Right。</p>
       <div class="field">
         <span class="label">排序</span>
         <div class="seg" id="sortSeg">
@@ -419,7 +422,7 @@
   }
   // 用普通 script 标签加载（不要 blob：iOS 上 blob 脚本会导致朗读失效）
   var s = document.createElement("script");
-  s.src = "app-h10.js?t=" + Date.now();
+  s.src = "app-h11.js?t=" + Date.now();
   s.async = false;
   s.onload = function(){
     var tag = document.getElementById("buildTag");
