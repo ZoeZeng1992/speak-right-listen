@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260806-speak12";
+const APP_BUILD="20260806-speak13";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -122,7 +122,9 @@ const PACK_SENTENCE_FIXES = {
   "The assets are ready to export.": { cn:"这些素材可以导出了。" },
   "I'm just going to **scroll on my phone** to unwind": { cn:"我就刷刷手机放松一下。" },
   "I'm just going to scroll on my phone to unwind": { cn:"我就刷刷手机放松一下。" },
-  "I'm just going to scroll on my phone to unwind.": { cn:"我就刷刷手机放松一下。" }
+  "I'm just going to scroll on my phone to unwind.": { cn:"我就刷刷手机放松一下。" },
+  "s** it a bit messy with sketches and notes?": { en:"Is it a bit messy with sketches and notes?", cn:"是不是有点乱，到处是草图和笔记？" },
+  "Is it a bit messy with sketches and notes?": { cn:"是不是有点乱，到处是草图和笔记？" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
@@ -135,6 +137,12 @@ function fixPackItem(x){
   }
   if(/我只想刷刷手机/.test(String(x.cn||"")) && /scroll on my phone/i.test(x.en) && /unwind/i.test(x.en)){
     return Object.assign({}, x, { cn:"我就刷刷手机放松一下。" });
+  }
+  if((/画了草图/.test(String(x.cn||"")) || /s\*\* it a bit messy/i.test(x.en)) && /messy/i.test(x.en) && /sketches/i.test(x.en)){
+    return Object.assign({}, x, {
+      en:"Is it a bit messy with sketches and notes?",
+      cn:"是不是有点乱，到处是草图和笔记？"
+    });
   }
   const fix=PACK_SENTENCE_FIXES[x.en];
   if(!fix) return x;
