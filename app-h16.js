@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260806-speak10";
+const APP_BUILD="20260806-speak11";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -123,6 +123,13 @@ const PACK_SENTENCE_FIXES = {
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
+  // 旧中文兜底（英文可能已是新句，但 cn 仍停在「已导出」）
+  if(/这些素材已导出/.test(String(x.cn||""))){
+    return Object.assign({}, x, {
+      en:"The assets are ready to export.",
+      cn:"这些素材可以导出了。"
+    });
+  }
   const fix=PACK_SENTENCE_FIXES[x.en];
   if(!fix) return x;
   return Object.assign({}, x, {
@@ -269,28 +276,36 @@ function sortItems(keepCurrent){
 }
 function itemFrom(x, other){
   const o=other||{};
-  return {
+  // 已知改正句：强制用修正后的中文（不能让本地旧 cn 盖住）
+  const fixedEn = (PACK_SENTENCE_FIXES[x.en]&&PACK_SENTENCE_FIXES[x.en].en) || x.en;
+  const forcedCn = (PACK_SENTENCE_FIXES[x.en]&&PACK_SENTENCE_FIXES[x.en].cn)
+    || (PACK_SENTENCE_FIXES[fixedEn]&&PACK_SENTENCE_FIXES[fixedEn].cn)
+    || (PACK_SENTENCE_FIXES[o.en]&&PACK_SENTENCE_FIXES[o.en].cn);
+  return fixPackItem({
     en:x.en,
-    cn:x.cn||o.cn||"",
+    cn: forcedCn || x.cn || o.cn || "",
     note:x.note||o.note||"",
     mode:x.mode||o.mode||"",
     fails:Math.max(+(x.fails||0)||0, +(o.fails||0)||0),
     gots:Math.max(+(x.gots||0)||0, +(o.gots||0)||0),
     addedAt:Math.max(+(x.addedAt||0)||0, +(o.addedAt||0)||0)
-  };
+  });
 }
 /** 保留 orderItems 的顺序，只合并次数/文案；other 里多出来的句追加在末尾 */
 function mergeKeepingOrder(orderItems, otherItems){
+  // 先两边都做旧→新改写，避免「exported」和「ready to export」各留一句
+  const a=fixPackItems(orderItems);
+  const b=fixPackItems(otherItems);
   const other=new Map();
-  (otherItems||[]).forEach(x=>{ if(x&&x.en) other.set(x.en, x); });
+  b.forEach(x=>{ if(x&&x.en) other.set(x.en, x); });
   const seen=new Set();
   const out=[];
-  (orderItems||[]).forEach(x=>{
+  a.forEach(x=>{
     if(!x||!x.en||seen.has(x.en)) return;
     seen.add(x.en);
     out.push(itemFrom(x, other.get(x.en)));
   });
-  (otherItems||[]).forEach(x=>{
+  b.forEach(x=>{
     if(!x||!x.en||seen.has(x.en)) return;
     seen.add(x.en);
     out.push(itemFrom(x, null));
@@ -360,10 +375,18 @@ function loadCache(){
   try{
     const pack=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");
     if(pack && Array.isArray(pack.items) && pack.items.length){
-      state.items=pack.items.filter(x=>x&&x.en);
+      state.items=fixPackItems(pack.items.filter(x=>x&&x.en));
       state.updatedAt=pack.updatedAt||0;
+      // 把改正写回缓存，避免下次又读到旧中文
+      try{
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          v:4, updatedAt:state.updatedAt, items:state.items, source:pack.source||"cache-fix", build:APP_BUILD
+        }));
+      }catch(e){}
       sortItems(false);
       if(state.currentEn){
+        const fixedCur=(PACK_SENTENCE_FIXES[state.currentEn]&&PACK_SENTENCE_FIXES[state.currentEn].en)||state.currentEn;
+        state.currentEn=fixedCur;
         const i=state.items.findIndex(x=>x.en===state.currentEn);
         if(i>=0) state.idx=i;
         else state.idx=Math.min(Math.max(0, state.idx), state.items.length-1);
@@ -374,6 +397,38 @@ function loadCache(){
     }
   }catch(e){}
   return false;
+}
+function applyLocalSentenceFixes(opts){
+  if(!state.items||!state.items.length) return false;
+  const before=state.items.map(x=>(x.en||"")+"\t"+(x.cn||"")).join("\n");
+  state.items=fixPackItems(state.items);
+  if(state.playOrder&&state.playOrder.length){
+    const seen=new Set();
+    state.playOrder=state.playOrder.map(en=>{
+      const f=PACK_SENTENCE_FIXES[en];
+      return (f&&f.en)||en;
+    }).filter(en=>{
+      if(!en||seen.has(en)) return false;
+      seen.add(en);
+      return state.items.some(x=>x&&x.en===en);
+    });
+    state.items.forEach(x=>{
+      if(x&&x.en && !seen.has(x.en)){ seen.add(x.en); state.playOrder.push(x.en); }
+    });
+  }
+  if(state.currentEn && PACK_SENTENCE_FIXES[state.currentEn]&&PACK_SENTENCE_FIXES[state.currentEn].en){
+    state.currentEn=PACK_SENTENCE_FIXES[state.currentEn].en;
+  }
+  const after=state.items.map(x=>(x.en||"")+"\t"+(x.cn||"")).join("\n");
+  if(before===after) return false;
+  try{
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      v:4, updatedAt:state.updatedAt||Date.now(), items:state.items, source:"local-fix", build:APP_BUILD
+    }));
+  }catch(e){}
+  savePrefs();
+  if(!(opts&&opts.silent)) render();
+  return true;
 }
 
 async function fetchWithTimeout(url, init, ms){
@@ -1180,6 +1235,7 @@ const bootId=(new URLSearchParams(location.search).get("id")||localStorage.getIt
 if($("syncIdInput") && bootId) $("syncIdInput").value=bootId;
 if($("buildTag")) $("buildTag").textContent = "版本 "+APP_BUILD;
 if(loadCache()){
+  applyLocalSentenceFixes({ silent:true });
   if(!state.playOrder||!state.playOrder.length) state.playOrder=state.items.map(x=>x.en);
   render();
 }else render();
