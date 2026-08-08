@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260806-speak13";
+const APP_BUILD="20260808-speak14";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -124,7 +124,40 @@ const PACK_SENTENCE_FIXES = {
   "I'm just going to scroll on my phone to unwind": { cn:"我就刷刷手机放松一下。" },
   "I'm just going to scroll on my phone to unwind.": { cn:"我就刷刷手机放松一下。" },
   "s** it a bit messy with sketches and notes?": { en:"Is it a bit messy with sketches and notes?", cn:"是不是有点乱，到处是草图和笔记？" },
-  "Is it a bit messy with sketches and notes?": { cn:"是不是有点乱，到处是草图和笔记？" }
+  "Is it a bit messy with sketches and notes?": { cn:"是不是有点乱，到处是草图和笔记？" },
+  "The radius is too round.": { en:"The radius is too big.", cn:"圆角太大了。" },
+  "The radius is too big.": { cn:"圆角太大了。" },
+  "The bill is included.": { en:"The service charge is included.", cn:"服务费已包含在内。" },
+  "The service charge is included.": { cn:"服务费已包含在内。" },
+  "Our team meets the team on Mondays.": { en:"Our team meets every Monday.", cn:"我们团队每周一开会。" },
+  "Our team meets every Monday.": { cn:"我们团队每周一开会。" },
+  "She has done the research talks.": { en:"She has done the user interviews." },
+  "I lost my ticket briefly.": { en:"I lost my ticket at the station.", cn:"我在车站把票弄丢了。" },
+  "I lost my ticket at the station.": { cn:"我在车站把票弄丢了。" },
+  "I have lost my password.": { en:"I have forgotten my password." },
+  "I have got feedback from my manager.": { en:"I have received feedback from my manager." },
+  "You are checking my email.": { en:"You are checking your email." },
+  "You are charging my phone.": { en:"You are charging your phone." },
+  "We are checking my email.": { en:"We are checking our email." },
+  "We are charging my phone.": { en:"We are charging our phones." },
+  "They are checking my email.": { en:"They are checking their email." },
+  "They are charging my phone.": { en:"They are charging their phones." },
+  "He is checking my email.": { en:"He is checking his email." },
+  "He is charging my phone.": { en:"He is charging his phone." },
+  "She is checking my email.": { en:"She is checking her email." },
+  "She is charging my phone.": { en:"She is charging her phone." },
+  "Our team cooks simple dinners.": { en:"Our team keeps designs simple.", cn:"我们团队让设计保持简单。" },
+  "Our team keeps designs simple.": { cn:"我们团队让设计保持简单。" },
+  "Our team leaves home at eight.": { en:"Our team finishes at six.", cn:"我们团队六点收工。" },
+  "Our team finishes at six.": { cn:"我们团队六点收工。" },
+  "Our team takes the metro to work.": { en:"Our team works from home on Fridays.", cn:"我们团队周五在家办公。" },
+  "Our team works from home on Fridays.": { cn:"我们团队周五在家办公。" },
+  "I don't like this icon.": { cn:"我不喜欢这个图标。" },
+  "I don't like this layout.": { cn:"我不喜欢这个布局。" },
+  "I don't like this button.": { cn:"我不喜欢这个按钮。" },
+  "I don't like this menu.": { cn:"我不喜欢这个菜单。" },
+  "They are walking to the station.": { cn:"他们正走去车站。" },
+  "The tent is waterproof.": { cn:"这顶帐篷是防水的。" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
