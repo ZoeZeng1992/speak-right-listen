@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260808-speak14";
+const APP_BUILD="20260811-speak15";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -496,13 +496,13 @@ async function fetchCloud(id){
     }, 8000);
     if(!res.ok) throw new Error("Jsonbin 拉取失败 ("+res.status+")");
     const j=await res.json();
-    return j.record || j;
+    return await decodeFavPack(j.record || j);
   }
   const res=await fetchWithTimeout(JSONBLOB_API+"/"+encodeURIComponent(parsed.id), {
     headers:{ "Accept":"application/json" }
   }, 8000);
   if(!res.ok) throw new Error("云拉取失败 ("+res.status+")");
-  return res.json();
+  return await decodeFavPack(await res.json());
 }
 function buildLocalPack(){
   return {
@@ -514,10 +514,42 @@ function buildLocalPack(){
     }))
   };
 }
+/* ---- 云同步包压缩，必须与电脑端 english-trainer.html 保持一致 ----
+   Jsonbin 免费版单个 record 上限 100KB，明文包已超；gzip+base64 后约 45%。
+   读取时自动识别：带 enc:"gzip-b64" 的解压，v4 明文包原样返回。          */
+function _u8ToB64(bytes){
+  let bin="";
+  const CH=0x8000;
+  for(let i=0;i<bytes.length;i+=CH) bin+=String.fromCharCode.apply(null, bytes.subarray(i, i+CH));
+  return btoa(bin);
+}
+function _b64ToU8(b64){
+  const bin=atob(b64), out=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i);
+  return out;
+}
+async function encodeFavPack(pack){
+  try{
+    if(typeof CompressionStream!=="function") return pack;
+    const src=new Blob([new TextEncoder().encode(JSON.stringify(pack))]);
+    const buf=await new Response(src.stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer();
+    return { v:5, enc:"gzip-b64", updatedAt:pack.updatedAt||Date.now(),
+             n:(pack.items||[]).length, data:_u8ToB64(new Uint8Array(buf)) };
+  }catch(e){ return pack; }
+}
+async function decodeFavPack(raw){
+  if(!raw || typeof raw!=="object") return raw;
+  if(raw.enc!=="gzip-b64" || !raw.data) return raw;
+  if(typeof DecompressionStream!=="function")
+    throw new Error("此设备不支持解压同步包（需 iOS 16.4+）");
+  const src=new Blob([_b64ToU8(raw.data)]);
+  const buf=await new Response(src.stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+  return JSON.parse(new TextDecoder().decode(buf));
+}
 async function putCloud(pack, rawId){
   const parsed=parseFavSyncId(rawId);
   if(!parsed.id) throw new Error("同步码无效");
-  const body=JSON.stringify(pack);
+  const body=JSON.stringify(await encodeFavPack(pack));
   if(parsed.provider==="jsonbin"){
     const key=(state.jsonbinKey||"").trim();
     if(!key) throw new Error("请先在设置里填写 Jsonbin Master Key（与电脑相同）");
