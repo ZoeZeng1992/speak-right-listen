@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260811-speak15";
+const APP_BUILD="20260811-speak16";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -546,6 +546,29 @@ async function decodeFavPack(raw){
   const buf=await new Response(src.stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
   return JSON.parse(new TextDecoder().decode(buf));
 }
+/** 回写给电脑的小包：只有 en -> [fails, gots]。416 句约 8KB，永远撞不到 Jsonbin 的 100KB。 */
+function buildStatsPack(){
+  const stats={};
+  state.items.forEach(x=>{
+    if(!x||!x.en) return;
+    stats[x.en]=[+(x.fails||0)||0, +(x.gots||0)||0];
+  });
+  return { v:6, updatedAt:Date.now(), stats };
+}
+/** 读云端次数，兼容 v6 小包和旧的 v4 整包 */
+function readStatsPack(pack){
+  if(!pack || typeof pack!=="object") return null;
+  if(pack.stats && typeof pack.stats==="object" && !Array.isArray(pack.items)) return pack.stats;
+  if(Array.isArray(pack.items)){
+    const out={};
+    pack.items.forEach(x=>{
+      if(!x||!x.en) return;
+      out[x.en]=[+(x.fails||0)||0, +(x.gots||0)||0];
+    });
+    return out;
+  }
+  return null;
+}
 async function putCloud(pack, rawId){
   const parsed=parseFavSyncId(rawId);
   if(!parsed.id) throw new Error("同步码无效");
@@ -590,32 +613,24 @@ async function pushStatsToCloud(opts){
   if(_pushBusy) return false;
   _pushBusy=true;
   if(!quiet && $("syncTip")) $("syncTip").textContent="正在同步到电脑…";
-  // 按 playOrder 导出，且异步回来后绝不改 idx（否则点下一句会被拽回去）
-  const orderSnap=(state.playOrder&&state.playOrder.length)
-    ? state.playOrder.map(en=>state.items.find(x=>x&&x.en===en)).filter(Boolean)
-    : state.items.slice();
+  // 异步回来后绝不改 idx（否则用户中途点「下一句」会被拽回上一句）
   const keptIdx=state.idx;
   const keptEn=(current()&&current().en)||state.currentEn||"";
   try{
-    let pack=null;
-    try{ pack=await fetchCloud(id); }catch(e){ pack=null; }
-    if(!pack || !Array.isArray(pack.items)) pack=buildLocalPack();
-    else{
-      pack.items=mergeKeepingOrder(orderSnap, pack.items);
-      pack.v=4;
-      pack.updatedAt=Date.now();
+    // 只回传次数：整包已改走 GitHub，这条通道永远只有几 KB
+    let remote=null;
+    try{ remote=await fetchCloud(id); }catch(e){ remote=null; }
+    const rs=readStatsPack(remote);
+    if(rs){
+      state.items.forEach(it=>{
+        const v=rs[it.en];
+        if(!Array.isArray(v)) return;
+        it.fails=Math.max(+(it.fails||0)||0, +(v[0]||0)||0);
+        it.gots=Math.max(+(it.gots||0)||0, +(v[1]||0)||0);
+      });
     }
+    const pack=buildStatsPack();
     await putCloud(pack, id);
-    const byEn=new Map((pack.items||[]).filter(x=>x&&x.en).map(x=>[x.en,x]));
-    state.items.forEach(it=>{
-      const c=byEn.get(it.en);
-      if(!c) return;
-      it.fails=Math.max(+(it.fails||0)||0, +(c.fails||0)||0);
-      it.gots=Math.max(+(it.gots||0)||0, +(c.gots||0)||0);
-      if(!it.cn && c.cn) it.cn=c.cn;
-      if(!it.note && c.note) it.note=c.note;
-      if((c.addedAt||0)>(it.addedAt||0)) it.addedAt=c.addedAt;
-    });
     // 保留用户同步期间点到的句子；不要用开始时的 curEn 覆写 idx
     const liveEn=(current()&&current().en)||state.currentEn||keptEn;
     if(liveEn && state.playOrder&&state.playOrder.length){
@@ -658,9 +673,11 @@ function recordPractice(){
   schedulePushStats();
 }
 async function fetchLocalFile(){
-  const res=await fetchWithTimeout("fav-listen-data.json?ts="+Date.now(), { cache:"no-store" }, 3000);
+  // 同目录文件：GitHub Pages 上是电脑推的压缩包，局域网上是 serve.py 写的明文包。
+  // decodeFavPack 会自动识别两种格式。?ts= 用来穿透 Pages 的 CDN 缓存（max-age=600）。
+  const res=await fetchWithTimeout("fav-listen-data.json?ts="+Date.now(), { cache:"no-store" }, 8000);
   if(!res.ok) throw new Error("本地文件不存在");
-  return res.json();
+  return await decodeFavPack(await res.json());
 }
 
 /** soft：只停朗读，保住媒体会话（暂停后取下再戴上耳机，单击还能继续播）
@@ -1114,6 +1131,18 @@ async function refreshAll(opts){
   if(id){
     localStorage.setItem(SYNC_KEY, id);
     if($("syncIdInput")) $("syncIdInput").value=id;
+  }
+  // 优先读同目录的 fav-listen-data.json：在 GitHub Pages 上是电脑推上来的大包，
+  // 在局域网上是 serve.py 写的本机文件。两边都不受 Jsonbin 100KB 限制，也不用 token。
+  try{
+    const pack=await fetchLocalFile();
+    if(pack && Array.isArray(pack.items) && pack.items.length){
+      const msg=applyPack(pack, "云同步", { resort });
+      if(!quiet) setFeedback((msg||("已刷新 "+state.items.length+" 句"))+" · "+new Date().toLocaleTimeString(), false);
+      return true;
+    }
+  }catch(e){}
+  if(id){
     try{
       const pack=await fetchCloud(id);
       const msg=applyPack(pack, "云同步", { resort });
