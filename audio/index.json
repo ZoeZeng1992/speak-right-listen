@@ -181,6 +181,26 @@
       ],
       "seconds": 1.508
     },
+    "0657d0e9bde369110f2961cfd9b1f77f6f192308f5d73916d5ba91b0b19aa01a": {
+      "bytes": 6072,
+      "createdAt": "2026-08-14T12:15:05+00:00",
+      "en": "when you do go out",
+      "path": "audio/06/0657d0e9bde369110f2961cfd9b1f77f6f192308f5d73916d5ba91b0b19aa01a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.163
+    },
+    "07d207ca1737d69d94fb268edcf8839a83542127df324377dc2ca6e71b7ed058": {
+      "bytes": 13008,
+      "createdAt": "2026-08-14T12:14:45+00:00",
+      "en": "I'm just going to scroll on my phone to unwind",
+      "path": "audio/07/07d207ca1737d69d94fb268edcf8839a83542127df324377dc2ca6e71b7ed058.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.555
+    },
     "07d327c754ba9623d2fde1fd170caba0bbe6ebf91f5227947e208837de5f779f": {
       "bytes": 10488,
       "createdAt": "2026-08-14T12:08:21+00:00",
@@ -521,6 +541,16 @@
       ],
       "seconds": 2.221
     },
+    "201128a624071a086a889cfa63e700f00d196c11f8f2b00208ec366a7e08ab5c": {
+      "bytes": 14712,
+      "createdAt": "2026-08-14T12:14:48+00:00",
+      "en": "Once I finish this one, I'll move on to the mobile app.",
+      "path": "audio/20/201128a624071a086a889cfa63e700f00d196c11f8f2b00208ec366a7e08ab5c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.061
+    },
     "2052abb0449a779cf7285d0c2c11d0759b6eecca8688dfb4d0de6d7f9cdb57eb": {
       "bytes": 13080,
       "createdAt": "2026-08-14T12:06:02+00:00",
@@ -691,6 +721,16 @@
       ],
       "seconds": 5.568
     },
+    "2c94fbc654d42e0c0ac778776193ad63cb0efc075699763c3919d878a7fb7251": {
+      "bytes": 10440,
+      "createdAt": "2026-08-14T12:14:44+00:00",
+      "en": "Are the engineers easy to work with?",
+      "path": "audio/2c/2c94fbc654d42e0c0ac778776193ad63cb0efc075699763c3919d878a7fb7251.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.038
+    },
     "2cbcab2c85711564e194d084a4c592b9161a80acb93b990a77fd5a43686afc34": {
       "bytes": 9096,
       "createdAt": "2026-08-14T12:07:38+00:00",
@@ -740,6 +780,16 @@
         "chat"
       ],
       "seconds": 1.799
+    },
+    "2eb66278f67ad099a1cc500d0f79df6575104406ff797a94396bf21b397336a1": {
+      "bytes": 18984,
+      "createdAt": "2026-08-14T12:14:50+00:00",
+      "en": "is your current design project about a mobile app, or is it a website?",
+      "path": "audio/2e/2eb66278f67ad099a1cc500d0f79df6575104406ff797a94396bf21b397336a1.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.993
     },
     "2ecbf02941f73c9a63095f23b48c952217098a3ee3b136dfe3ab4a8d16389ae1": {
       "bytes": 7824,
@@ -870,6 +920,16 @@
         "speak"
       ],
       "seconds": 1.855
+    },
+    "3a92b7c5f622663272d9eee18620e91e14039441cb858015f93d0e33f756bdf7": {
+      "bytes": 18456,
+      "createdAt": "2026-08-14T12:14:55+00:00",
+      "en": "I usually just work from wherever I want in the house with my laptop.",
+      "path": "audio/3a/3a92b7c5f622663272d9eee18620e91e14039441cb858015f93d0e33f756bdf7.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.746
     },
     "3b4df1fb3495219b727598d62feee4e2ae12754d3ff8dd263a596ebeb6504b75": {
       "bytes": 9240,
@@ -1120,6 +1180,16 @@
         "speak"
       ],
       "seconds": 1.27
+    },
+    "487b7710f1f992a09b0044692688623d86832aaa16f12c41e140d8175d73145b": {
+      "bytes": 12624,
+      "createdAt": "2026-08-14T12:14:47+00:00",
+      "en": "make the rest of the day feel more productive",
+      "path": "audio/48/487b7710f1f992a09b0044692688623d86832aaa16f12c41e140d8175d73145b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.431
     },
     "48e0af30fe3bee48bd071c25c0c4a850d88c60c5e09400ad7cea7dcac6e4bd3b": {
       "bytes": 26016,
@@ -1871,6 +1941,16 @@
       ],
       "seconds": 4.725
     },
+    "73d186c170d72525fa6bc51c73e272e00b86f58b2c8a474bc620cd1d4cc1ac41": {
+      "bytes": 7104,
+      "createdAt": "2026-08-14T12:14:57+00:00",
+      "en": "are you relaxing at home",
+      "path": "audio/73/73d186c170d72525fa6bc51c73e272e00b86f58b2c8a474bc620cd1d4cc1ac41.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.348
+    },
     "73f34a53de3f992d47ea8a7f5e64d2064a00284eab491c8e65542aa1b5491113": {
       "bytes": 10752,
       "createdAt": "2026-08-14T12:02:13+00:00",
@@ -1900,6 +1980,16 @@
         "speak"
       ],
       "seconds": 1.102
+    },
+    "7636342831a62eef0100f0592ad9dd946291913a0ae56f08627ad01125ddd728": {
+      "bytes": 12384,
+      "createdAt": "2026-08-14T12:14:59+00:00",
+      "en": "Are your teammates or your manager supportive",
+      "path": "audio/76/7636342831a62eef0100f0592ad9dd946291913a0ae56f08627ad01125ddd728.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.473
     },
     "767ba002434775dc7311e163106d6b11b7fbefef2325bbbb96a7ad4f486a3c8c": {
       "bytes": 7512,
@@ -2111,6 +2201,16 @@
       ],
       "seconds": 0.947
     },
+    "851d8cdb45790189b06ba487d70737fd6be89f0465bebfddbe273982d2965272": {
+      "bytes": 8472,
+      "createdAt": "2026-08-14T12:14:43+00:00",
+      "en": "Are you working from home today",
+      "path": "audio/85/851d8cdb45790189b06ba487d70737fd6be89f0465bebfddbe273982d2965272.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.63
+    },
     "85882ab2e24263286caedb5d2b9ab3ddf0f3f70fce53148b7d1ff28747da4bc5": {
       "bytes": 7560,
       "createdAt": "2026-08-14T12:01:34+00:00",
@@ -2220,6 +2320,16 @@
         "speak"
       ],
       "seconds": 1.745
+    },
+    "89c2ca6b3f1155837b6869b2f1390096b93085a7ed3a9eb037ca7b56ddb27dfb": {
+      "bytes": 6888,
+      "createdAt": "2026-08-14T12:14:54+00:00",
+      "en": "are you a coffee person",
+      "path": "audio/89/89c2ca6b3f1155837b6869b2f1390096b93085a7ed3a9eb037ca7b56ddb27dfb.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.321
     },
     "8a70bd8151628a52e3b12ac6a0524c7f6d49a5632eaf213ebe435423463a3de1": {
       "bytes": 9384,
@@ -2401,6 +2511,16 @@
       ],
       "seconds": 1.53
     },
+    "9640135f00477cacba9ff68218d96373aa34907da026e291d4362d04dcbc6344": {
+      "bytes": 5040,
+      "createdAt": "2026-08-14T12:15:02+00:00",
+      "en": "be hooked on...",
+      "path": "audio/96/9640135f00477cacba9ff68218d96373aa34907da026e291d4362d04dcbc6344.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.028
+    },
     "9640477807856c37e862d6826160e0b33719a1ebb3ac8603e4e3b8c526505fb7": {
       "bytes": 6648,
       "createdAt": "2026-08-14T12:08:19+00:00",
@@ -2430,6 +2550,16 @@
         "chat"
       ],
       "seconds": 1.19
+    },
+    "974b7831cd234bb73ad796fd686b32d54b26219947cff452bff40fd1bacc675c": {
+      "bytes": 10944,
+      "createdAt": "2026-08-14T12:14:53+00:00",
+      "en": "is there another drink you love while working?",
+      "path": "audio/97/974b7831cd234bb73ad796fd686b32d54b26219947cff452bff40fd1bacc675c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.183
     },
     "9854ae32b14f30eea67cea2ed8115dc1ac6ff40358cf354951fc677ce43d01d8": {
       "bytes": 8160,
@@ -2711,6 +2841,16 @@
       ],
       "seconds": 1.613
     },
+    "a7aba8d81727eb80b9ca535f505aedb51ea1c42b4e5af0fbecea621a88ec9c3c": {
+      "bytes": 9744,
+      "createdAt": "2026-08-14T12:14:56+00:00",
+      "en": "is your home workspace very tidy,",
+      "path": "audio/a7/a7aba8d81727eb80b9ca535f505aedb51ea1c42b4e5af0fbecea621a88ec9c3c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.939
+    },
     "a84a12afab3e465afc3addf7ab2a8ee7be297877f84c293a05283eaa36bff951": {
       "bytes": 7104,
       "createdAt": "2026-08-14T12:02:16+00:00",
@@ -2850,6 +2990,16 @@
         "speak"
       ],
       "seconds": 1.338
+    },
+    "af0afc5ffa28e7c3da7af0536fe20243fbad16cf951a6064aacdb9f179a3e54c": {
+      "bytes": 22968,
+      "createdAt": "2026-08-14T12:14:52+00:00",
+      "en": "is your favorite part doing user research, or is it making UI wireframes?",
+      "path": "audio/af/af0afc5ffa28e7c3da7af0536fe20243fbad16cf951a6064aacdb9f179a3e54c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.696
     },
     "af25d0d016dfac18d7e37418bb635ea68107368765feef2778bbf2231b8ff68e": {
       "bytes": 5088,
@@ -3240,6 +3390,16 @@
         "speak"
       ],
       "seconds": 2.24
+    },
+    "c12d38832ba6adcfc5e460dd9f339edccd908e0863ae77beba33ca4ce6be804e": {
+      "bytes": 5640,
+      "createdAt": "2026-08-14T12:14:58+00:00",
+      "en": "are you out somewhere?",
+      "path": "audio/c1/c12d38832ba6adcfc5e460dd9f339edccd908e0863ae77beba33ca4ce6be804e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.155
     },
     "c17b99b393af7b59c41e6edfbb0d8c99a8d3c01c7015d7125a7d731375c9e15b": {
       "bytes": 18576,
@@ -3671,6 +3831,16 @@
       ],
       "seconds": 1.355
     },
+    "d7489292eabb2746000f5bc9380486a99626f163da13666bfca34a22f968e0b6": {
+      "bytes": 10320,
+      "createdAt": "2026-08-14T12:15:02+00:00",
+      "en": "Have you ever watched Modern Family?",
+      "path": "audio/d7/d7489292eabb2746000f5bc9380486a99626f163da13666bfca34a22f968e0b6.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.95
+    },
     "d76d261cd8570a5dcd9c36324800bc0c3fb023d94cc84a654a40d506264d193d": {
       "bytes": 8112,
       "createdAt": "2026-08-14T12:02:14+00:00",
@@ -3830,6 +4000,16 @@
         "speak"
       ],
       "seconds": 1.658
+    },
+    "e1ca999b414c12af02ad1587f0ac52466edce52859861d43e7f843920f0d873f": {
+      "bytes": 25968,
+      "createdAt": "2026-08-14T12:15:05+00:00",
+      "en": "Are you watching any good TV shows on your phone lately, or is it mostly just social media?",
+      "path": "audio/e1/e1ca999b414c12af02ad1587f0ac52466edce52859861d43e7f843920f0d873f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 5.25
     },
     "e22e4485b982da259538a9e3bf5bbe8e9dd54c6ed36c9e80cd77b9f0eb6093e0": {
       "bytes": 13800,
@@ -4151,6 +4331,16 @@
       ],
       "seconds": 2.958
     },
+    "f62aa8487f92c0f84f7aae6db921af5c21cb2c5872ddc54f41c47a1319bb55dc": {
+      "bytes": 17928,
+      "createdAt": "2026-08-14T12:15:01+00:00",
+      "en": "For romance dramas, have you ever watched Emily in Paris?",
+      "path": "audio/f6/f62aa8487f92c0f84f7aae6db921af5c21cb2c5872ddc54f41c47a1319bb55dc.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.485
+    },
     "f6734df68f803fda5f808dfb1be570a225cf2832008bf17522e1262b35e95b5c": {
       "bytes": 18120,
       "createdAt": "2026-08-14T12:05:08+00:00",
@@ -4333,7 +4523,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-14T12:08:21+00:00",
+  "updatedAt": "2026-08-14T12:15:05+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
