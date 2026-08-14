@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260814-audio17";
+const APP_BUILD="20260814-audio18";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -687,6 +687,14 @@ async function fetchLocalFile(){
 function canonicalAudioText(text){
   let value=String(text||"");
   try{ value=value.normalize("NFC"); }catch(e){}
+  // Chat 里的 Markdown 星号会被 en-US 引擎读成 "asterisk"。
+  // 混入中文说明时只朗读英文部分；屏幕原文和句库本身保持不变。
+  value=value.replace(/\*/g,"").replace(/`/g,"");
+  const han=/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+  if(han.test(value)){
+    value=value.replace(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g," ");
+    value=value.replace(/[，。！？：；、“”《》【】（）…·\/\\|]+/g," ");
+  }
   return value.trim().replace(/\s+/g," ");
 }
 async function sha256Hex(text){
