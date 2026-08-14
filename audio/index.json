@@ -791,6 +791,16 @@
       ],
       "seconds": 1.532
     },
+    "30181a983dce51ef3c6f13b77e826498f6006bf8d9529cb1d521bbb10b946547": {
+      "bytes": 17424,
+      "createdAt": "2026-08-14T14:35:44+00:00",
+      "en": "My product manager will share some business‑side stuff with me.",
+      "path": "audio/30/30181a983dce51ef3c6f13b77e826498f6006bf8d9529cb1d521bbb10b946547.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.536
+    },
     "301ef1635809a74d1f57420db77f6c01bc3a5d929cb0f3e0cee8e1665497df66": {
       "bytes": 6792,
       "createdAt": "2026-08-14T12:03:46+00:00",
@@ -800,6 +810,26 @@
         "speak"
       ],
       "seconds": 1.286
+    },
+    "309176d25caa3175639fe1e63efb45fc32baf4320fa386444259349a3144bfac": {
+      "bytes": 8400,
+      "createdAt": "2026-08-14T14:35:45+00:00",
+      "en": "even if you're flying solo!",
+      "path": "audio/30/309176d25caa3175639fe1e63efb45fc32baf4320fa386444259349a3144bfac.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.558
+    },
+    "33e19a836285f0ccbced40aa660ea51e472301a65a09cc100817fa143b3de107": {
+      "bytes": 7248,
+      "createdAt": "2026-08-14T14:35:42+00:00",
+      "en": "are you on your own for this",
+      "path": "audio/33/33e19a836285f0ccbced40aa660ea51e472301a65a09cc100817fa143b3de107.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.321
     },
     "34a0f6807231e512752da422a832228433ccdd1e2b22da8e72fdcad21e05ff68": {
       "bytes": 8736,
@@ -850,6 +880,16 @@
         "speak"
       ],
       "seconds": 1.339
+    },
+    "38526140bb40cb52a23cd99f569645ae4fdf3e903f6da62693583a9ea8f8852f": {
+      "bytes": 20856,
+      "createdAt": "2026-08-14T14:35:56+00:00",
+      "en": "So when you ask me whether they’re busy in an office or constantly on the move,",
+      "path": "audio/38/38526140bb40cb52a23cd99f569645ae4fdf3e903f6da62693583a9ea8f8852f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.094
     },
     "386a66a255b9b36c8bef614f4adee41beecbda99300f6a1e3a8134c26f16d59a": {
       "bytes": 15360,
@@ -1030,6 +1070,16 @@
         "chat"
       ],
       "seconds": 3.411
+    },
+    "41fd35f956a7f3cd1a7af5b7752edfbe32b33573b5bf32e83f688c653d7519d1": {
+      "bytes": 7920,
+      "createdAt": "2026-08-14T14:35:35+00:00",
+      "en": "do you head back home to eat?",
+      "path": "audio/41/41fd35f956a7f3cd1a7af5b7752edfbe32b33573b5bf32e83f688c653d7519d1.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.604
     },
     "4238079f75639e2910334794f41d5482a7c4395a9087519e971609620711750b": {
       "bytes": 6144,
@@ -1370,6 +1420,16 @@
         "speak"
       ],
       "seconds": 1.156
+    },
+    "5552d778b22365b171aa38ed18c5bcc53535e029461e1307a5e6a9ec2be2802b": {
+      "bytes": 8544,
+      "createdAt": "2026-08-14T14:35:48+00:00",
+      "en": "That's a lot of ground to cover!",
+      "path": "audio/55/5552d778b22365b171aa38ed18c5bcc53535e029461e1307a5e6a9ec2be2802b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.643
     },
     "56418d53bc2b6de23d9c84bf2627580ea8cfb05d46382fea991ead27a8efd68f": {
       "bytes": 4032,
@@ -1721,6 +1781,16 @@
       ],
       "seconds": 1.598
     },
+    "665695cee6be44b7650e4fdfa5a8170a609993914f33547ea32c22347cd38986": {
+      "bytes": 14928,
+      "createdAt": "2026-08-14T14:35:49+00:00",
+      "en": "Is the desktop version the main focus right now",
+      "path": "audio/66/665695cee6be44b7650e4fdfa5a8170a609993914f33547ea32c22347cd38986.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.887
+    },
     "6656b21696ada3a017a3af513a6135cb336b31afa635ef60cdd4ed9102079991": {
       "bytes": 6288,
       "createdAt": "2026-08-14T12:00:45+00:00",
@@ -1780,6 +1850,16 @@
         "speak"
       ],
       "seconds": 1.497
+    },
+    "6b8bf7f9d617c179b4c50e245b834017d3c4f8d42af69ee7990259d80bf99ec7": {
+      "bytes": 7560,
+      "createdAt": "2026-08-14T14:35:52+00:00",
+      "en": "all kinds of backgrounds.",
+      "path": "audio/6b/6b8bf7f9d617c179b4c50e245b834017d3c4f8d42af69ee7990259d80bf99ec7.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.483
     },
     "6b96418d845128d99f8a72db83c754df91c3dc481bab2cbdcf28e1340d3d1185": {
       "bytes": 6984,
@@ -1950,6 +2030,16 @@
         "chat"
       ],
       "seconds": 1.506
+    },
+    "7a331fa0b821d41bf441c7c24c2f230ad9dc75a79a32ea153a98e27ed49aa7b5": {
+      "bytes": 23880,
+      "createdAt": "2026-08-14T14:35:47+00:00",
+      "en": "So, is this after-sales system a web page for desktop, or is it a mobile app?",
+      "path": "audio/7a/7a331fa0b821d41bf441c7c24c2f230ad9dc75a79a32ea153a98e27ed49aa7b5.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 5.072
     },
     "7a71e42dda0e25d43b98c6f3d9e0063db2efb743f1b1b6acb684d86f8d6b0755": {
       "bytes": 7008,
@@ -2511,6 +2601,16 @@
       ],
       "seconds": 1.436
     },
+    "9b68e6b080436ce1572fc8cb1ca7f0b7ddf7ba9ba861dd4786c5fb5e9b35ef63": {
+      "bytes": 14232,
+      "createdAt": "2026-08-14T14:35:51+00:00",
+      "en": "tackling the big screen first is usually easier.",
+      "path": "audio/9b/9b68e6b080436ce1572fc8cb1ca7f0b7ddf7ba9ba861dd4786c5fb5e9b35ef63.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.8
+    },
     "9c92a52118b604dbeab019b1f789298255b206c550e8ba2ce6fc2c90d0852b1b": {
       "bytes": 5760,
       "createdAt": "2026-08-14T12:03:41+00:00",
@@ -2871,6 +2971,16 @@
       ],
       "seconds": 1.338
     },
+    "aec43641add1a39929408b35f41d9b3ebcc4a9e21d1b9b865c06468c7a6bea0f": {
+      "bytes": 8712,
+      "createdAt": "2026-08-14T14:35:52+00:00",
+      "en": "are they constantly on the move?",
+      "path": "audio/ae/aec43641add1a39929408b35f41d9b3ebcc4a9e21d1b9b865c06468c7a6bea0f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.64
+    },
     "af0afc5ffa28e7c3da7af0536fe20243fbad16cf951a6064aacdb9f179a3e54c": {
       "bytes": 22968,
       "createdAt": "2026-08-14T12:14:52+00:00",
@@ -2970,6 +3080,16 @@
         "speak"
       ],
       "seconds": 1.495
+    },
+    "b2d3f7542741a1d75b66d634e17520e44cc3245cd37af97fc6511a863df69765": {
+      "bytes": 13320,
+      "createdAt": "2026-08-14T14:35:40+00:00",
+      "en": "after we’d done all our weekend plans, we would",
+      "path": "audio/b2/b2d3f7542741a1d75b66d634e17520e44cc3245cd37af97fc6511a863df69765.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.642
     },
     "b3820abd1ee662d589370708ac555aca04dd6efbf2e4ae56408d613acb8cb501": {
       "bytes": 7848,
@@ -3181,6 +3301,16 @@
       ],
       "seconds": 1.851
     },
+    "be551769b4d19a9a8441666cae9a3bde5ab1c52053aa7c175a862950e38819f3": {
+      "bytes": 11256,
+      "createdAt": "2026-08-14T14:35:41+00:00",
+      "en": "I'm busy with an after‑sales system",
+      "path": "audio/be/be551769b4d19a9a8441666cae9a3bde5ab1c52053aa7c175a862950e38819f3.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.112
+    },
     "bf02a9d70d77dd7ec464742eaf3b521bcaf1bb54a4d16d44b17eccb4ed3a0250": {
       "bytes": 8136,
       "createdAt": "2026-08-14T12:03:45+00:00",
@@ -3210,6 +3340,16 @@
         "speak"
       ],
       "seconds": 1.599
+    },
+    "c0169f8fa45cf8db9242c17614752a4ad120b28107a49b91b884698f8a5222ae": {
+      "bytes": 12936,
+      "createdAt": "2026-08-14T14:35:36+00:00",
+      "en": "To be honest, it was actually two weeks ago!",
+      "path": "audio/c0/c0169f8fa45cf8db9242c17614752a4ad120b28107a49b91b884698f8a5222ae.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.528
     },
     "c08538f9aee6f7cdc28fb913b6168b38da89b958e46dcbbbee860241d915618c": {
       "bytes": 8112,
@@ -3350,6 +3490,16 @@
         "speak"
       ],
       "seconds": 1.192
+    },
+    "c49b3e8d4d833c1eaa8234265be0c5bbe75a527063a86b31b7c1ad66349759d7": {
+      "bytes": 18672,
+      "createdAt": "2026-08-14T14:35:54+00:00",
+      "en": "They could be young, or maybe older. They could be teenagers, or adults.",
+      "path": "audio/c4/c49b3e8d4d833c1eaa8234265be0c5bbe75a527063a86b31b7c1ad66349759d7.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.972
     },
     "c4c6532fa27cb9d09f8dbd83d2023da271020366e1dc54173e6544b0b7bf453e": {
       "bytes": 8976,
@@ -3811,6 +3961,16 @@
       ],
       "seconds": 1.848
     },
+    "e004ba1d5bd2e0d1d2a5cf5cf74feac87207fce360345a0d76157ccf0fd9a80f": {
+      "bytes": 7224,
+      "createdAt": "2026-08-14T14:35:42+00:00",
+      "en": "and the devs help out too",
+      "path": "audio/e0/e004ba1d5bd2e0d1d2a5cf5cf74feac87207fce360345a0d76157ccf0fd9a80f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.469
+    },
     "e01ad1a5100c7bb19645252b72be285a5f35120bbd70b2203952dc0f9608da76": {
       "bytes": 7488,
       "createdAt": "2026-08-14T12:01:21+00:00",
@@ -4050,6 +4210,16 @@
         "chat"
       ],
       "seconds": 1.12
+    },
+    "efc2567c297d777a6397d68258f3bf88fa0436974ef4816c3e684f0169645115": {
+      "bytes": 18168,
+      "createdAt": "2026-08-14T14:35:38+00:00",
+      "en": "hit up the supermarket to grab some groceries to wrap up the day.",
+      "path": "audio/ef/efc2567c297d777a6397d68258f3bf88fa0436974ef4816c3e684f0169645115.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.796
     },
     "efcbc412bc384f656a88be329510162c88d6725bbf7f9d23880056e0f28bdb7e": {
       "bytes": 6192,
@@ -4333,7 +4503,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-14T12:15:49+00:00",
+  "updatedAt": "2026-08-14T14:35:56+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
