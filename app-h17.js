@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260814-audio18";
+const APP_BUILD="20260815-audio19";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -39,6 +39,10 @@ let wakeLock=null, wakeKeepAlive=null, speechKeepAlive=null;
 let voices=[];
 let _pushTimer=null, _pushBusy=false;
 let _voiceAudio=null, _activeVoiceEn="";
+let _voiceAttemptSeq=0, _voiceRetryTimer=null, _voiceWatchdogTimer=null;
+let _loopRecoveryTimer=null, _loopRecoveryCount=0;
+const VOICE_STALL_MS=4500;
+const VOICE_MAX_RESUME_TRIES=8;
 const _audioSlots=new Map();
 let _fallbackNoticeEn="";
 
@@ -730,11 +734,29 @@ function ensureVoiceAudio(){
   _voiceAudio=a;
   return a;
 }
+function clearVoiceRecovery(invalidate){
+  if(_voiceRetryTimer){ clearTimeout(_voiceRetryTimer); _voiceRetryTimer=null; }
+  if(_voiceWatchdogTimer){ clearTimeout(_voiceWatchdogTimer); _voiceWatchdogTimer=null; }
+  if(invalidate) _voiceAttemptSeq++;
+}
+function clearLoopRecovery(resetCount){
+  if(_loopRecoveryTimer){ clearTimeout(_loopRecoveryTimer); _loopRecoveryTimer=null; }
+  if(resetCount) _loopRecoveryCount=0;
+}
+function markPlaybackHealthy(){
+  clearLoopRecovery(true);
+}
 function stopVoiceAudio(reset){
+  clearVoiceRecovery(true);
   if(!_voiceAudio) return;
   try{
     _voiceAudio.onended=null;
     _voiceAudio.onerror=null;
+    _voiceAudio.onpause=null;
+    _voiceAudio.onplaying=null;
+    _voiceAudio.ontimeupdate=null;
+    _voiceAudio.onwaiting=null;
+    _voiceAudio.onstalled=null;
     _voiceAudio.pause();
     if(reset!==false) _voiceAudio.currentTime=0;
   }catch(e){}
@@ -812,6 +834,7 @@ function stopLoop(opts){
     return;
   }
   loopToken++;
+  clearLoopRecovery(true);
   loopPlaying=false;
   loopCount=0;
   if(!keepWant){
@@ -828,6 +851,7 @@ function stopLoop(opts){
 }
 function pausePlayback(fromRemote){
   loopToken++;
+  clearLoopRecovery(true);
   loopPlaying=false;
   loopCount=0;
   userWantsPlay=false;
@@ -960,8 +984,16 @@ function bindMediaAudioEvents(a){
     }, 400);
   });
 }
+function yieldMediaKeeperToVoice(){
+  try{
+    if(_mediaAudio&&!_mediaAudio.paused) _mediaAudio.pause();
+  }catch(e){}
+}
 function nudgeMediaAudio(){
   try{
+    // iOS 偶尔会让两个 HTMLAudio 互相抢占会话。声音 A 正在发声时，
+    // 当前播放器本身就能维持媒体会话，不要再启动静音保活轨。
+    if(_voiceAudio && _activeVoiceEn && !_voiceAudio.paused && !_voiceAudio.ended) return;
     const a=ensureMediaAudio();
     if(a.paused){
       const p=a.play();
@@ -1075,15 +1107,16 @@ function setupMediaSession(force){
 }
 function updatePlayUI(){
   const lim=state.loop;
+  const active=loopPlaying||userWantsPlay;
   if($("status")){
     $("status").textContent = loopPlaying
       ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
-      : "";
+      : (userWantsPlay ? "音频被系统中断，正在自动恢复…" : "");
   }
   if($("playBtn")){
-    $("playBtn").textContent = loopPlaying ? "暂停" : "播放";
+    $("playBtn").textContent = active ? "暂停" : "播放";
     $("playBtn").classList.toggle("primary", true);
-    $("playBtn").classList.toggle("is-playing", !!loopPlaying);
+    $("playBtn").classList.toggle("is-playing", !!active);
   }
   document.querySelectorAll("#loopSeg button").forEach(b=>{
     b.classList.toggle("on", +b.dataset.loop===state.loop);
@@ -1105,7 +1138,9 @@ function unlockSpeech(){
     unlockSpeech.done=true;
   }catch(e){}
 }
-function startLoop(rate){
+function startLoop(rate, opts){
+  const recovering=!!(opts&&opts.recovering);
+  clearLoopRecovery(!recovering);
   const s0=current();
   if(!s0||!s0.en){
     toast("没有可播放的句子", true);
@@ -1171,6 +1206,18 @@ function startLoop(rate){
     if(token!==loopToken) return;
     loopPlaying=false;
     updatePlayUI();
+    if(userWantsPlay){
+      clearLoopRecovery(false);
+      const retryNo=++_loopRecoveryCount;
+      const delay=Math.min(8000,500*Math.pow(2,Math.min(retryNo-1,4)));
+      if(retryNo===1) toast((message||"朗读被中断")+"，正在自动恢复",true);
+      _loopRecoveryTimer=setTimeout(()=>{
+        _loopRecoveryTimer=null;
+        if(token!==loopToken||!userWantsPlay||loopPlaying) return;
+        startLoop(playRate,{recovering:true});
+      },delay);
+      return;
+    }
     toast(message||"朗读失败，请重试",true);
   };
 
@@ -1183,7 +1230,7 @@ function startLoop(rate){
     u.rate=playRate;
     u.pitch=1;
     u.volume=1;
-    u.onstart=()=>{ nudgeMediaAudio(); updateMediaSession(); };
+    u.onstart=()=>{ markPlaybackHealthy(); nudgeMediaAudio(); updateMediaSession(); };
     u.onend=afterOne;
     u.onerror=ev=>{
       if(token!==loopToken) return;
@@ -1207,14 +1254,90 @@ function startLoop(rate){
       return;
     }
     const a=ensureVoiceAudio();
-    let failed=false;
+    clearVoiceRecovery(true);
+    const attempt=_voiceAttemptSeq;
+    let failed=false, finished=false, resumePending=false, resumeTries=0;
+    let lastTime=-1, lastProgressAt=Date.now();
+    const isActive=()=>!failed&&!finished&&attempt===_voiceAttemptSeq&&token===loopToken&&userWantsPlay;
+    const nearEnd=()=>Number.isFinite(a.duration)&&a.duration>0&&a.currentTime>=Math.max(0,a.duration-.12);
+    const detach=()=>{
+      a.onended=null; a.onerror=null; a.onpause=null; a.onplaying=null;
+      a.ontimeupdate=null; a.onwaiting=null; a.onstalled=null;
+    };
+    const complete=()=>{
+      if(!isActive()) return;
+      finished=true;
+      detach();
+      clearVoiceRecovery(true);
+      afterOne();
+    };
     const fallback=reason=>{
-      if(failed||token!==loopToken) return;
+      if(!isActive()) return;
       failed=true;
+      detach();
+      clearVoiceRecovery(true);
       useFixedAudio=false;
       stopVoiceAudio(true);
       notifySystemFallback(text,reason||"播放失败");
       playSystemOnce(false);
+    };
+    let armWatchdog, scheduleResume;
+    armWatchdog=()=>{
+      if(_voiceWatchdogTimer) clearTimeout(_voiceWatchdogTimer);
+      _voiceWatchdogTimer=setTimeout(()=>{
+        _voiceWatchdogTimer=null;
+        if(!isActive()) return;
+        if(a.ended||nearEnd()){ complete(); return; }
+        if(a.paused){ scheduleResume("被系统暂停",false); return; }
+        if(Date.now()-lastProgressAt>VOICE_STALL_MS){ scheduleResume("播放卡住",true); return; }
+        armWatchdog();
+      },1200);
+    };
+    scheduleResume=(reason,restart)=>{
+      if(!isActive()||resumePending) return;
+      if(a.ended||nearEnd()){ complete(); return; }
+      if(resumeTries>=VOICE_MAX_RESUME_TRIES){ fallback(reason); return; }
+      resumePending=true;
+      if(a.paused) nudgeMediaAudio();
+      if(_voiceWatchdogTimer){ clearTimeout(_voiceWatchdogTimer); _voiceWatchdogTimer=null; }
+      const delay=Math.min(2400,180*Math.pow(2,Math.min(resumeTries,4)));
+      _voiceRetryTimer=setTimeout(()=>{
+        _voiceRetryTimer=null;
+        if(!isActive()){ resumePending=false; return; }
+        resumeTries++;
+        try{
+          if(restart&&resumeTries>=3){
+            // 解码器连续无进度时重新挂载本地 Blob；只重播当前句，不联网。
+            a.pause();
+            a.src=slot.url;
+            a.dataset.en=text;
+            a.load();
+            a.currentTime=0;
+          }else if(restart){
+            a.currentTime=Math.max(0,(a.currentTime||0)-.15);
+          }
+          const onStarted=()=>{
+            if(!isActive()) return;
+            resumePending=false;
+            lastTime=a.currentTime||0;
+            lastProgressAt=Date.now();
+            nudgeMediaAudio();
+            updateMediaSession();
+            armWatchdog();
+          };
+          const onRejected=()=>{
+            resumePending=false;
+            if(isActive()) scheduleResume(reason,restart);
+          };
+          yieldMediaKeeperToVoice();
+          const promise=a.play();
+          if(promise&&promise.then) promise.then(onStarted).catch(onRejected);
+          else onStarted();
+        }catch(e){
+          resumePending=false;
+          if(isActive()) scheduleResume(reason,restart);
+        }
+      },delay);
     };
     try{
       if(a.dataset.en!==text){
@@ -1224,14 +1347,40 @@ function startLoop(rate){
       }
       a.playbackRate=playRate;
       try{ a.preservesPitch=true; a.webkitPreservesPitch=true; }catch(e){}
-      a.onended=()=>{ if(!failed) afterOne(); };
-      a.onerror=()=>fallback("文件播放失败");
+      a.onended=complete;
+      a.onerror=()=>scheduleResume("文件播放失败",true);
+      a.onpause=()=>{
+        if(!isActive()||a.ended) return;
+        if(nearEnd()) complete();
+        else scheduleResume("被系统暂停",false);
+      };
+      a.onplaying=()=>{
+        if(!isActive()) return;
+        resumePending=false;
+        lastTime=a.currentTime||0;
+        lastProgressAt=Date.now();
+        markPlaybackHealthy();
+        armWatchdog();
+      };
+      a.ontimeupdate=()=>{
+        if(!isActive()) return;
+        const nowTime=a.currentTime||0;
+        if(lastTime<0||nowTime>lastTime+.02||nowTime<lastTime){
+          lastTime=nowTime;
+          lastProgressAt=Date.now();
+          resumeTries=0;
+        }
+      };
+      a.onwaiting=armWatchdog;
+      a.onstalled=()=>scheduleResume("播放卡住",true);
       a.currentTime=0;
       _activeVoiceEn=text;
+      yieldMediaKeeperToVoice();
       const promise=a.play();
-      if(promise&&promise.catch) promise.catch(()=>fallback("未能启动"));
+      if(promise&&promise.catch) promise.catch(()=>scheduleResume("未能启动",false));
       nudgeMediaAudio();
       updateMediaSession();
+      armWatchdog();
     }catch(e){ fallback("未能启动"); }
   };
 
@@ -1249,7 +1398,7 @@ function startLoop(rate){
 }
 window.srPlay = function srPlay(ev){
   if(ev&&ev.preventDefault) ev.preventDefault();
-  if(loopPlaying) stopLoop({ soft:true });
+  if(loopPlaying||userWantsPlay) stopLoop({ soft:true });
   else startLoop();
   return false;
 };
@@ -1504,6 +1653,10 @@ document.addEventListener("visibilitychange", async ()=>{
 });
 window.addEventListener("online", ()=>refreshAll({ quiet:true }));
 window.addEventListener("pagehide", ()=>{ savePrefs(); releaseAllAudioSlots(); });
+window.addEventListener("pageshow", ()=>{
+  refreshAudioWindow({retryErrors:true});
+  if(userWantsPlay) setTimeout(()=>startLoop(playRateNow||1),0);
+});
 window.addEventListener("beforeunload", ()=>savePrefs());
 
 loadPrefs();
