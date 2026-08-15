@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260815-audio19";
+const APP_BUILD="20260815-audio20";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -34,7 +34,7 @@ const state = {
 
 let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
 let userWantsPlay=false;
-let _mediaHold=false; // 听练会话中（含暂停）：保住 Now Playing，供耳机单击恢复播放
+let _mediaHold=false; // 记住听练会话；暂停时只保留逻辑状态，不播放静音轨占用系统音频
 let wakeLock=null, wakeKeepAlive=null, speechKeepAlive=null;
 let voices=[];
 let _pushTimer=null, _pushBusy=false;
@@ -107,8 +107,8 @@ function startKeepAlives(){
     if(userWantsPlay){
       try{ if(speechSynthesis.paused) speechSynthesis.resume(); }catch(e){}
     }
-    // 朗读中或软暂停都要续播静音轨：一停 iOS 就可能丢掉 Now Playing，耳机再按没反应
-    if(userWantsPlay || loopPlaying || _mediaHold){
+    // 仅在真正朗读时维持媒体会话；暂停/播完必须让出系统音频给其他 App。
+    if(userWantsPlay || loopPlaying){
       nudgeMediaAudio();
       setupMediaSession(true);
       updateMediaSession();
@@ -824,7 +824,7 @@ function notifySystemFallback(en, reason){
   toast("声音 A "+(reason||"暂不可用")+"，本句暂用系统备用发音",true);
 }
 
-/** soft：只停朗读，保住媒体会话（暂停后取下再戴上耳机，单击还能继续播）
+/** soft：只停朗读并记住会话，停止所有音频以让出系统音频通道
  *  hard/默认：彻底结束听练会话，耳机键不再指向本页 */
 function stopLoop(opts){
   const keepWant=!!(opts&&opts.keepWant);
@@ -859,11 +859,9 @@ function pausePlayback(fromRemote){
   stopVoiceAudio(false);
   try{ speechSynthesis.cancel(); }catch(e){}
   _mediaHold=true;
-  // 软暂停仍继续播静音轨，保住 Now Playing。
-  // 若 pause 静音轨，iOS 常丢掉会话 → 再按耳机完全没反应，只能点屏幕。
-  // 恢复靠 pause 事件切换：已软暂停时再收到 pause = 继续播放。
-  nudgeMediaAudio();
-  startKeepAlives();
+  // 暂停/播完后不能留静音轨在后台，否则 iOS 会把其他 App 的视频暂停。
+  stopKeepAlives();
+  stopMediaAudio();
   setupMediaSession(true);
   updatePlayUI();
   try{
@@ -888,7 +886,7 @@ function onRemotePauseOrToggle(){
   const now=Date.now();
   if(now-_remoteToggleAt<450) return;
   _remoteToggleAt=now;
-  // 静音轨仍在播时，单击几乎总是 pause；已软暂停则当作继续播放
+  // 已软暂停时收到远程 pause 仍按“继续”处理，兼容部分耳机的切换事件。
   if(isSoftPaused()) resumeFromRemote();
   else pausePlayback(true);
 }
@@ -973,11 +971,12 @@ function ensureMediaAudio(){
 function bindMediaAudioEvents(a){
   if(!a || a._srBound) return;
   a._srBound=true;
-  // 取下耳机 / 系统打断会 pause；会话未结束则续上，避免丢掉 Now Playing
+  // 取下耳机 / 系统打断会 pause；只有正在朗读时才续上。
+  // 逻辑软暂停（_mediaHold）不能单独触发续播，否则会抢其他 App 的音频焦点。
   a.addEventListener("pause", ()=>{
-    if(!_mediaHold && !userWantsPlay && !loopPlaying) return;
+    if(!userWantsPlay && !loopPlaying) return;
     setTimeout(()=>{
-      if(!_mediaHold && !userWantsPlay && !loopPlaying) return;
+      if(!userWantsPlay && !loopPlaying) return;
       nudgeMediaAudio();
       setupMediaSession(true);
       updateMediaSession();
@@ -1058,8 +1057,6 @@ function goPrev(fromRemote){
   else {
     stopVoiceAudio(true);
     try{ speechSynthesis.cancel(); }catch(e){}
-    if(_mediaHold) nudgeMediaAudio();
-    else if(loopPlaying || userWantsPlay) nudgeMediaAudio();
     render();
     updateMediaSession();
   }
@@ -1076,7 +1073,6 @@ function goNext(fromRemote){
   else {
     stopVoiceAudio(true);
     try{ speechSynthesis.cancel(); }catch(e){}
-    if(_mediaHold) nudgeMediaAudio();
     render();
     updateMediaSession();
   }
@@ -1190,7 +1186,7 @@ function startLoop(rate, opts){
       }, 350);
       return;
     }
-    // 播完后仍挂起会话，耳机单击可再播当前句
+    // 播完后记住当前句，但停止全部音频并让出系统音频通道。
     pausePlayback(false);
     if($("status") && lim>0 && state.idx >= playLen()-1) $("status").textContent="已到最后一句";
   };
