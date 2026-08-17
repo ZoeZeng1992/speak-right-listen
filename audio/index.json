@@ -151,6 +151,16 @@
       ],
       "seconds": 1.322
     },
+    "04905c4ae77bab50d6a63e3cc3e88cbbaf695658bca653fabf0b73b5b0432eed": {
+      "bytes": 9744,
+      "createdAt": "2026-08-17T14:13:12+00:00",
+      "en": "The emergency exit is there.",
+      "path": "audio/04/04905c4ae77bab50d6a63e3cc3e88cbbaf695658bca653fabf0b73b5b0432eed.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.801
+    },
     "0502dae184dbdec5373e71737d1fa30ab7038b94ba377f52610db3ee1dc80766": {
       "bytes": 11256,
       "createdAt": "2026-08-14T12:05:59+00:00",
@@ -200,6 +210,16 @@
         "chat"
       ],
       "seconds": 1.973
+    },
+    "087a1fc28e231cc43ba414a2bbca3d17222854e78c3c7a1199807f1385a5c453": {
+      "bytes": 6696,
+      "createdAt": "2026-08-17T14:13:02+00:00",
+      "en": "The grid is balanced.",
+      "path": "audio/08/087a1fc28e231cc43ba414a2bbca3d17222854e78c3c7a1199807f1385a5c453.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.288
     },
     "09df5494ec493f2b33e4bd6a902369b82a1ac862c7d7e88a7ff6b84629852b08": {
       "bytes": 8136,
@@ -461,6 +481,16 @@
       ],
       "seconds": 1.429
     },
+    "1b36771d542518d48a4092f74290866f8315f1842768fdd9031ea01c5f4355f3": {
+      "bytes": 7800,
+      "createdAt": "2026-08-17T14:13:18+00:00",
+      "en": "The GPS is working.",
+      "path": "audio/1b/1b36771d542518d48a4092f74290866f8315f1842768fdd9031ea01c5f4355f3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.536
+    },
     "1bc65f8940a456d818a490d6134a9db39b606113f87105f1f147c9d5f5654747": {
       "bytes": 7920,
       "createdAt": "2026-08-14T12:00:46+00:00",
@@ -520,6 +550,16 @@
         "chat"
       ],
       "seconds": 2.221
+    },
+    "1f9c490654ac64a9d874fc814b0681813b113b41b321e4946a310e22754f30b4": {
+      "bytes": 7968,
+      "createdAt": "2026-08-17T14:13:21+00:00",
+      "en": "The pharmacy is nearby.",
+      "path": "audio/1f/1f9c490654ac64a9d874fc814b0681813b113b41b321e4946a310e22754f30b4.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.523
     },
     "201128a624071a086a889cfa63e700f00d196c11f8f2b00208ec366a7e08ab5c": {
       "bytes": 14712,
@@ -730,6 +770,16 @@
         "chat"
       ],
       "seconds": 1.372
+    },
+    "2dd450e2b9ba17346d6161386a110ce1a7abe631d130f8b8a804c35f4de26b8e": {
+      "bytes": 10128,
+      "createdAt": "2026-08-17T14:13:08+00:00",
+      "en": "The departure time is confirmed.",
+      "path": "audio/2d/2dd450e2b9ba17346d6161386a110ce1a7abe631d130f8b8a804c35f4de26b8e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.947
     },
     "2dd9d8ba714aaf6eb1446ea709507d7159acbf9a7b402deecd916089c3bd73b1": {
       "bytes": 7176,
@@ -1331,6 +1381,16 @@
       ],
       "seconds": 1.608
     },
+    "4fd52f6d2b5aad33d6dc2f4b10e7081ffc07d8586478229d6ffa55d938aa9288": {
+      "bytes": 7368,
+      "createdAt": "2026-08-17T14:13:06+00:00",
+      "en": "The stand-up is at ten.",
+      "path": "audio/4f/4fd52f6d2b5aad33d6dc2f4b10e7081ffc07d8586478229d6ffa55d938aa9288.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.44
+    },
     "4fee965f5b0b77ae8dedee4b7f6e03a1f323281047fe3161cdb89fabd5d689e7": {
       "bytes": 12312,
       "createdAt": "2026-08-14T12:08:13+00:00",
@@ -1671,6 +1731,16 @@
       ],
       "seconds": 1.468
     },
+    "62407a541b7a4714fda8f37b230f74ad7cb028e11aadd72d4ffcb9bb257d01da": {
+      "bytes": 8688,
+      "createdAt": "2026-08-17T14:13:17+00:00",
+      "en": "The layover is three hours.",
+      "path": "audio/62/62407a541b7a4714fda8f37b230f74ad7cb028e11aadd72d4ffcb9bb257d01da.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.604
+    },
     "628c8cf7b6eebcc32b06bf70208c9d0eda48cabd729c847cbba2a081ec93e596": {
       "bytes": 8112,
       "createdAt": "2026-08-14T12:03:38+00:00",
@@ -1821,6 +1891,16 @@
       ],
       "seconds": 2.239
     },
+    "69cba1e482122e4e4efffea2292b925168bc5338d459f9092938a20ee1d826ca": {
+      "bytes": 6960,
+      "createdAt": "2026-08-17T14:13:20+00:00",
+      "en": "The Airbnb is cozy.",
+      "path": "audio/69/69cba1e482122e4e4efffea2292b925168bc5338d459f9092938a20ee1d826ca.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.311
+    },
     "6a5ecc944eeb505de4fbedf4abbde63a1ad484d0a29c47becb38948ce558a035": {
       "bytes": 7176,
       "createdAt": "2026-08-14T12:02:52+00:00",
@@ -1901,6 +1981,16 @@
       ],
       "seconds": 1.747
     },
+    "6df870db37c4fd364642f13d87e42b2f62ad63049d733a22046b44efde4a9efb": {
+      "bytes": 9984,
+      "createdAt": "2026-08-17T14:13:14+00:00",
+      "en": "The progress is at fifty percent.",
+      "path": "audio/6d/6df870db37c4fd364642f13d87e42b2f62ad63049d733a22046b44efde4a9efb.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.907
+    },
     "6e601efc24e328fb911a43750a95d6b2cbe8d17a799d3c588be219aef4a494bc": {
       "bytes": 7872,
       "createdAt": "2026-08-14T12:04:07+00:00",
@@ -1950,6 +2040,16 @@
         "speak"
       ],
       "seconds": 1.297
+    },
+    "734f0db223ec63ee9ea971b9210b7956924b9abc782bbfa20dbb3c6ee0149c07": {
+      "bytes": 10200,
+      "createdAt": "2026-08-17T14:13:16+00:00",
+      "en": "The service charge is included.",
+      "path": "audio/73/734f0db223ec63ee9ea971b9210b7956924b9abc782bbfa20dbb3c6ee0149c07.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.959
     },
     "73d186c170d72525fa6bc51c73e272e00b86f58b2c8a474bc620cd1d4cc1ac41": {
       "bytes": 7104,
@@ -2021,6 +2121,16 @@
       ],
       "seconds": 1.527
     },
+    "76db69a879a25aed739548114790224cc81d1d0ee80f562803a09c90004d0680": {
+      "bytes": 8112,
+      "createdAt": "2026-08-17T14:13:03+00:00",
+      "en": "The seat is a window seat.",
+      "path": "audio/76/76db69a879a25aed739548114790224cc81d1d0ee80f562803a09c90004d0680.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.631
+    },
     "78672c64fe586879fb761454b64c7b7f4931be637c4e6ad01f57a7ce3d948c34": {
       "bytes": 7560,
       "createdAt": "2026-08-14T12:05:24+00:00",
@@ -2030,6 +2140,16 @@
         "chat"
       ],
       "seconds": 1.506
+    },
+    "78db988222cfde921597b420a75120fb00366a6bd5d36c5b83fbebe3fd6a5567": {
+      "bytes": 6216,
+      "createdAt": "2026-08-17T14:13:03+00:00",
+      "en": "The upload failed.",
+      "path": "audio/78/78db988222cfde921597b420a75120fb00366a6bd5d36c5b83fbebe3fd6a5567.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.195
     },
     "7a331fa0b821d41bf441c7c24c2f230ad9dc75a79a32ea153a98e27ed49aa7b5": {
       "bytes": 23880,
@@ -2241,6 +2361,16 @@
       ],
       "seconds": 1.487
     },
+    "85d963a8eea804970ff7c804d72e5011ffad31287bb5a25d958974f43d1082fa": {
+      "bytes": 6264,
+      "createdAt": "2026-08-17T14:13:15+00:00",
+      "en": "The gym is packed.",
+      "path": "audio/85/85d963a8eea804970ff7c804d72e5011ffad31287bb5a25d958974f43d1082fa.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.235
+    },
     "86c9c09a9314437cacd0e1be2da06687e983640e2422bf7386d8a551295723cd": {
       "bytes": 8376,
       "createdAt": "2026-08-14T12:01:46+00:00",
@@ -2351,6 +2481,16 @@
       ],
       "seconds": 1.967
     },
+    "8c1a66fce459b1422175e5aac2dad8710de9515058ec2fc10dde446182dd9a48": {
+      "bytes": 5664,
+      "createdAt": "2026-08-17T14:13:13+00:00",
+      "en": "She is on the call.",
+      "path": "audio/8c/8c1a66fce459b1422175e5aac2dad8710de9515058ec2fc10dde446182dd9a48.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.137
+    },
     "8c35575512b5c66a5dda83688453b23ecfb6975e89b45f08073c588315e0d93c": {
       "bytes": 7872,
       "createdAt": "2026-08-14T12:03:49+00:00",
@@ -2460,6 +2600,26 @@
         "speak"
       ],
       "seconds": 1.294
+    },
+    "9299ed5a35a856d6a27f5277277d976f1d27d08d2997ca8b8e1e070a16570e65": {
+      "bytes": 6024,
+      "createdAt": "2026-08-17T14:13:16+00:00",
+      "en": "The package is here.",
+      "path": "audio/92/9299ed5a35a856d6a27f5277277d976f1d27d08d2997ca8b8e1e070a16570e65.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.19
+    },
+    "92e00c907f9ace2e076ae444708648b63831c51bb66837f4fa64ed6dfca8a69e": {
+      "bytes": 6720,
+      "createdAt": "2026-08-17T14:13:08+00:00",
+      "en": "The color is on brand.",
+      "path": "audio/92/92e00c907f9ace2e076ae444708648b63831c51bb66837f4fa64ed6dfca8a69e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.349
     },
     "934880bcd5567d63ceb05e511de3dbf6e7e0a3d3319dece74f552f88bd285021": {
       "bytes": 8064,
@@ -2580,6 +2740,16 @@
         "speak"
       ],
       "seconds": 1.33
+    },
+    "991587bf59d23f37f44a0d90457e27940376caaa0127355c1761de2dc560dde5": {
+      "bytes": 7008,
+      "createdAt": "2026-08-17T14:13:19+00:00",
+      "en": "You are in the wrong file.",
+      "path": "audio/99/991587bf59d23f37f44a0d90457e27940376caaa0127355c1761de2dc560dde5.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.329
     },
     "9ad3c3254d9fa11c918f357f6a05a6edcaf119d6cb276b283eb98bfd54c695ee": {
       "bytes": 8832,
@@ -2731,6 +2901,16 @@
       ],
       "seconds": 1.85
     },
+    "a25dd633c353288bd978a383b6d987639a828177c26bb84e9b6b617b726fb0c2": {
+      "bytes": 7248,
+      "createdAt": "2026-08-17T14:13:10+00:00",
+      "en": "The payment is pending.",
+      "path": "audio/a2/a25dd633c353288bd978a383b6d987639a828177c26bb84e9b6b617b726fb0c2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.399
+    },
     "a4014d9b708604a2a3ae999769630edc6df3af05bd2cfb641ba5377c785edf65": {
       "bytes": 6480,
       "createdAt": "2026-08-14T12:01:18+00:00",
@@ -2870,6 +3050,16 @@
         "speak"
       ],
       "seconds": 1.56
+    },
+    "a9e002c74e91ce3df75ffcbd8cd0b620f342126d0de0a1513a6d05b6a59ac72a": {
+      "bytes": 8136,
+      "createdAt": "2026-08-17T14:13:11+00:00",
+      "en": "The check-out time is noon.",
+      "path": "audio/a9/a9e002c74e91ce3df75ffcbd8cd0b620f342126d0de0a1513a6d05b6a59ac72a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.554
     },
     "aa9387f18a141ba1a459ea987733802e5e4e115411ba6717ce084129c690a9db": {
       "bytes": 6792,
@@ -3150,6 +3340,16 @@
         "chat"
       ],
       "seconds": 1.067
+    },
+    "b64932a44936d64f5a7601675fb09f714ed0d3d4e4ebab535c77931f59a5e857": {
+      "bytes": 6840,
+      "createdAt": "2026-08-17T14:13:19+00:00",
+      "en": "The bus stop is here.",
+      "path": "audio/b6/b64932a44936d64f5a7601675fb09f714ed0d3d4e4ebab535c77931f59a5e857.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.373
     },
     "b65b3fc41eae33ef9edeb90b232010bea84b2b6f39dec15855d80dd6377f68fd": {
       "bytes": 8040,
@@ -3681,6 +3881,16 @@
       ],
       "seconds": 1.677
     },
+    "cc28f7110e22cefe46da06acc5c9ca1a36d6adf01c5ef0df24f8dce47751b160": {
+      "bytes": 8376,
+      "createdAt": "2026-08-17T14:13:05+00:00",
+      "en": "The persona is updated.",
+      "path": "audio/cc/cc28f7110e22cefe46da06acc5c9ca1a36d6adf01c5ef0df24f8dce47751b160.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.626
+    },
     "ccbd982fcf45202c14def5ba03f171416023e9f9e9692faa47cdddf17a0ee0fd": {
       "bytes": 9960,
       "createdAt": "2026-08-14T12:07:33+00:00",
@@ -3931,6 +4141,16 @@
       ],
       "seconds": 2.397
     },
+    "dcbe9df91e2070e4b64bfa9ad182617df664fabc896ebff0c84b9bc7681aff4a": {
+      "bytes": 5688,
+      "createdAt": "2026-08-17T14:13:04+00:00",
+      "en": "The heater is on.",
+      "path": "audio/dc/dcbe9df91e2070e4b64bfa9ad182617df664fabc896ebff0c84b9bc7681aff4a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.138
+    },
     "dcddab2c5e715331584b50dc29b275704568c3e4779e4a51d5c6d760bede3841": {
       "bytes": 12360,
       "createdAt": "2026-08-14T12:06:08+00:00",
@@ -4110,6 +4330,16 @@
         "chat"
       ],
       "seconds": 1.701
+    },
+    "ea87ffc7de7f14bf7dc0bdd10d268840e18d0ba70739d6be15aee82679db01e6": {
+      "bytes": 9072,
+      "createdAt": "2026-08-17T14:13:13+00:00",
+      "en": "The radio button is selected.",
+      "path": "audio/ea/ea87ffc7de7f14bf7dc0bdd10d268840e18d0ba70739d6be15aee82679db01e6.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.785
     },
     "eb1a14993642c2ecae097c90c29b08a41d7e7607e94feea09dfa85f62092dbed": {
       "bytes": 7584,
@@ -4331,6 +4561,16 @@
       ],
       "seconds": 3.485
     },
+    "f65fef6aeb45d07ea68b8a746118c5951a10488bdcd0b4c3ed315db300a34ca8": {
+      "bytes": 10488,
+      "createdAt": "2026-08-17T14:13:07+00:00",
+      "en": "The release is scheduled for Friday.",
+      "path": "audio/f6/f65fef6aeb45d07ea68b8a746118c5951a10488bdcd0b4c3ed315db300a34ca8.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.015
+    },
     "f7d0c1293f2f25befd0dc850e065fa688d6055e2153a2f06eacfa65e79eb782f": {
       "bytes": 8976,
       "createdAt": "2026-08-14T12:02:32+00:00",
@@ -4400,6 +4640,16 @@
         "speak"
       ],
       "seconds": 2.056
+    },
+    "fb82e16b380c10d3452b4e0ef1db5e3342a47af4f636e2978b8c436ab4c25e75": {
+      "bytes": 7608,
+      "createdAt": "2026-08-17T14:13:09+00:00",
+      "en": "The feature is in beta.",
+      "path": "audio/fb/fb82e16b380c10d3452b4e0ef1db5e3342a47af4f636e2978b8c436ab4c25e75.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.547
     },
     "fbe8da28b2303900a1dd094e63465f8df9b5dd5d39638cae19e5334b3b0a7c2a": {
       "bytes": 10656,
@@ -4503,7 +4753,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-14T14:35:56+00:00",
+  "updatedAt": "2026-08-17T14:13:21+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
