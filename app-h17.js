@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260815-audio20";
+const APP_BUILD="20260817-audio21";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -41,7 +41,10 @@ let _pushTimer=null, _pushBusy=false;
 let _voiceAudio=null, _activeVoiceEn="";
 let _voiceAttemptSeq=0, _voiceRetryTimer=null, _voiceWatchdogTimer=null;
 let _loopRecoveryTimer=null, _loopRecoveryCount=0;
-const VOICE_STALL_MS=4500;
+const VOICE_STALL_MS=1800;
+const VOICE_WATCHDOG_TICK_MS=500;
+const VOICE_RETRY_BASE_MS=120;
+const VOICE_RETRY_MAX_MS=1200;
 const VOICE_MAX_RESUME_TRIES=8;
 const _audioSlots=new Map();
 let _fallbackNoticeEn="";
@@ -990,9 +993,9 @@ function yieldMediaKeeperToVoice(){
 }
 function nudgeMediaAudio(){
   try{
-    // iOS 偶尔会让两个 HTMLAudio 互相抢占会话。声音 A 正在发声时，
-    // 当前播放器本身就能维持媒体会话，不要再启动静音保活轨。
-    if(_voiceAudio && _activeVoiceEn && !_voiceAudio.paused && !_voiceAudio.ended) return;
+    // 声音 A 的一次连续循环会话（包括每遍之间的 400ms 间隔和意外暂停）
+    // 始终由真正的播放器持有音频通道；不要反复切到静音轨再切回来。
+    if(_activeVoiceEn && userWantsPlay && loopPlaying) return;
     const a=ensureMediaAudio();
     if(a.paused){
       const p=a.play();
@@ -1277,6 +1280,16 @@ function startLoop(rate, opts){
       notifySystemFallback(text,reason||"播放失败");
       playSystemOnce(false);
     };
+    const recordCurrentProgress=()=>{
+      const nowTime=a.currentTime||0;
+      if(lastTime<0||nowTime>lastTime+.02||nowTime<lastTime){
+        lastTime=nowTime;
+        lastProgressAt=Date.now();
+        resumeTries=0;
+        return true;
+      }
+      return false;
+    };
     let armWatchdog, scheduleResume;
     armWatchdog=()=>{
       if(_voiceWatchdogTimer) clearTimeout(_voiceWatchdogTimer);
@@ -1284,10 +1297,12 @@ function startLoop(rate, opts){
         _voiceWatchdogTimer=null;
         if(!isActive()) return;
         if(a.ended||nearEnd()){ complete(); return; }
+        // iOS 息屏时可能少发 timeupdate；直接读取 currentTime，避免把正常播放误判为卡住。
+        if(!a.paused&&recordCurrentProgress()){ armWatchdog(); return; }
         if(a.paused){ scheduleResume("被系统暂停",false); return; }
         if(Date.now()-lastProgressAt>VOICE_STALL_MS){ scheduleResume("播放卡住",true); return; }
         armWatchdog();
-      },1200);
+      },VOICE_WATCHDOG_TICK_MS);
     };
     scheduleResume=(reason,restart)=>{
       if(!isActive()||resumePending) return;
@@ -1296,7 +1311,7 @@ function startLoop(rate, opts){
       resumePending=true;
       if(a.paused) nudgeMediaAudio();
       if(_voiceWatchdogTimer){ clearTimeout(_voiceWatchdogTimer); _voiceWatchdogTimer=null; }
-      const delay=Math.min(2400,180*Math.pow(2,Math.min(resumeTries,4)));
+      const delay=Math.min(VOICE_RETRY_MAX_MS,VOICE_RETRY_BASE_MS*Math.pow(2,Math.min(resumeTries,4)));
       _voiceRetryTimer=setTimeout(()=>{
         _voiceRetryTimer=null;
         if(!isActive()){ resumePending=false; return; }
@@ -1360,12 +1375,7 @@ function startLoop(rate, opts){
       };
       a.ontimeupdate=()=>{
         if(!isActive()) return;
-        const nowTime=a.currentTime||0;
-        if(lastTime<0||nowTime>lastTime+.02||nowTime<lastTime){
-          lastTime=nowTime;
-          lastProgressAt=Date.now();
-          resumeTries=0;
-        }
+        recordCurrentProgress();
       };
       a.onwaiting=armWatchdog;
       a.onstalled=()=>scheduleResume("播放卡住",true);
