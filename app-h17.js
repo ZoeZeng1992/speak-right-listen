@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-pip2";
+const APP_BUILD="20260817-pip3";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -680,8 +680,6 @@ function recordPractice(){
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     v:4, updatedAt:Date.now(), items:state.items, source:"local"
   }));
-  // 点「不会」就是没听懂 —— 直接把中文亮出来，省得再去点一次「中文」
-  state.showCn = true;
   savePrefs();
   // 听练中途不重排：只更新次数，避免点「不会」后顺序乱跳
   render();
