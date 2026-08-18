@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-audio21";
+const APP_BUILD="20260817-pip1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1585,6 +1585,105 @@ window.srRefresh = async function srRefresh(ev){
   return false;
 };
 if($("refreshBtn")) $("refreshBtn").onclick=window.srRefresh;
+
+/* ================= 桌面小窗（Document Picture-in-Picture） =================
+   把练习区的真实 DOM 节点搬进一个常驻最上层的小窗，练听力时可以一边做别的事。
+   用「搬移节点」而不是「复制一份 UI」：小窗和主页面共用同一批节点和同一套事件，
+   状态不可能不同步（这个 app 的 playOrder / idx / fails 最怕两头各记一份）。
+   iOS Safari 不支持这个 API，按钮会保持隐藏，手机端行为完全不变。       */
+const PIP_NODE_IDS = ["stage", "transport", "grade", "statsLine"];
+let _pipWin = null, _pipSlots = [];
+
+function pipNodes(){
+  // stage / transport / grade 没有 id，用 class 取；statsLine 有 id
+  const wrap = document.getElementById("player");
+  if(!wrap) return [];
+  const out = [];
+  [".stage", ".transport", ".grade"].forEach(sel => {
+    const el = wrap.querySelector(sel);
+    if(el) out.push(el);
+  });
+  const st = $("statsLine");
+  if(st) out.push(st);
+  return out;
+}
+
+function copyStylesInto(win){
+  // PiP 窗口不继承主文档样式，要把规则搬过去
+  for(const sheet of document.styleSheets){
+    try{
+      const css = [...sheet.cssRules].map(r => r.cssText).join("\n");
+      const el = win.document.createElement("style");
+      el.textContent = css;
+      win.document.head.appendChild(el);
+    }catch(e){
+      // 跨域样式表（如 Google Fonts）读不到 cssRules，改成用 link 引一份
+      if(sheet.href){
+        const link = win.document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = sheet.href;
+        win.document.head.appendChild(link);
+      }
+    }
+  }
+}
+
+function restoreFromPip(){
+  // 把节点搬回主页面原位。用占位符记住位置，避免顺序错乱
+  _pipSlots.forEach(({ node, slot }) => {
+    if(slot && slot.parentNode) slot.parentNode.replaceChild(node, slot);
+  });
+  _pipSlots = [];
+  const hint = document.getElementById("pipHint");
+  if(hint) hint.remove();
+  _pipWin = null;
+  const b = $("pipBtn");
+  if(b) b.textContent = "小窗";
+}
+
+async function openPip(){
+  if(!("documentPictureInPicture" in window)) return;
+  if(_pipWin){ try{ _pipWin.close(); }catch(e){} return; }   // 再点一次 = 收回
+  const nodes = pipNodes();
+  if(!nodes.length) return;
+
+  const win = await documentPictureInPicture.requestWindow({ width: 400, height: 340 });
+  _pipWin = win;
+  copyStylesInto(win);
+  win.document.body.classList.add("pip-window");
+
+  // 先放占位符再搬，关闭时才能原位还回去
+  _pipSlots = nodes.map(node => {
+    const slot = document.createComment("pip-slot");
+    node.parentNode.insertBefore(slot, node);
+    win.document.body.appendChild(node);
+    return { node, slot };
+  });
+
+  // 主页面留一句说明，否则中间空一块会让人以为坏了
+  const player = document.getElementById("player");
+  if(player && !document.getElementById("pipHint")){
+    const hint = document.createElement("div");
+    hint.className = "pip-hint";
+    hint.id = "pipHint";
+    hint.textContent = "练习区已放进桌面小窗。关掉小窗就回到这里。";
+    player.insertBefore(hint, player.firstChild);
+  }
+  const b = $("pipBtn");
+  if(b) b.textContent = "收回";
+
+  // 用户直接关小窗时也要还原
+  win.addEventListener("pagehide", restoreFromPip);
+}
+
+if($("pipBtn")){
+  // 只有支持的浏览器才露出这个按钮（iOS Safari 不支持，手机上看不到）
+  if("documentPictureInPicture" in window){
+    $("pipBtn").style.display = "";
+    $("pipBtn").onclick = () => { openPip().catch(e => toast("小窗打开失败：" + ((e&&e.message)||e), true)); };
+  }
+}
+
 $("showCnBtn").onclick=()=>{ state.showCn=!state.showCn; savePrefs(); render(); };
 $("showNoteBtn").onclick=()=>{ state.showNote=!state.showNote; savePrefs(); render(); };
 $("loopSeg").onclick=e=>{

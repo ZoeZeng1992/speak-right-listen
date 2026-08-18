@@ -74,6 +74,23 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
+  /* ---- 桌面小窗（Document Picture-in-Picture）----
+     小窗里是从主页面搬过去的同一批真实节点，不是副本，所以状态天然同步。
+     下面这些规则只在 body.pip-window 里生效，不影响主页面。 */
+  body.pip-window{margin:0;padding:12px 14px;background:var(--bg,#f3f4f0);font-family:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif}
+  body.pip-window .stage{margin:0 0 10px}
+  body.pip-window .en{font-size:26px;line-height:1.25;margin:6px 0}
+  body.pip-window .panel{font-size:14px}
+  body.pip-window .transport{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:8px;margin-bottom:8px}
+  body.pip-window .transport .btn{height:44px;font-size:15px}
+  body.pip-window .grade{margin:0 0 6px}
+  body.pip-window .grade .btn{height:40px;font-size:15px}
+  body.pip-window .statsline{margin:0;text-align:center;font-size:13px}
+  body.pip-window .toggles{margin-top:4px}
+  body.pip-window .note{display:none}          /* 小窗放不下备注 */
+  .pip-away{display:none !important}           /* 节点搬走后，主页面留个占位提示 */
+  .pip-hint{margin:10px 0;padding:14px;border-radius:12px;background:#eef4ff;border:1px solid #cfe0ff;
+    color:#26467a;font-size:14px;line-height:1.6;text-align:center}
   .icon-btn{
     height:40px;padding:0 14px;border-radius:999px;
     border:1px solid var(--line-strong);
@@ -319,6 +336,7 @@
     </div>
     <button class="icon-btn" type="button" id="refreshBtn"
       onclick="return (window.srRefresh ? window.srRefresh(event) : (alert('页面还是旧版。请删掉桌面图标，用 Safari 打开最新链接后重新添加到主屏幕。'), false))">刷新</button>
+    <button class="icon-btn" type="button" id="pipBtn" style="display:none" title="把练习区放进桌面小窗，始终浮在最上层">小窗</button>
   </header>
 
   <section class="setup" id="setup">
