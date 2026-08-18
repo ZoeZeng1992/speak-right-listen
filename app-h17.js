@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-pip1";
+const APP_BUILD="20260817-pip2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -11,7 +11,12 @@ const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_WINDOW_BEHIND=1;
 const AUDIO_WINDOW_AHEAD=2;
 
-const $ = id => document.getElementById(id);
+let _pipWin = null, _pipSlots = [];
+/* 节点被搬进桌面小窗后就不在主文档里了，document.getElementById 会返回 null，
+   render() 之类直接 .textContent 就抛错 —— 文案卡死、连播中断都是这么来的。
+   所以 $ 必须两个文档都找。 */
+const $ = id => document.getElementById(id)
+  || ((_pipWin && !_pipWin.closed) ? _pipWin.document.getElementById(id) : null);
 function setPlayMsg(text, cls){
   const el=$("playMsg");
   if(!el) return;
@@ -675,6 +680,8 @@ function recordPractice(){
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     v:4, updatedAt:Date.now(), items:state.items, source:"local"
   }));
+  // 点「不会」就是没听懂 —— 直接把中文亮出来，省得再去点一次「中文」
+  state.showCn = true;
   savePrefs();
   // 听练中途不重排：只更新次数，避免点「不会」后顺序乱跳
   render();
@@ -1592,14 +1599,13 @@ if($("refreshBtn")) $("refreshBtn").onclick=window.srRefresh;
    状态不可能不同步（这个 app 的 playOrder / idx / fails 最怕两头各记一份）。
    iOS Safari 不支持这个 API，按钮会保持隐藏，手机端行为完全不变。       */
 const PIP_NODE_IDS = ["stage", "transport", "grade", "statsLine"];
-let _pipWin = null, _pipSlots = [];
 
 function pipNodes(){
   // stage / transport / grade 没有 id，用 class 取；statsLine 有 id
   const wrap = document.getElementById("player");
   if(!wrap) return [];
   const out = [];
-  [".stage", ".transport", ".grade"].forEach(sel => {
+  [".stage", ".status", ".transport", ".grade"].forEach(sel => {
     const el = wrap.querySelector(sel);
     if(el) out.push(el);
   });
@@ -1647,7 +1653,7 @@ async function openPip(){
   const nodes = pipNodes();
   if(!nodes.length) return;
 
-  const win = await documentPictureInPicture.requestWindow({ width: 400, height: 340 });
+  const win = await documentPictureInPicture.requestWindow({ width: 300, height: 208 });
   _pipWin = win;
   copyStylesInto(win);
   win.document.body.classList.add("pip-window");
