@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-pip3";
+const APP_BUILD="20260817-pip4";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1651,7 +1651,7 @@ async function openPip(){
   const nodes = pipNodes();
   if(!nodes.length) return;
 
-  const win = await documentPictureInPicture.requestWindow({ width: 300, height: 208 });
+  const win = await documentPictureInPicture.requestWindow({ width: 300, height: 252 });
   _pipWin = win;
   copyStylesInto(win);
   win.document.body.classList.add("pip-window");
