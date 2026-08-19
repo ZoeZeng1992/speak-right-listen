@@ -211,6 +211,16 @@
       ],
       "seconds": 1.973
     },
+    "083843bd607418aea44fb0a6e06cfbfe4faadbae6698844afd848be6329dc723": {
+      "bytes": 11640,
+      "createdAt": "2026-08-19T00:06:32+00:00",
+      "en": "No, my boss hasn't said anything yet.",
+      "path": "audio/08/083843bd607418aea44fb0a6e06cfbfe4faadbae6698844afd848be6329dc723.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.223
+    },
     "087a1fc28e231cc43ba414a2bbca3d17222854e78c3c7a1199807f1385a5c453": {
       "bytes": 6696,
       "createdAt": "2026-08-17T14:13:02+00:00",
@@ -391,6 +401,16 @@
       ],
       "seconds": 1.669
     },
+    "16469ce90f6c5759b6816e7f70c0d75cb124a122a946c581ae482fd96a4c7ad3": {
+      "bytes": 7752,
+      "createdAt": "2026-08-19T00:06:21+00:00",
+      "en": "That's a huge milestone",
+      "path": "audio/16/16469ce90f6c5759b6816e7f70c0d75cb124a122a946c581ae482fd96a4c7ad3.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.532
+    },
     "173f520e088902d1d9594ac418004439facc30716f3c82dba3bf635a83128f60": {
       "bytes": 10992,
       "createdAt": "2026-08-14T12:06:55+00:00",
@@ -411,6 +431,16 @@
       ],
       "seconds": 1.23
     },
+    "17cd8e115cf9e0f9bb1a1d466bf50d221760df19691db759dc98482b5e4eb374": {
+      "bytes": 12888,
+      "createdAt": "2026-08-19T00:06:30+00:00",
+      "en": "Have your leaders given you any feedback on it yet?",
+      "path": "audio/17/17cd8e115cf9e0f9bb1a1d466bf50d221760df19691db759dc98482b5e4eb374.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.456
+    },
     "185b3ccaf6b2f6ba0015e3db25a580c69a7a6698dd06d68e7596a3295856696d": {
       "bytes": 9336,
       "createdAt": "2026-08-14T12:01:15+00:00",
@@ -420,6 +450,16 @@
         "speak"
       ],
       "seconds": 1.798
+    },
+    "18b687dc24239e7bab67f54fe4fd4eac2914f809b81191f28e02f182926e7f46": {
+      "bytes": 8712,
+      "createdAt": "2026-08-19T00:06:20+00:00",
+      "en": "how's your week been so far?",
+      "path": "audio/18/18b687dc24239e7bab67f54fe4fd4eac2914f809b81191f28e02f182926e7f46.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.636
     },
     "19466d61661beadac3e47a8516d0951bc357b374fa3c05a42e9680ca48265bfa": {
       "bytes": 5784,
@@ -510,6 +550,16 @@
         "chat"
       ],
       "seconds": 1.24
+    },
+    "1ca2a00cb4486aebe2d7ee2724d224edaccf13407456120ded425e991605530b": {
+      "bytes": 11880,
+      "createdAt": "2026-08-19T00:06:34+00:00",
+      "en": "the presentation didn’t require feedback",
+      "path": "audio/1c/1ca2a00cb4486aebe2d7ee2724d224edaccf13407456120ded425e991605530b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.555
     },
     "1cb59263d5625b2531895cddd4945a020d70531ae37930d2fddf177a529227aa": {
       "bytes": 7704,
@@ -771,6 +821,16 @@
       ],
       "seconds": 1.372
     },
+    "2d9019f73392f30050a7de4daa07eba410db6e9fe02c72b4062b95dfbae1cbc0": {
+      "bytes": 15912,
+      "createdAt": "2026-08-19T00:06:42+00:00",
+      "en": "Have you ever taken advantage of a slow week like this",
+      "path": "audio/2d/2d9019f73392f30050a7de4daa07eba410db6e9fe02c72b4062b95dfbae1cbc0.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.99
+    },
     "2dd450e2b9ba17346d6161386a110ce1a7abe631d130f8b8a804c35f4de26b8e": {
       "bytes": 10128,
       "createdAt": "2026-08-17T14:13:08+00:00",
@@ -871,6 +931,26 @@
       ],
       "seconds": 1.558
     },
+    "30c29dc2aaac502d900076ce1173d351a37cfe10015c6c9c7a45f9d9241b087e": {
+      "bytes": 10536,
+      "createdAt": "2026-08-19T00:06:40+00:00",
+      "en": "Enjoy the downtime while it lasts!",
+      "path": "audio/30/30c29dc2aaac502d900076ce1173d351a37cfe10015c6c9c7a45f9d9241b087e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.984
+    },
+    "3244b4b15f5f4f3927f61c010cbca6fb51e422ed179a772cf2af88d071bc4711": {
+      "bytes": 18216,
+      "createdAt": "2026-08-19T00:06:23+00:00",
+      "en": "Have you ever presented a big prototype like that to stakeholders",
+      "path": "audio/32/3244b4b15f5f4f3927f61c010cbca6fb51e422ed179a772cf2af88d071bc4711.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.692
+    },
     "33e19a836285f0ccbced40aa660ea51e472301a65a09cc100817fa143b3de107": {
       "bytes": 7248,
       "createdAt": "2026-08-14T14:35:42+00:00",
@@ -920,6 +1000,16 @@
         "speak"
       ],
       "seconds": 1.496
+    },
+    "37a9c033f348f6dac6444c13df0f4a8aaa10b2bbaccd5a728c1290c9c9ba0cbd": {
+      "bytes": 17736,
+      "createdAt": "2026-08-19T00:06:27+00:00",
+      "en": "Before that, I hadn't had any opportunities to present a prototype",
+      "path": "audio/37/37a9c033f348f6dac6444c13df0f4a8aaa10b2bbaccd5a728c1290c9c9ba0cbd.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.624
     },
     "380124e24b481de9a3f2c445a215497f7ab3c29a2657ebac06d93ad166abb55c": {
       "bytes": 7056,
@@ -1291,6 +1381,16 @@
       ],
       "seconds": 1.589
     },
+    "49f71b479018621583893a211579578b4927b9286cbcdf96c050e83d370b412b": {
+      "bytes": 20136,
+      "createdAt": "2026-08-19T00:06:29+00:00",
+      "en": "Before that, I hadn't really had the chance to pitch anything to the big bosses.",
+      "path": "audio/49/49f71b479018621583893a211579578b4927b9286cbcdf96c050e83d370b412b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.077
+    },
     "4acec68bd336fa92588ee7cefaa6bfc457c3b33f86509fe365aa8b53ccf2ccfd": {
       "bytes": 9552,
       "createdAt": "2026-08-14T12:01:03+00:00",
@@ -1591,6 +1691,16 @@
       ],
       "seconds": 1.52
     },
+    "5bd15ebf33fc582eab42e3f62a3a4490db0bc77e6fde6417e7c7d6ff040fa267": {
+      "bytes": 7608,
+      "createdAt": "2026-08-19T00:06:31+00:00",
+      "en": "It can be pretty nerve-wracking",
+      "path": "audio/5b/5bd15ebf33fc582eab42e3f62a3a4490db0bc77e6fde6417e7c7d6ff040fa267.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.54
+    },
     "5ccca3e958516dfbfc28f3abe7422070d0139ca965d1ebefd965d6f1139ebecd": {
       "bytes": 4920,
       "createdAt": "2026-08-14T12:05:47+00:00",
@@ -1690,6 +1800,16 @@
         "chat"
       ],
       "seconds": 3.231
+    },
+    "6127e1497a3380d36cefec8b00537853cb27b664191a63cfc6ffcbe2e2f718b9": {
+      "bytes": 12456,
+      "createdAt": "2026-08-19T00:06:43+00:00",
+      "en": "I have been studying English and using the tool",
+      "path": "audio/61/6127e1497a3380d36cefec8b00537853cb27b664191a63cfc6ffcbe2e2f718b9.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.466
     },
     "613c36c1847cf21fadf04eeb0a17e78d6ed7d598ec9de2f3c2e9a063b913edcd": {
       "bytes": 6000,
@@ -2021,6 +2141,16 @@
       ],
       "seconds": 1.907
     },
+    "6e2574104827dd98afee0bf4060ab0d4cf721f54b825251c42005988e57b45be": {
+      "bytes": 4584,
+      "createdAt": "2026-08-19T00:06:42+00:00",
+      "en": "advantage",
+      "path": "audio/6e/6e2574104827dd98afee0bf4060ab0d4cf721f54b825251c42005988e57b45be.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.9
+    },
     "6e601efc24e328fb911a43750a95d6b2cbe8d17a799d3c588be219aef4a494bc": {
       "bytes": 7872,
       "createdAt": "2026-08-14T12:04:07+00:00",
@@ -2240,6 +2370,16 @@
         "speak"
       ],
       "seconds": 1.267
+    },
+    "7e2dd939c80738f6b87290584691e9e75ce228ae0cd91597f72ee0b6b17e9f83": {
+      "bytes": 8808,
+      "createdAt": "2026-08-19T00:06:38+00:00",
+      "en": "no work has been assigned to me.",
+      "path": "audio/7e/7e2dd939c80738f6b87290584691e9e75ce228ae0cd91597f72ee0b6b17e9f83.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.697
     },
     "7e7fa0756a81857eb29085af8642c2b23a3b8f43ce65a86c919f275deaf8efd9": {
       "bytes": 22560,
@@ -2931,6 +3071,16 @@
       ],
       "seconds": 1.85
     },
+    "a259eb112676267255186ca73ef748cff910872712192293f18de9d632e96290": {
+      "bytes": 17712,
+      "createdAt": "2026-08-19T00:06:33+00:00",
+      "en": "Have you ever had to wait this long for feedback on a design before?",
+      "path": "audio/a2/a259eb112676267255186ca73ef748cff910872712192293f18de9d632e96290.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.566
+    },
     "a25dd633c353288bd978a383b6d987639a828177c26bb84e9b6b617b726fb0c2": {
       "bytes": 7248,
       "createdAt": "2026-08-17T14:13:10+00:00",
@@ -3110,6 +3260,16 @@
         "speak"
       ],
       "seconds": 1.546
+    },
+    "abb7a51aad752e93df2f1f297aba15bc339708a51c6f7763395c5e3a78f7289e": {
+      "bytes": 7416,
+      "createdAt": "2026-08-19T00:06:26+00:00",
+      "en": "was this your first time?",
+      "path": "audio/ab/abb7a51aad752e93df2f1f297aba15bc339708a51c6f7763395c5e3a78f7289e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.438
     },
     "abf00ac6b6a4447ce38e1be69ce6270a09e9dc750600fdfbcee3e6c05a37e667": {
       "bytes": 8928,
@@ -3441,6 +3601,16 @@
       ],
       "seconds": 1.017
     },
+    "b89606a529831fd275e19aabe2605683d330707f679a15efa8e96ca481ef6d4b": {
+      "bytes": 10872,
+      "createdAt": "2026-08-19T00:06:35+00:00",
+      "en": "back then I didn’t have to get feedback",
+      "path": "audio/b8/b89606a529831fd275e19aabe2605683d330707f679a15efa8e96ca481ef6d4b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.054
+    },
     "b8cab532ee0a40e0fa272e628192d6604ef4097f48f18de0b84fdc4b52e74c73": {
       "bytes": 7248,
       "createdAt": "2026-08-14T12:01:11+00:00",
@@ -3570,6 +3740,16 @@
         "speak"
       ],
       "seconds": 1.599
+    },
+    "c00b74b0df6a9a83183df898b356b8589d56b1558a142b95923e9b4e9f5ba59d": {
+      "bytes": 8424,
+      "createdAt": "2026-08-19T00:06:37+00:00",
+      "en": "I haven't had anything to do",
+      "path": "audio/c0/c00b74b0df6a9a83183df898b356b8589d56b1558a142b95923e9b4e9f5ba59d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.648
     },
     "c0169f8fa45cf8db9242c17614752a4ad120b28107a49b91b884698f8a5222ae": {
       "bytes": 12936,
@@ -3780,6 +3960,16 @@
         "chat"
       ],
       "seconds": 0.903
+    },
+    "c650396ce749f288b69f662cfa7cc21145431eec3f195720bf8366052d953848": {
+      "bytes": 28632,
+      "createdAt": "2026-08-19T00:06:25+00:00",
+      "en": "That's a huge milestone. Have you ever presented a big prototype like that to stakeholders before",
+      "path": "audio/c6/c650396ce749f288b69f662cfa7cc21145431eec3f195720bf8366052d953848.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 5.908
     },
     "c6738d1e217a0c6207c7f9a82b6b4c4581d0f0d4b6ba3d585d39494fe73f7b19": {
       "bytes": 7152,
@@ -4571,6 +4761,16 @@
       ],
       "seconds": 1.478
     },
+    "f3c72d7838767c6af11b8279aa71db447b44e531bb2dc906cb35211bedeb059d": {
+      "bytes": 6672,
+      "createdAt": "2026-08-19T00:06:36+00:00",
+      "en": "I've been totally free",
+      "path": "audio/f3/f3c72d7838767c6af11b8279aa71db447b44e531bb2dc906cb35211bedeb059d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.31
+    },
     "f4f311562d132e4f5aa0599d4a4b33d9a7de40221d01a9c3617c4c6166a0e825": {
       "bytes": 7320,
       "createdAt": "2026-08-14T12:02:08+00:00",
@@ -4670,6 +4870,16 @@
         "speak"
       ],
       "seconds": 1.482
+    },
+    "fab3624267ec140a802bc5fea531eac7b0fc48d009d7172ce879f6d91847227f": {
+      "bytes": 21168,
+      "createdAt": "2026-08-19T00:06:39+00:00",
+      "en": "Nah, I've been super slow lately. Nothing's come across my desk yet.",
+      "path": "audio/fa/fab3624267ec140a802bc5fea531eac7b0fc48d009d7172ce879f6d91847227f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.277
     },
     "fb01441f5750fa4b249d0226f19cbaa14dcb7d5d6feb9761c73b4987b7073534": {
       "bytes": 8520,
@@ -4813,7 +5023,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-17T15:23:17+00:00",
+  "updatedAt": "2026-08-19T00:06:43+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
