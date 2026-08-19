@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-audio22";
+const APP_BUILD="20260817-cn1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -170,7 +170,23 @@ const PACK_SENTENCE_FIXES = {
   "I don't like this button.": { cn:"我不喜欢这个按钮。" },
   "I don't like this menu.": { cn:"我不喜欢这个菜单。" },
   "They are walking to the station.": { cn:"他们正走去车站。" },
-  "The tent is waterproof.": { cn:"这顶帐篷是防水的。" }
+  "The tent is waterproof.": { cn:"这顶帐篷是防水的。" },
+  "He has chosen a new color.": { cn:"他已经选了一个新颜色。" },
+  "She has chosen a new color.": { cn:"她已经选了一个新颜色。" },
+  "She has picked a new color.": { cn:"她已经选好一个新颜色了。" },
+  "He has booked a taxi.": { cn:"他已经叫了一辆出租车。" },
+  "We have moved to a new tool.": { cn:"我们已经换了一个新工具。" },
+  "She has tried a darker background.": { cn:"她试过一种更深的背景。" },
+  "They have moved to a new flat.": { cn:"他们搬到一套新公寓了。" },
+  "I have set an alarm.": { cn:"我定了一个闹钟。" },
+  "I have not booked a hotel yet.": { cn:"我还没订一家酒店。" },
+  "We have never stayed in a hostel.": { cn:"我们从没住过一家青旅。" },
+  "They have joined a walking tour.": { cn:"他们参加了一个步行游览团。" },
+  "I have booked a rental car.": { cn:"我租好了一辆车。" },
+  "He has reviewed my work.": { cn:"他已经评审过我的稿子了。" },
+  "He has checked the contrast.": { cn:"他已经检查过对比度了。" },
+  "I have checked the weather.": { cn:"我查过天气预报了。" },
+  "She has finished her research.": { cn:"她已经做完她那部分调研了。" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
