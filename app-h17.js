@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-cn1";
+const APP_BUILD="20260817-cn2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -186,7 +186,16 @@ const PACK_SENTENCE_FIXES = {
   "He has reviewed my work.": { cn:"他已经评审过我的稿子了。" },
   "He has checked the contrast.": { cn:"他已经检查过对比度了。" },
   "I have checked the weather.": { cn:"我查过天气预报了。" },
-  "She has finished her research.": { cn:"她已经做完她那部分调研了。" }
+  "She has finished her research.": { cn:"她已经做完她那部分调研了。" },
+  "They have flown home.": { cn:"他们已经飞回家了。" },
+  "We have met the deadline.": { cn:"我们赶上截止时间了。" },
+  "She has joined a gym.": { cn:"她加入了一家健身房。" },
+  "He has already left home.": { cn:"他已经离开家了。" },
+  "She has felt the same way.": { cn:"她也有同样的感觉。" },
+  "She has taken good notes.": { cn:"她笔记记得很好。" },
+  "We have finished our meal.": { cn:"我们把这顿饭吃完了。" },
+  "We have improved the onboarding.": { cn:"我们已经把新手引导改进了。" },
+  "We have agreed on the layout.": { cn:"布局我们已经达成一致了。" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
