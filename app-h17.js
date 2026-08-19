@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-pp1";
+const APP_BUILD="20260817-pl1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -195,7 +195,25 @@ const PACK_SENTENCE_FIXES = {
   "She has taken good notes.": { cn:"她笔记记得很好。" },
   "We have finished our meal.": { cn:"我们把这顿饭吃完了。" },
   "We have improved the onboarding.": { cn:"我们已经把新手引导改进了。" },
-  "We have agreed on the layout.": { cn:"布局我们已经达成一致了。" }
+  "We have agreed on the layout.": { cn:"布局我们已经达成一致了。" },
+  "He has talked to the users.": { cn:"他已经和这些用户聊过了。" },
+  "She has finished the icons.": { cn:"她已经做完这些图标了。" },
+  "She has read your notes.": { cn:"她已经看了你那些备注。" },
+  "I have finished the wireframes.": { cn:"我已经画完这些线框图了。" },
+  "I have exported the assets.": { cn:"我已经把这些素材导出来了。" },
+  "I have renamed the layers.": { cn:"我已经把这些图层重新命名了。" },
+  "Have you finished the icons?": { cn:"这些图标你做完了吗？" },
+  "I have uploaded the screenshots.": { cn:"我已经把这些截图传上去了。" },
+  "He has prepared the slides.": { cn:"他已经把这些演示稿准备好了。" },
+  "She has reduced the steps.": { cn:"她已经把这些步骤减少了。" },
+  "She has put the icons in a folder.": { cn:"她把这些图标放进一个文件夹了。" },
+  "I have marked the changes.": { cn:"我已经把这些改动标出来了。" },
+  "I have sorted the layers.": { cn:"我把这些图层整理好了。" },
+  "He has forgotten his keys.": { cn:"他把那几把钥匙忘了。" },
+  "Have you seen my keys?": { cn:"你看见我那几把钥匙了吗？" },
+  "She has turned off the lights.": { cn:"她把灯都关了。" },
+  "I have understood the rules.": { cn:"这些规则我明白了。" },
+  "Have you booked the tickets?": { cn:"那几张票你订了吗？" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
