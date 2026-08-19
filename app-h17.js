@@ -3,7 +3,7 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-pl1";
+const APP_BUILD="20260817-sweep1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -213,7 +213,20 @@ const PACK_SENTENCE_FIXES = {
   "Have you seen my keys?": { cn:"你看见我那几把钥匙了吗？" },
   "She has turned off the lights.": { cn:"她把灯都关了。" },
   "I have understood the rules.": { cn:"这些规则我明白了。" },
-  "Have you booked the tickets?": { cn:"那几张票你订了吗？" }
+  "Have you booked the tickets?": { cn:"那几张票你订了吗？" },
+  "He has made a simpler version.": { cn:"他已经做了一个更简单的版本。" },
+  "She has never missed a deadline.": { cn:"她从没错过一次截止时间。" },
+  "We have booked a table.": { cn:"我们订好一个位子了。" },
+  "I have booked a table.": { cn:"我已经订好一个位子了。" },
+  "I have made a decision.": { cn:"我已经做了一个决定。" },
+  "He has read your notes.": { cn:"他已经看了你那些备注。" },
+  "She had left a comment before I opened the file.": { cn:"我打开文件之前，她就留了一条评论。" },
+  "They had hired a designer before I applied.": { cn:"我投简历之前，他们就招到一位设计师了。" },
+  "They had moved to a new tool before last year.": { cn:"去年之前，他们就换了一个新工具。" },
+  "They had found a restaurant before we asked.": { cn:"我们问之前，他们就找到一家餐厅了。" },
+  "We had agreed on the layout before the call.": { cn:"开会之前，我们就对布局达成一致了。" },
+  "He had grown vegetables before he had a garden.": { en:"He had grown some vegetables before he moved.", cn:"他搬家之前，种过一些菜。" },
+  "He had grown some vegetables before he moved.": { cn:"他搬家之前，种过一些菜。" }
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
