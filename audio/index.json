@@ -111,6 +111,16 @@
       ],
       "seconds": 0.776
     },
+    "02b5290133ff1ca9b84ea3b2914cab498416ff3c13c79feeebac08236de71d9e": {
+      "bytes": 8160,
+      "createdAt": "2026-08-20T00:06:35+00:00",
+      "en": "I have forgotten my password.",
+      "path": "audio/02/02b5290133ff1ca9b84ea3b2914cab498416ff3c13c79feeebac08236de71d9e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.628
+    },
     "03c4577e7bede4ecefea416cdacb97f0902d162c5443f072b7d7035449398d55": {
       "bytes": 14016,
       "createdAt": "2026-08-14T12:05:49+00:00",
@@ -451,6 +461,16 @@
       ],
       "seconds": 1.798
     },
+    "18a3343db1e2427e3305fbe9ee98f6bee0cc39a8bd1bd6ce4103e3234202738d": {
+      "bytes": 7176,
+      "createdAt": "2026-08-20T00:06:52+00:00",
+      "en": "I have finished the report.",
+      "path": "audio/18/18a3343db1e2427e3305fbe9ee98f6bee0cc39a8bd1bd6ce4103e3234202738d.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.444
+    },
     "18b687dc24239e7bab67f54fe4fd4eac2914f809b81191f28e02f182926e7f46": {
       "bytes": 8712,
       "createdAt": "2026-08-19T00:06:20+00:00",
@@ -460,6 +480,16 @@
         "chat"
       ],
       "seconds": 1.636
+    },
+    "1936e70db8cc96b054a1ba119f5746bb09675fec21ef749a78dca64e6476787a": {
+      "bytes": 12600,
+      "createdAt": "2026-08-20T00:06:53+00:00",
+      "en": "I had collected my luggage before she called.",
+      "path": "audio/19/1936e70db8cc96b054a1ba119f5746bb09675fec21ef749a78dca64e6476787a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.567
     },
     "19466d61661beadac3e47a8516d0951bc357b374fa3c05a42e9680ca48265bfa": {
       "bytes": 5784,
@@ -661,6 +691,16 @@
       ],
       "seconds": 1.17
     },
+    "21e619103c657fedf0fe9863b09c96cbbe5a4a9c12d78748f275c9fed69f69b1": {
+      "bytes": 7056,
+      "createdAt": "2026-08-20T00:06:38+00:00",
+      "en": "They have started already.",
+      "path": "audio/21/21e619103c657fedf0fe9863b09c96cbbe5a4a9c12d78748f275c9fed69f69b1.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.409
+    },
     "2231de0e8721962b49ae1026678577d8bbc2337bf138f2239a9af0a0e7f4e72d": {
       "bytes": 9120,
       "createdAt": "2026-08-14T12:03:47+00:00",
@@ -701,6 +741,16 @@
       ],
       "seconds": 1.446
     },
+    "25c5b5e2ddfffe7e6fd22a3a7c5c95c16c36a89db1b4a3fd59a172d114da6112": {
+      "bytes": 5976,
+      "createdAt": "2026-08-20T00:06:43+00:00",
+      "en": "I have caught a cold.",
+      "path": "audio/25/25c5b5e2ddfffe7e6fd22a3a7c5c95c16c36a89db1b4a3fd59a172d114da6112.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.229
+    },
     "25d36173b5f60e8742e6621c64f0200466c70ff3743822dbf45022ddd342f091": {
       "bytes": 8664,
       "createdAt": "2026-08-14T12:04:19+00:00",
@@ -740,6 +790,16 @@
         "chat"
       ],
       "seconds": 1.692
+    },
+    "2956439070a76d487b8a7eb809c2895bf5012a95f15a2527b9926fbef4458702": {
+      "bytes": 6192,
+      "createdAt": "2026-08-20T00:06:49+00:00",
+      "en": "I have had breakfast.",
+      "path": "audio/29/2956439070a76d487b8a7eb809c2895bf5012a95f15a2527b9926fbef4458702.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.23
     },
     "296b1a59607270fce3951619e362041148aef8d29ffbaa0984042740d396ac4e": {
       "bytes": 9336,
@@ -870,6 +930,16 @@
         "chat"
       ],
       "seconds": 1.799
+    },
+    "2eaa76be08f454dc4adb40e998141fd19fc1f742698f641f175a56e947c60003": {
+      "bytes": 7056,
+      "createdAt": "2026-08-20T00:06:50+00:00",
+      "en": "We have eaten already.",
+      "path": "audio/2e/2eaa76be08f454dc4adb40e998141fd19fc1f742698f641f175a56e947c60003.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.33
     },
     "2eb66278f67ad099a1cc500d0f79df6575104406ff797a94396bf21b397336a1": {
       "bytes": 18984,
@@ -1131,6 +1201,16 @@
       ],
       "seconds": 1.827
     },
+    "3d9cdceacea4a14cee790d9b10453dca1bcc88bb0f63e57b065e5487a8ff7f8e": {
+      "bytes": 10248,
+      "createdAt": "2026-08-20T00:06:51+00:00",
+      "en": "We had passed customs before noon.",
+      "path": "audio/3d/3d9cdceacea4a14cee790d9b10453dca1bcc88bb0f63e57b065e5487a8ff7f8e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.924
+    },
     "3dd839a1c22560369fac722d9e086079d4c4202a14e53b2107bc88b56860ec4e": {
       "bytes": 7392,
       "createdAt": "2026-08-14T12:08:00+00:00",
@@ -1190,6 +1270,16 @@
         "speak"
       ],
       "seconds": 1.522
+    },
+    "410a81289a6b7e5801c161cd4eea4eac6032c3874f973c2d214ff5b3e2641990": {
+      "bytes": 6384,
+      "createdAt": "2026-08-20T00:06:44+00:00",
+      "en": "She has not packed yet.",
+      "path": "audio/41/410a81289a6b7e5801c161cd4eea4eac6032c3874f973c2d214ff5b3e2641990.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.289
     },
     "412a9ebc1b4b3bb51adea30666c4f4ae368f68a0490840f73a05fffbfd824cd5": {
       "bytes": 7440,
@@ -1711,6 +1801,16 @@
       ],
       "seconds": 0.973
     },
+    "5d5d1dd222566e036268124ac4c6e2d22ac6897754254965b7be83c8d0236ee3": {
+      "bytes": 8016,
+      "createdAt": "2026-08-20T00:06:47+00:00",
+      "en": "I have put the food in the fridge.",
+      "path": "audio/5d/5d5d1dd222566e036268124ac4c6e2d22ac6897754254965b7be83c8d0236ee3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.613
+    },
     "5da400e4fbc9e4efde180effc4e75582ca86d902702aadcb27bb93095623a0c8": {
       "bytes": 6864,
       "createdAt": "2026-08-14T12:03:29+00:00",
@@ -2021,6 +2121,16 @@
       ],
       "seconds": 1.188
     },
+    "6761fb5c60f6bfe5f5b31ec8f45b3f6c2d5b0b7325ca7664ded18d2c41973e58": {
+      "bytes": 6456,
+      "createdAt": "2026-08-20T00:06:46+00:00",
+      "en": "She has paid the bill.",
+      "path": "audio/67/6761fb5c60f6bfe5f5b31ec8f45b3f6c2d5b0b7325ca7664ded18d2c41973e58.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.24
+    },
     "67eb8e6f66b527a0857b8c3c65bb8b29769883fb1c4658d84dab2cf6c47bc5c2": {
       "bytes": 5832,
       "createdAt": "2026-08-14T12:01:59+00:00",
@@ -2210,6 +2320,16 @@
         "speak"
       ],
       "seconds": 1.959
+    },
+    "7358db3ddb89f9dce975250c913006cea5a1bd7e291e954dbfb7d6940237b15f": {
+      "bytes": 7032,
+      "createdAt": "2026-08-20T00:06:46+00:00",
+      "en": "They have seen the doctor.",
+      "path": "audio/73/7358db3ddb89f9dce975250c913006cea5a1bd7e291e954dbfb7d6940237b15f.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.41
     },
     "73d186c170d72525fa6bc51c73e272e00b86f58b2c8a474bc620cd1d4cc1ac41": {
       "bytes": 7104,
@@ -2541,6 +2661,16 @@
       ],
       "seconds": 1.235
     },
+    "85fd66703e71883a923817dd7b7d77003d713ca2833ca363bc06948259a9110e": {
+      "bytes": 6936,
+      "createdAt": "2026-08-20T00:06:41+00:00",
+      "en": "He has climbed the tower.",
+      "path": "audio/85/85fd66703e71883a923817dd7b7d77003d713ca2833ca363bc06948259a9110e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.369
+    },
     "86c9c09a9314437cacd0e1be2da06687e983640e2422bf7386d8a551295723cd": {
       "bytes": 8376,
       "createdAt": "2026-08-14T12:01:46+00:00",
@@ -2570,6 +2700,26 @@
         "speak"
       ],
       "seconds": 1.789
+    },
+    "8782fce07c7abadc66bd9e3104fa2fc501ed954a0d4e91440a86f532179d5f02": {
+      "bytes": 19824,
+      "createdAt": "2026-08-20T00:06:55+00:00",
+      "en": "So when you asked me whether they were busy in an office or constantly on the move",
+      "path": "audio/87/8782fce07c7abadc66bd9e3104fa2fc501ed954a0d4e91440a86f532179d5f02.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.977
+    },
+    "890f7eb1eda9a4d06103209b793fa123ef590382d9c64d5648805fe16018d475": {
+      "bytes": 6096,
+      "createdAt": "2026-08-20T00:06:36+00:00",
+      "en": "She has sent the file.",
+      "path": "audio/89/890f7eb1eda9a4d06103209b793fa123ef590382d9c64d5648805fe16018d475.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.245
     },
     "892edab7dc3a909c965e01d754e00308f62eabcefd0f865fe6421674bdb1c671": {
       "bytes": 8808,
@@ -2651,6 +2801,16 @@
       ],
       "seconds": 1.967
     },
+    "8bfc25821870877f5b21511d584be538e800d19f8804a3d0f3cd1dc95cf8f40e": {
+      "bytes": 6576,
+      "createdAt": "2026-08-20T00:06:49+00:00",
+      "en": "I have been here before.",
+      "path": "audio/8b/8bfc25821870877f5b21511d584be538e800d19f8804a3d0f3cd1dc95cf8f40e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.355
+    },
     "8c1a66fce459b1422175e5aac2dad8710de9515058ec2fc10dde446182dd9a48": {
       "bytes": 5664,
       "createdAt": "2026-08-17T14:13:13+00:00",
@@ -2660,6 +2820,16 @@
         "speak"
       ],
       "seconds": 1.137
+    },
+    "8c26229aff971250a54f71631a0eb7befa0c0537361832d493dc2c3b1c030301": {
+      "bytes": 8424,
+      "createdAt": "2026-08-20T00:06:42+00:00",
+      "en": "She has never eaten sushi.",
+      "path": "audio/8c/8c26229aff971250a54f71631a0eb7befa0c0537361832d493dc2c3b1c030301.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.569
     },
     "8c35575512b5c66a5dda83688453b23ecfb6975e89b45f08073c588315e0d93c": {
       "bytes": 7872,
@@ -2710,6 +2880,16 @@
         "speak"
       ],
       "seconds": 1.705
+    },
+    "8e15e3a8067d232f05099d8fb51aa290d2339bb9cfd707e119620f34575ffd8c": {
+      "bytes": 7872,
+      "createdAt": "2026-08-20T00:06:48+00:00",
+      "en": "He has changed his mind.",
+      "path": "audio/8e/8e15e3a8067d232f05099d8fb51aa290d2339bb9cfd707e119620f34575ffd8c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.493
     },
     "8ec641b157c2e3550bfae32fc25ccb5e8a44593e87993103ef90eb36174ec7f5": {
       "bytes": 7344,
@@ -2771,6 +2951,16 @@
       ],
       "seconds": 1.294
     },
+    "927f4209e4b07246abbc8818056772ed70ae0b448c5f8f81d7cdc633927792cc": {
+      "bytes": 9024,
+      "createdAt": "2026-08-20T00:06:45+00:00",
+      "en": "She has done the user interviews.",
+      "path": "audio/92/927f4209e4b07246abbc8818056772ed70ae0b448c5f8f81d7cdc633927792cc.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.716
+    },
     "9299ed5a35a856d6a27f5277277d976f1d27d08d2997ca8b8e1e070a16570e65": {
       "bytes": 6024,
       "createdAt": "2026-08-17T14:13:16+00:00",
@@ -2800,6 +2990,16 @@
         "speak"
       ],
       "seconds": 1.556
+    },
+    "93bb68aa2b7f8592720e00b9110275711a784097908661d8f8072587f3324202": {
+      "bytes": 9864,
+      "createdAt": "2026-08-20T00:06:41+00:00",
+      "en": "She has put the icons in a folder.",
+      "path": "audio/93/93bb68aa2b7f8592720e00b9110275711a784097908661d8f8072587f3324202.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.936
     },
     "948eb7079fa8277183037b7d6561f20329424ac8d7b90423c01c6f792dc1471d": {
       "bytes": 7248,
@@ -3801,6 +4001,26 @@
       ],
       "seconds": 1.155
     },
+    "c1719625563fd84ba550a72116d9607deef80e68bb17c280976e1d015d8127e3": {
+      "bytes": 5592,
+      "createdAt": "2026-08-20T00:06:37+00:00",
+      "en": "They have arrived.",
+      "path": "audio/c1/c1719625563fd84ba550a72116d9607deef80e68bb17c280976e1d015d8127e3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.081
+    },
+    "c17b5c2f3ef4fcfefd733512c14ab38c26123dffaa773d1d0a39a8f63c6ec708": {
+      "bytes": 6504,
+      "createdAt": "2026-08-20T00:06:39+00:00",
+      "en": "She has found her wallet.",
+      "path": "audio/c1/c17b5c2f3ef4fcfefd733512c14ab38c26123dffaa773d1d0a39a8f63c6ec708.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.344
+    },
     "c17b99b393af7b59c41e6edfbb0d8c99a8d3c01c7015d7125a7d731375c9e15b": {
       "bytes": 18576,
       "createdAt": "2026-08-14T12:06:49+00:00",
@@ -4381,6 +4601,16 @@
       ],
       "seconds": 2.397
     },
+    "dca13d9f0a7ae410c6d582e89032a48ca9a56afb3db481017fd28612470d331d": {
+      "bytes": 5760,
+      "createdAt": "2026-08-20T00:06:43+00:00",
+      "en": "We have slept well.",
+      "path": "audio/dc/dca13d9f0a7ae410c6d582e89032a48ca9a56afb3db481017fd28612470d331d.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.14
+    },
     "dcbe9df91e2070e4b64bfa9ad182617df664fabc896ebff0c84b9bc7681aff4a": {
       "bytes": 5688,
       "createdAt": "2026-08-17T14:13:04+00:00",
@@ -4461,6 +4691,16 @@
       ],
       "seconds": 1.658
     },
+    "e1471924ec75a6bf4c79ef53d723a695464fe4e7a3a3ca6adfea61fffa5efb40": {
+      "bytes": 8400,
+      "createdAt": "2026-08-20T00:06:40+00:00",
+      "en": "I have heard about this project.",
+      "path": "audio/e1/e1471924ec75a6bf4c79ef53d723a695464fe4e7a3a3ca6adfea61fffa5efb40.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.68
+    },
     "e1ca999b414c12af02ad1587f0ac52466edce52859861d43e7f843920f0d873f": {
       "bytes": 25968,
       "createdAt": "2026-08-14T12:15:05+00:00",
@@ -4480,6 +4720,16 @@
         "chat"
       ],
       "seconds": 2.698
+    },
+    "e2c76f69bc0dafeeb5ae81e7aeb1f8698d0c108f1db12246a189857f7d95bf14": {
+      "bytes": 8856,
+      "createdAt": "2026-08-20T00:06:37+00:00",
+      "en": "She has chosen a new color.",
+      "path": "audio/e2/e2c76f69bc0dafeeb5ae81e7aeb1f8698d0c108f1db12246a189857f7d95bf14.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.695
     },
     "e35dfa231130f0bcf190f30dcc59c9f907b7a48693c3e4167d5749cad43d152d": {
       "bytes": 7224,
@@ -5023,7 +5273,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-19T00:06:43+00:00",
+  "updatedAt": "2026-08-20T00:06:55+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
