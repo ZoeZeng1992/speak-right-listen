@@ -71,6 +71,16 @@
       ],
       "seconds": 1.116
     },
+    "019037845343363bbf40b0e71b71872ef158a57e76a07f64adc5582ae5204e3d": {
+      "bytes": 20280,
+      "createdAt": "2026-08-22T10:57:55+00:00",
+      "en": "Before this, I hadn’t had any experience designing an ERP system.",
+      "path": "audio/01/019037845343363bbf40b0e71b71872ef158a57e76a07f64adc5582ae5204e3d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.176
+    },
     "01ab729b6b96be540ed6f5b647861fab3a559ca2c26abceb090b76176b553b8d": {
       "bytes": 6912,
       "createdAt": "2026-08-14T12:02:11+00:00",
@@ -180,6 +190,26 @@
         "chat"
       ],
       "seconds": 2.089
+    },
+    "055fddecf68bcf2eabea0725888c339f05ba6a98df2aa4c1eac539f3f8218c49": {
+      "bytes": 12024,
+      "createdAt": "2026-08-22T10:57:32+00:00",
+      "en": "We had bought the tickets before they sold out.",
+      "path": "audio/05/055fddecf68bcf2eabea0725888c339f05ba6a98df2aa4c1eac539f3f8218c49.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.356
+    },
+    "058f935b8a2600817f1b9757ac50b891a706bc244ebaa3c045ecce8dead52a1f": {
+      "bytes": 11928,
+      "createdAt": "2026-08-22T10:57:23+00:00",
+      "en": "I had written down the address before I left.",
+      "path": "audio/05/058f935b8a2600817f1b9757ac50b891a706bc244ebaa3c045ecce8dead52a1f.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.243
     },
     "05bfad3199653eff8e5d680de46ff3c63be64c1794f655d45991bf6e1e8d54e7": {
       "bytes": 7536,
@@ -971,6 +1001,16 @@
       ],
       "seconds": 1.532
     },
+    "3006be05097a9e1883c0f15cdefab5aa1c9a98160f0ac8d133fbacb33aae388e": {
+      "bytes": 24888,
+      "createdAt": "2026-08-22T10:57:46+00:00",
+      "en": "Before today, had you ever talked about this kind of AI anxiety with your coworkers?",
+      "path": "audio/30/3006be05097a9e1883c0f15cdefab5aa1c9a98160f0ac8d133fbacb33aae388e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.857
+    },
     "30181a983dce51ef3c6f13b77e826498f6006bf8d9529cb1d521bbb10b946547": {
       "bytes": 17424,
       "createdAt": "2026-08-14T14:35:44+00:00",
@@ -1120,6 +1160,16 @@
         "chat"
       ],
       "seconds": 1.958
+    },
+    "38e282e56448a4b0e41971d6290914594dd0d68245928b1812f4909518cc6e51": {
+      "bytes": 24192,
+      "createdAt": "2026-08-22T10:57:57+00:00",
+      "en": "First off, have you finished any big UX projects or redesigns at work lately?",
+      "path": "audio/38/38e282e56448a4b0e41971d6290914594dd0d68245928b1812f4909518cc6e51.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.908
     },
     "38ed47ad05729583609334043e61cd9d534876c08fdb7292ac178f572bcb11b8": {
       "bytes": 9384,
@@ -1691,6 +1741,16 @@
       ],
       "seconds": 0.814
     },
+    "56633c798f570837d0fcfed9f3b3ca541e35b5fed0a9ba3b17c1a9fb2d16591f": {
+      "bytes": 8976,
+      "createdAt": "2026-08-22T10:57:24+00:00",
+      "en": "He has been here for two years.",
+      "path": "audio/56/56633c798f570837d0fcfed9f3b3ca541e35b5fed0a9ba3b17c1a9fb2d16591f.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.702
+    },
     "568aca045a51ff32c8e296ce15892076c7d47ea3a35f05cc64c66bcabc2f8fc0": {
       "bytes": 7944,
       "createdAt": "2026-08-14T12:02:25+00:00",
@@ -1700,6 +1760,16 @@
         "speak"
       ],
       "seconds": 1.558
+    },
+    "579877d8912ac6fc8c5fe5baee080562e90096f46d8a7909abf5cd9ac0ab7719": {
+      "bytes": 7944,
+      "createdAt": "2026-08-22T10:57:24+00:00",
+      "en": "I have caught a small mistake.",
+      "path": "audio/57/579877d8912ac6fc8c5fe5baee080562e90096f46d8a7909abf5cd9ac0ab7719.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.602
     },
     "57a2148815de3d9c971d1013ec14bf63be6357c861e7a6c2aca5dd5a106d0539": {
       "bytes": 5736,
@@ -1801,6 +1871,16 @@
       ],
       "seconds": 0.973
     },
+    "5d31d344842539d8d0ac87e83741a497b25935913eb9bf3cd9240087ad091448": {
+      "bytes": 18072,
+      "createdAt": "2026-08-22T10:57:52+00:00",
+      "en": "What has been the biggest challenge for you since you started working on it?",
+      "path": "audio/5d/5d31d344842539d8d0ac87e83741a497b25935913eb9bf3cd9240087ad091448.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.691
+    },
     "5d5d1dd222566e036268124ac4c6e2d22ac6897754254965b7be83c8d0236ee3": {
       "bytes": 8016,
       "createdAt": "2026-08-20T00:06:47+00:00",
@@ -1821,6 +1901,16 @@
       ],
       "seconds": 1.356
     },
+    "5dd096e098c5cfc86cb2a784a8b92a1223d7e395c723117f7e5264ad2cfea222": {
+      "bytes": 5040,
+      "createdAt": "2026-08-22T10:57:42+00:00",
+      "en": "gallows humor",
+      "path": "audio/5d/5dd096e098c5cfc86cb2a784a8b92a1223d7e395c723117f7e5264ad2cfea222.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.043
+    },
     "5e6f119bceffcbc54b7103f24bfb481150dcac2d340fc7415a0d1b73c98a85c7": {
       "bytes": 8304,
       "createdAt": "2026-08-14T12:04:17+00:00",
@@ -1840,6 +1930,16 @@
         "chat"
       ],
       "seconds": 3.461
+    },
+    "5edc79e97fad59d6a8c7061212b1ad75427ee3eefbee7784147c73ca5aa3295a": {
+      "bytes": 13896,
+      "createdAt": "2026-08-22T10:57:44+00:00",
+      "en": "Maybe we won’t be able to find jobs in the future",
+      "path": "audio/5e/5edc79e97fad59d6a8c7061212b1ad75427ee3eefbee7784147c73ca5aa3295a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.78
     },
     "5ee692bfc7fdb96290b0efa22cc830aaf8d04aee1fa45ca674e629b3b2b8b470": {
       "bytes": 6480,
@@ -2051,6 +2151,16 @@
       ],
       "seconds": 1.197
     },
+    "6551399251bb5154a96d3c40fdd10505d4e457def9799be4707b67fc583cd750": {
+      "bytes": 6936,
+      "createdAt": "2026-08-22T10:57:21+00:00",
+      "en": "I have printed the mockup.",
+      "path": "audio/65/6551399251bb5154a96d3c40fdd10505d4e457def9799be4707b67fc583cd750.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.44
+    },
     "657a54328c86e99dea35100c0e6a30efcf041ced9cb40e1a0f601f8ba991f1e6": {
       "bytes": 8880,
       "createdAt": "2026-08-14T12:03:31+00:00",
@@ -2231,6 +2341,16 @@
       ],
       "seconds": 1.547
     },
+    "6ce8bdb25e9b6d64939008d58d64ffded206c221afdb49a7a0ff13e7b325bd2b": {
+      "bytes": 16104,
+      "createdAt": "2026-08-22T10:57:40+00:00",
+      "en": "Social media is full of this kind of news and posts.",
+      "path": "audio/6c/6ce8bdb25e9b6d64939008d58d64ffded206c221afdb49a7a0ff13e7b325bd2b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.196
+    },
     "6d59b1707e6bb8bd1df4789b82fbfc3d98b114ba68afee8d7dd6c3ac5da4ae37": {
       "bytes": 8928,
       "createdAt": "2026-08-14T12:02:56+00:00",
@@ -2270,6 +2390,26 @@
         "speak"
       ],
       "seconds": 1.564
+    },
+    "6e61f9472caa0e95cdbbbe422553f5b3be263693e819cbdeabbcf1f8d874ce01": {
+      "bytes": 14280,
+      "createdAt": "2026-08-22T10:57:53+00:00",
+      "en": "It's pretty different from customer-facing apps, right?",
+      "path": "audio/6e/6e61f9472caa0e95cdbbbe422553f5b3be263693e819cbdeabbcf1f8d874ce01.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.808
+    },
+    "70f9982a7dadd2bee7c2fe8561b0786b53228425662b9be0eec1f90930197d18": {
+      "bytes": 12336,
+      "createdAt": "2026-08-22T10:57:28+00:00",
+      "en": "He had spent all his cash before the last day.",
+      "path": "audio/70/70f9982a7dadd2bee7c2fe8561b0786b53228425662b9be0eec1f90930197d18.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.308
     },
     "71702121e6cbb6bb67d624f1b2932f386775b0dd6a414eb8aedaf69fe51d0629": {
       "bytes": 6144,
@@ -2351,6 +2491,16 @@
       ],
       "seconds": 2.095
     },
+    "7483c6ee88c5de84524c5efa4376478fa23dd1eb3c1741b8d351a985bc71e915": {
+      "bytes": 12432,
+      "createdAt": "2026-08-22T10:57:58+00:00",
+      "en": "Let's chat a bit about work and design today.",
+      "path": "audio/74/7483c6ee88c5de84524c5efa4376478fa23dd1eb3c1741b8d351a985bc71e915.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.435
+    },
     "74cd8398c8e93d9628aee4ea671c1b6794fdd6eb51f1ea7ed306c33122d5d9e3": {
       "bytes": 6000,
       "createdAt": "2026-08-14T12:03:11+00:00",
@@ -2410,6 +2560,16 @@
         "speak"
       ],
       "seconds": 1.631
+    },
+    "78191c1143d526e39183451528c8711a471b85f7cd3d6f48abc4f65ff2c1421b": {
+      "bytes": 6000,
+      "createdAt": "2026-08-22T10:57:35+00:00",
+      "en": "I have set an alarm.",
+      "path": "audio/78/78191c1143d526e39183451528c8711a471b85f7cd3d6f48abc4f65ff2c1421b.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.213
     },
     "78672c64fe586879fb761454b64c7b7f4931be637c4e6ad01f57a7ce3d948c34": {
       "bytes": 7560,
@@ -2480,6 +2640,16 @@
         "chat"
       ],
       "seconds": 2.12
+    },
+    "7cb5f370cdc6b92b87f099d230765613699f8d77b2e6ddb1d73f48e62dfb4a35": {
+      "bytes": 16464,
+      "createdAt": "2026-08-22T10:57:50+00:00",
+      "en": "So I have always had to correct the mistakes that the AI made.",
+      "path": "audio/7c/7cb5f370cdc6b92b87f099d230765613699f8d77b2e6ddb1d73f48e62dfb4a35.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.359
     },
     "7d2eaad620e6607163cf41a0a523e9b876d38b09d0d2ed1f00edbd1b9f0c4624": {
       "bytes": 6696,
@@ -2781,6 +2951,16 @@
       ],
       "seconds": 1.321
     },
+    "8a5d6d276a45722101664da6c3236c8d6e7bea3aadaa2a72285e50fb64cf6cdf": {
+      "bytes": 8424,
+      "createdAt": "2026-08-22T10:57:22+00:00",
+      "en": "We have listened to the users.",
+      "path": "audio/8a/8a5d6d276a45722101664da6c3236c8d6e7bea3aadaa2a72285e50fb64cf6cdf.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.549
+    },
     "8a70bd8151628a52e3b12ac6a0524c7f6d49a5632eaf213ebe435423463a3de1": {
       "bytes": 9384,
       "createdAt": "2026-08-14T12:06:54+00:00",
@@ -2810,6 +2990,16 @@
         "speak"
       ],
       "seconds": 1.355
+    },
+    "8c09b2c2b8b926679d50a73a4715946b22aa8667852138c84331b70c64ff2a69": {
+      "bytes": 6960,
+      "createdAt": "2026-08-22T10:58:01+00:00",
+      "en": "pivot my career a bit",
+      "path": "audio/8c/8c09b2c2b8b926679d50a73a4715946b22aa8667852138c84331b70c64ff2a69.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.428
     },
     "8c1a66fce459b1422175e5aac2dad8710de9515058ec2fc10dde446182dd9a48": {
       "bytes": 5664,
@@ -2951,6 +3141,16 @@
       ],
       "seconds": 1.294
     },
+    "922ed645a4e76d44a854ed506ad0c39668fa78d8ff9287d4bc758efa154f5e98": {
+      "bytes": 12792,
+      "createdAt": "2026-08-22T10:57:20+00:00",
+      "en": "She had updated the style guide before the sprint.",
+      "path": "audio/92/922ed645a4e76d44a854ed506ad0c39668fa78d8ff9287d4bc758efa154f5e98.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.612
+    },
     "927f4209e4b07246abbc8818056772ed70ae0b448c5f8f81d7cdc633927792cc": {
       "bytes": 9024,
       "createdAt": "2026-08-20T00:06:45+00:00",
@@ -2980,6 +3180,16 @@
         "speak"
       ],
       "seconds": 1.349
+    },
+    "9347e4fd6541f7ceada0f8cb78d27778ba174c2f03893b04d2cfab024784d337": {
+      "bytes": 15696,
+      "createdAt": "2026-08-22T10:57:48+00:00",
+      "en": "I hope AI tools can help me more with my daily work.",
+      "path": "audio/93/9347e4fd6541f7ceada0f8cb78d27778ba174c2f03893b04d2cfab024784d337.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.224
     },
     "934880bcd5567d63ceb05e511de3dbf6e7e0a3d3319dece74f552f88bd285021": {
       "bytes": 8064,
@@ -3120,6 +3330,26 @@
         "speak"
       ],
       "seconds": 1.329
+    },
+    "992dcbccb54e15c469b3469e2586c5a40aedaf0fb464a88e4075608358a6e0e4": {
+      "bytes": 15504,
+      "createdAt": "2026-08-22T10:57:38+00:00",
+      "en": "social media loves to push those scary headlines!",
+      "path": "audio/99/992dcbccb54e15c469b3469e2586c5a40aedaf0fb464a88e4075608358a6e0e4.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.102
+    },
+    "9ac49db07cf2476ffcb983a86c895bea5eec1457e459ff0b376b4f0fcbe27348": {
+      "bytes": 7608,
+      "createdAt": "2026-08-22T10:57:33+00:00",
+      "en": "They have been busy all week.",
+      "path": "audio/9a/9ac49db07cf2476ffcb983a86c895bea5eec1457e459ff0b376b4f0fcbe27348.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.601
     },
     "9ad3c3254d9fa11c918f357f6a05a6edcaf119d6cb276b283eb98bfd54c695ee": {
       "bytes": 8832,
@@ -3441,6 +3671,16 @@
       ],
       "seconds": 1.554
     },
+    "a9fa0ffc5f8ffbca22de992fa3b6bd7a711f6d3cf8c09053a4a8983ad3408e0e": {
+      "bytes": 9120,
+      "createdAt": "2026-08-22T10:58:00+00:00",
+      "en": "Yeah, I've been stressing about it",
+      "path": "audio/a9/a9fa0ffc5f8ffbca22de992fa3b6bd7a711f6d3cf8c09053a4a8983ad3408e0e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.78
+    },
     "aa9387f18a141ba1a459ea987733802e5e4e115411ba6717ce084129c690a9db": {
       "bytes": 6792,
       "createdAt": "2026-08-14T12:04:42+00:00",
@@ -3651,6 +3891,16 @@
       ],
       "seconds": 2.531
     },
+    "b27e4c36c8a6e36aa2789ffc9e5657ca95bb1a7eae5fb3a601ee3264a4123a2f": {
+      "bytes": 6672,
+      "createdAt": "2026-08-22T10:57:30+00:00",
+      "en": "I have saved some money.",
+      "path": "audio/b2/b27e4c36c8a6e36aa2789ffc9e5657ca95bb1a7eae5fb3a601ee3264a4123a2f.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.345
+    },
     "b295638a0077d0ecf9b89826cd0d949cef4289681e7649d5220a43d2ea490616": {
       "bytes": 7704,
       "createdAt": "2026-08-14T12:04:15+00:00",
@@ -3770,6 +4020,16 @@
         "chat"
       ],
       "seconds": 0.867
+    },
+    "b7607f626a0863edd4a0e0d517132d22bb9fc57a9b3e3a4bc6fae25363c0a32f": {
+      "bytes": 10944,
+      "createdAt": "2026-08-22T10:57:59+00:00",
+      "en": "Yes, I've been anxious all this time,",
+      "path": "audio/b7/b7607f626a0863edd4a0e0d517132d22bb9fc57a9b3e3a4bc6fae25363c0a32f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.101
     },
     "b7638fdc4cc9954547e773cb3b759f28fdbabf9a2414a5249c0d13a098609229": {
       "bytes": 14304,
@@ -3900,6 +4160,16 @@
         "speak"
       ],
       "seconds": 1.851
+    },
+    "bdc9baed5e3235d149d9fa3512d36b1f3f4c03d81e58eb911050628de89bb17f": {
+      "bytes": 23928,
+      "createdAt": "2026-08-22T10:57:42+00:00",
+      "en": "had you already seen any news or posts about designers losing jobs to AI?",
+      "path": "audio/bd/bdc9baed5e3235d149d9fa3512d36b1f3f4c03d81e58eb911050628de89bb17f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.633
     },
     "be551769b4d19a9a8441666cae9a3bde5ab1c52053aa7c175a862950e38819f3": {
       "bytes": 11256,
@@ -4041,6 +4311,16 @@
       ],
       "seconds": 1.048
     },
+    "c269d0710919386c15092b197b068f347e64a6763c0a9878db99667e6fb4c36e": {
+      "bytes": 12456,
+      "createdAt": "2026-08-22T10:57:27+00:00",
+      "en": "We had watched that film before it won the award.",
+      "path": "audio/c2/c269d0710919386c15092b197b068f347e64a6763c0a9878db99667e6fb4c36e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.482
+    },
     "c27374c3462c06a0c96e20709c14dabc740325878fd8dda9055ce6ddb7db5896": {
       "bytes": 7344,
       "createdAt": "2026-08-14T12:01:38+00:00",
@@ -4180,6 +4460,16 @@
         "chat"
       ],
       "seconds": 0.903
+    },
+    "c6142b4dd26cf085f5078d1b83a97540abc75f1ae394e776b932cf9d5d8aae53": {
+      "bytes": 11616,
+      "createdAt": "2026-08-22T10:57:47+00:00",
+      "en": "I can’t help thinking where my place would be if",
+      "path": "audio/c6/c6142b4dd26cf085f5078d1b83a97540abc75f1ae394e776b932cf9d5d8aae53.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.323
     },
     "c650396ce749f288b69f662cfa7cc21145431eec3f195720bf8366052d953848": {
       "bytes": 28632,
@@ -4331,6 +4621,16 @@
       ],
       "seconds": 1.656
     },
+    "cbe96fc9ffea436d0d1d2234c9573c48db2924829b8bb271761de48d123fa0e2": {
+      "bytes": 7536,
+      "createdAt": "2026-08-22T10:57:25+00:00",
+      "en": "They have closed the ticket.",
+      "path": "audio/cb/cbe96fc9ffea436d0d1d2234c9573c48db2924829b8bb271761de48d123fa0e2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.448
+    },
     "cc28f7110e22cefe46da06acc5c9ca1a36d6adf01c5ef0df24f8dce47751b160": {
       "bytes": 8376,
       "createdAt": "2026-08-17T14:13:05+00:00",
@@ -4441,6 +4741,16 @@
       ],
       "seconds": 1.74
     },
+    "d485f062ea6f38529fbd51ea5488670dbfe35d0451660dd4dcab6664beccfe0c": {
+      "bytes": 19080,
+      "createdAt": "2026-08-22T10:57:37+00:00",
+      "en": "have your feelings about AI and your design career changed at all?",
+      "path": "audio/d4/d485f062ea6f38529fbd51ea5488670dbfe35d0451660dd4dcab6664beccfe0c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.947
+    },
     "d520b13dd03ae4db3f471ce7c37167f43fc141cdf38938261f31335d28597098": {
       "bytes": 6288,
       "createdAt": "2026-08-14T12:03:08+00:00",
@@ -4460,6 +4770,26 @@
         "speak"
       ],
       "seconds": 1.476
+    },
+    "d55ccf10eb2113d3874b5da173a23eaf3ec7b071d50f04a3bb5995c804fd6405": {
+      "bytes": 11040,
+      "createdAt": "2026-08-22T10:57:26+00:00",
+      "en": "I had finished the wireframes by Monday.",
+      "path": "audio/d5/d55ccf10eb2113d3874b5da173a23eaf3ec7b071d50f04a3bb5995c804fd6405.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.084
+    },
+    "d57dcfbf7365b6e0dc2be0b15b044ec590e77cb1547d2c62d75affba1094f02e": {
+      "bytes": 7152,
+      "createdAt": "2026-08-22T10:57:35+00:00",
+      "en": "I have started a new file.",
+      "path": "audio/d5/d57dcfbf7365b6e0dc2be0b15b044ec590e77cb1547d2c62d75affba1094f02e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.42
     },
     "d6d0f4f573d253c752161f33a5c3f91b92a0292cdb88ad7b7909c2e6c3e825fa": {
       "bytes": 8064,
@@ -4540,6 +4870,16 @@
         "speak"
       ],
       "seconds": 1.597
+    },
+    "da616f1734a6e16e28d8044d037e6b08423f95c5f2ba8fbb63272de82d918c82": {
+      "bytes": 9240,
+      "createdAt": "2026-08-22T10:57:51+00:00",
+      "en": "I think the biggest challenge is that",
+      "path": "audio/da/da616f1734a6e16e28d8044d037e6b08423f95c5f2ba8fbb63272de82d918c82.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.752
     },
     "da695af01be0a531a69ac5e4034d885a56e2c15d655776db5a8de2be6b69a389": {
       "bytes": 5760,
@@ -4801,6 +5141,16 @@
       ],
       "seconds": 1.518
     },
+    "e83528699e92db26e3ec97b9a0ceaace57964aaf5905868b6e8b06a8081a3212": {
+      "bytes": 7008,
+      "createdAt": "2026-08-22T10:57:34+00:00",
+      "en": "We have fixed the alignment.",
+      "path": "audio/e8/e83528699e92db26e3ec97b9a0ceaace57964aaf5905868b6e8b06a8081a3212.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.407
+    },
     "e97c506f89507415e572ae45d8c6005c87e7b608ce2464c50aab24e127263009": {
       "bytes": 8088,
       "createdAt": "2026-08-14T12:01:25+00:00",
@@ -5001,6 +5351,16 @@
       ],
       "seconds": 2.05
     },
+    "f3098b7b0a3329912780908d6cecec5ecb982adeb2597c0846d24f6c476a2687": {
+      "bytes": 6744,
+      "createdAt": "2026-08-22T10:57:32+00:00",
+      "en": "I have kept the ticket.",
+      "path": "audio/f3/f3098b7b0a3329912780908d6cecec5ecb982adeb2597c0846d24f6c476a2687.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.324
+    },
     "f33162b4f3be5b96d1542d88f2a16bbe19ebab9dcf693d20ac95e52c95238ee6": {
       "bytes": 7704,
       "createdAt": "2026-08-14T12:02:46+00:00",
@@ -5020,6 +5380,16 @@
         "chat"
       ],
       "seconds": 1.31
+    },
+    "f4115405a4a72dfacac01c8fa0b6df106248adde92c15767ae26be4b964635b9": {
+      "bytes": 8544,
+      "createdAt": "2026-08-22T10:57:31+00:00",
+      "en": "He has renewed his passport.",
+      "path": "audio/f4/f4115405a4a72dfacac01c8fa0b6df106248adde92c15767ae26be4b964635b9.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.595
     },
     "f4f311562d132e4f5aa0599d4a4b33d9a7de40221d01a9c3617c4c6166a0e825": {
       "bytes": 7320,
@@ -5231,6 +5601,16 @@
       ],
       "seconds": 1.4
     },
+    "fdcac2790395de76f4b49819adcebd997b90fa01a9a2e30227774f14a0650933": {
+      "bytes": 10896,
+      "createdAt": "2026-08-22T10:57:29+00:00",
+      "en": "I had done the laundry before she asked.",
+      "path": "audio/fd/fdcac2790395de76f4b49819adcebd997b90fa01a9a2e30227774f14a0650933.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.101
+    },
     "fe8760d49601fd79eb44cdb6015ffa954a9914da0f766be6d0f9b491abe770f7": {
       "bytes": 7296,
       "createdAt": "2026-08-14T12:05:47+00:00",
@@ -5273,7 +5653,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-20T00:06:55+00:00",
+  "updatedAt": "2026-08-22T10:58:01+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
