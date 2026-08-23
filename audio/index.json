@@ -21,6 +21,16 @@
       ],
       "seconds": 1.356
     },
+    "008d71d07114717e57cd99a23c3e87f1850dcba76ea9eaa1e939cf3e055329cf": {
+      "bytes": 7104,
+      "createdAt": "2026-08-23T23:54:37+00:00",
+      "en": "UX case studies",
+      "path": "audio/00/008d71d07114717e57cd99a23c3e87f1850dcba76ea9eaa1e939cf3e055329cf.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.335
+    },
     "009d41e83fde8668c0d07b67fcc99638bcab9749527aaaae51a9ddfb126ef72d": {
       "bytes": 7392,
       "createdAt": "2026-08-14T12:02:19+00:00",
@@ -170,6 +180,16 @@
         "speak"
       ],
       "seconds": 1.322
+    },
+    "048e70cdcef173cb73a541688f7fd9f77c08dfdb2fc4411007c9e07fbd756052": {
+      "bytes": 17064,
+      "createdAt": "2026-08-23T23:54:43+00:00",
+      "en": "and whatever free time I get goes toward studying English.",
+      "path": "audio/04/048e70cdcef173cb73a541688f7fd9f77c08dfdb2fc4411007c9e07fbd756052.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.422
     },
     "04905c4ae77bab50d6a63e3cc3e88cbbaf695658bca653fabf0b73b5b0432eed": {
       "bytes": 9744,
@@ -1051,6 +1071,16 @@
       ],
       "seconds": 1.984
     },
+    "31cfbce3d0fdad2f1ae01e0ecf798ebc7857b914bd04d8b0b6a2b486c3db143a": {
+      "bytes": 6720,
+      "createdAt": "2026-08-23T23:54:45+00:00",
+      "en": "your spoken English",
+      "path": "audio/31/31cfbce3d0fdad2f1ae01e0ecf798ebc7857b914bd04d8b0b6a2b486c3db143a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.27
+    },
     "3244b4b15f5f4f3927f61c010cbca6fb51e422ed179a772cf2af88d071bc4711": {
       "bytes": 18216,
       "createdAt": "2026-08-19T00:06:23+00:00",
@@ -1280,6 +1310,16 @@
         "speak"
       ],
       "seconds": 1.426
+    },
+    "3e2b5f469e6fd9417377a2fa191e8f8b10436317f8b235c77e0b8fc250006e48": {
+      "bytes": 14664,
+      "createdAt": "2026-08-23T23:54:38+00:00",
+      "en": "I’ve wanted to polish my UI portfolio all along.",
+      "path": "audio/3e/3e2b5f469e6fd9417377a2fa191e8f8b10436317f8b235c77e0b8fc250006e48.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.967
     },
     "3e4c02c938a76977db9379c9b09d333926322213bef963d21abbda00b2ca4407": {
       "bytes": 68328,
@@ -1680,6 +1720,16 @@
         "speak"
       ],
       "seconds": 1.442
+    },
+    "5300f765f372cd6c86ceda0933f25530cddef69c54e65d2bfb2c3d09b2ac3a68": {
+      "bytes": 9504,
+      "createdAt": "2026-08-23T23:54:37+00:00",
+      "en": "before you decided to make this shift",
+      "path": "audio/53/5300f765f372cd6c86ceda0933f25530cddef69c54e65d2bfb2c3d09b2ac3a68.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.812
     },
     "53890935df4213f7e763f3c794928baee8cdde5b663616073748efac81367b01": {
       "bytes": 4656,
@@ -3131,6 +3181,16 @@
       ],
       "seconds": 1.224
     },
+    "9181a6c8ff5b9ef33406fb317056b507db91897ca506c881c55707c6de396689": {
+      "bytes": 10992,
+      "createdAt": "2026-08-23T23:54:42+00:00",
+      "en": "The problem is I’ve been busy with work",
+      "path": "audio/91/9181a6c8ff5b9ef33406fb317056b507db91897ca506c881c55707c6de396689.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.295
+    },
     "9182f3a0e645c54ca452372031df3a2222cc3ce43f9c46a19f20b92628ebca71": {
       "bytes": 6432,
       "createdAt": "2026-08-14T12:02:27+00:00",
@@ -3490,6 +3550,16 @@
         "speak"
       ],
       "seconds": 1.263
+    },
+    "a0794e94f4fc1979907c9b1fc2243b297e8f3e4d00321c07248c893095ae1ee0": {
+      "bytes": 17688,
+      "createdAt": "2026-08-23T23:54:40+00:00",
+      "en": "Right now, my portfolio doesn’t have any UX case studies.",
+      "path": "audio/a0/a0794e94f4fc1979907c9b1fc2243b297e8f3e4d00321c07248c893095ae1ee0.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.357
     },
     "a1d1ef4975cb78d8c0d892447bd6b393324a1cc83495f6ccbb22a0c4593ac89a": {
       "bytes": 9936,
@@ -5401,6 +5471,16 @@
       ],
       "seconds": 1.411
     },
+    "f50fbcf7248a02d1f7c90aaf0159e6c8681d071c62b47e1386201d0619b9b1be": {
+      "bytes": 18408,
+      "createdAt": "2026-08-23T23:54:45+00:00",
+      "en": "So I don’t have much time left to polish my UI portfolio.",
+      "path": "audio/f5/f50fbcf7248a02d1f7c90aaf0159e6c8681d071c62b47e1386201d0619b9b1be.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.672
+    },
     "f51c9442112d746b4addb5e2679279279f4e6aa6b9ca3c4f8d7b5c4b91dc4dfa": {
       "bytes": 4920,
       "createdAt": "2026-08-14T12:07:02+00:00",
@@ -5653,7 +5733,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-22T10:58:01+00:00",
+  "updatedAt": "2026-08-23T23:54:45+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
