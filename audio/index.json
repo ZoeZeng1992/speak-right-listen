@@ -1001,6 +1001,16 @@
       ],
       "seconds": 5.568
     },
+    "2c5629a7ff81db707bcd0c62ff7f727bacfd926614f4dd9c4264f109cfdf1b91": {
+      "bytes": 4296,
+      "createdAt": "2026-08-31T00:02:12+00:00",
+      "en": "Fair enough!",
+      "path": "audio/2c/2c5629a7ff81db707bcd0c62ff7f727bacfd926614f4dd9c4264f109cfdf1b91.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.834
+    },
     "2c94fbc654d42e0c0ac778776193ad63cb0efc075699763c3919d878a7fb7251": {
       "bytes": 10440,
       "createdAt": "2026-08-14T12:14:44+00:00",
@@ -1140,6 +1150,16 @@
         "chat"
       ],
       "seconds": 1.532
+    },
+    "2f365e8dd77f1bb958fb4a61f55192194125123201ec99da7f16628c857d536d": {
+      "bytes": 10200,
+      "createdAt": "2026-08-31T00:02:20+00:00",
+      "en": "We're just about out of time for today",
+      "path": "audio/2f/2f365e8dd77f1bb958fb4a61f55192194125123201ec99da7f16628c857d536d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.92
     },
     "3006be05097a9e1883c0f15cdefab5aa1c9a98160f0ac8d133fbacb33aae388e": {
       "bytes": 24888,
@@ -1550,6 +1570,16 @@
         "chat"
       ],
       "seconds": 1.688
+    },
+    "433590b65f48c780c686f23d53ab1f9cabfeee81e0b9319041a60b6763774ffb": {
+      "bytes": 6984,
+      "createdAt": "2026-08-31T00:02:22+00:00",
+      "en": "Do we have limited time?",
+      "path": "audio/43/433590b65f48c780c686f23d53ab1f9cabfeee81e0b9319041a60b6763774ffb.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.416
     },
     "435ec781174b72fd8c28f9cf9e196277ee08646bdd83edd8c10faec6f1d3868c": {
       "bytes": 7440,
@@ -2721,6 +2751,16 @@
       ],
       "seconds": 1.297
     },
+    "72d02a36f0bda8838f86257433b62edf572ec6d71712664cd3141107e8e917b0": {
+      "bytes": 14160,
+      "createdAt": "2026-08-31T00:02:23+00:00",
+      "en": "I didn’t know our conversations had a time limit.",
+      "path": "audio/72/72d02a36f0bda8838f86257433b62edf572ec6d71712664cd3141107e8e917b0.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.669
+    },
     "734f0db223ec63ee9ea971b9210b7956924b9abc782bbfa20dbb3c6ee0149c07": {
       "bytes": 10200,
       "createdAt": "2026-08-17T14:13:16+00:00",
@@ -2740,6 +2780,16 @@
         "speak"
       ],
       "seconds": 1.41
+    },
+    "73c3d81495c4b7f5bad2ce278bd856074197065c652ed7dfd8e1e46ba337a5d3": {
+      "bytes": 8688,
+      "createdAt": "2026-08-31T00:02:16+00:00",
+      "en": "Yeah, hit me with some ideas!",
+      "path": "audio/73/73c3d81495c4b7f5bad2ce278bd856074197065c652ed7dfd8e1e46ba337a5d3.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.715
     },
     "73d186c170d72525fa6bc51c73e272e00b86f58b2c8a474bc620cd1d4cc1ac41": {
       "bytes": 7104,
@@ -3060,6 +3110,16 @@
         "speak"
       ],
       "seconds": 1.284
+    },
+    "8262b0061142eb779b6eec165abd4b51dda2fbc7734e7e536a3b31ed50c2ce06": {
+      "bytes": 8928,
+      "createdAt": "2026-08-31T00:02:21+00:00",
+      "en": "before our time runs out today,",
+      "path": "audio/82/8262b0061142eb779b6eec165abd4b51dda2fbc7734e7e536a3b31ed50c2ce06.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.766
     },
     "82a65bbffa7564f3c71fe17adf9c37b4c13a715fbf3324e2244065a0b0ca216f": {
       "bytes": 7992,
@@ -3470,6 +3530,16 @@
         "speak"
       ],
       "seconds": 1.294
+    },
+    "919769a6a07fd0c8c0eb1d2fa3831846cc59fd01bc18631f58eb8a47cf9626f2": {
+      "bytes": 16728,
+      "createdAt": "2026-08-31T00:02:19+00:00",
+      "en": "Maybe we can talk about what I did today. ( \"what I did today\" )",
+      "path": "audio/91/919769a6a07fd0c8c0eb1d2fa3831846cc59fd01bc18631f58eb8a47cf9626f2.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.498
     },
     "922ed645a4e76d44a854ed506ad0c39668fa78d8ff9287d4bc758efa154f5e98": {
       "bytes": 12792,
@@ -4020,6 +4090,16 @@
         "chat"
       ],
       "seconds": 1.939
+    },
+    "a8467ed73d1e9b0e1027e4c39de11da8d5fc687f42338f0399786498731fa8c4": {
+      "bytes": 8712,
+      "createdAt": "2026-08-31T00:02:15+00:00",
+      "en": "Yeah, if you've got any in mind! (",
+      "path": "audio/a8/a8467ed73d1e9b0e1027e4c39de11da8d5fc687f42338f0399786498731fa8c4.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.749
     },
     "a84a12afab3e465afc3addf7ab2a8ee7be297877f84c293a05283eaa36bff951": {
       "bytes": 7104,
@@ -5591,6 +5671,16 @@
       ],
       "seconds": 1.351
     },
+    "e47e7f800e35c6a6a6aee0a99d7748f6afb00f93e5717abd4f29620eb26d1372": {
+      "bytes": 9432,
+      "createdAt": "2026-08-31T00:02:13+00:00",
+      "en": "Winging it works totally fine too.",
+      "path": "audio/e4/e47e7f800e35c6a6a6aee0a99d7748f6afb00f93e5717abd4f29620eb26d1372.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.823
+    },
     "e4d6f3534760553424e5f676b1b94d8217a3a594e5b73e39448b4ac962161281": {
       "bytes": 7152,
       "createdAt": "2026-08-14T12:03:28+00:00",
@@ -5630,6 +5720,16 @@
         "speak"
       ],
       "seconds": 1.518
+    },
+    "e738e462211081feb7412e2e997ac7c0b662ffde10338536fee99594d34bb7fc": {
+      "bytes": 2760,
+      "createdAt": "2026-08-31T00:02:14+00:00",
+      "en": "dive",
+      "path": "audio/e7/e738e462211081feb7412e2e997ac7c0b662ffde10338536fee99594d34bb7fc.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.548
     },
     "e83528699e92db26e3ec97b9a0ceaace57964aaf5905868b6e8b06a8081a3212": {
       "bytes": 7008,
@@ -5991,6 +6091,16 @@
       ],
       "seconds": 2.015
     },
+    "f706f5ef9ac90a292be30291e4c6fab20cdc623b8fa3980df89baa6a5e996dd4": {
+      "bytes": 14280,
+      "createdAt": "2026-08-31T00:02:17+00:00",
+      "en": "Maybe we can talk about what I've done today. ( I've )",
+      "path": "audio/f7/f706f5ef9ac90a292be30291e4c6fab20cdc623b8fa3980df89baa6a5e996dd4.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.907
+    },
     "f7d0c1293f2f25befd0dc850e065fa688d6055e2153a2f06eacfa65e79eb782f": {
       "bytes": 8976,
       "createdAt": "2026-08-14T12:02:32+00:00",
@@ -6050,6 +6160,16 @@
         "chat"
       ],
       "seconds": 4.277
+    },
+    "fac353d2244f2f8ef796b929ce01d465bc6c846ca9f077089b5b53f2cb43cc49": {
+      "bytes": 18840,
+      "createdAt": "2026-08-31T00:02:12+00:00",
+      "en": "have you thought about any other topics you'd like to dive into next time?",
+      "path": "audio/fa/fac353d2244f2f8ef796b929ce01d465bc6c846ca9f077089b5b53f2cb43cc49.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.662
     },
     "fb01441f5750fa4b249d0226f19cbaa14dcb7d5d6feb9761c73b4987b7073534": {
       "bytes": 8520,
@@ -6223,7 +6343,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-28T15:42:59+00:00",
+  "updatedAt": "2026-08-31T00:02:23+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
