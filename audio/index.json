@@ -281,6 +281,16 @@
       ],
       "seconds": 1.163
     },
+    "07140e82d4275e5aff30031a515844440f62fcac363a0530d8e1d77daff978aa": {
+      "bytes": 10200,
+      "createdAt": "2026-08-31T15:10:15+00:00",
+      "en": "We don't actually have a strict cutoff!",
+      "path": "audio/07/07140e82d4275e5aff30031a515844440f62fcac363a0530d8e1d77daff978aa.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.956
+    },
     "07d207ca1737d69d94fb268edcf8839a83542127df324377dc2ca6e71b7ed058": {
       "bytes": 13008,
       "createdAt": "2026-08-14T12:14:45+00:00",
@@ -761,6 +771,16 @@
       ],
       "seconds": 2.221
     },
+    "1f736492918e6bb785fc71f5d79778724f07fcdf0fd898bbc2ac624288026b1a": {
+      "bytes": 7152,
+      "createdAt": "2026-08-31T15:10:30+00:00",
+      "en": "That makes total sense!",
+      "path": "audio/1f/1f736492918e6bb785fc71f5d79778724f07fcdf0fd898bbc2ac624288026b1a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.398
+    },
     "1f9c490654ac64a9d874fc814b0681813b113b41b321e4946a310e22754f30b4": {
       "bytes": 7968,
       "createdAt": "2026-08-17T14:13:21+00:00",
@@ -800,6 +820,16 @@
         "speak"
       ],
       "seconds": 1.347
+    },
+    "20604f9cb793bb1a8d10ec25fad9ef978236b834b19ff2bcd7a077e509283a64": {
+      "bytes": 18408,
+      "createdAt": "2026-08-31T15:10:32+00:00",
+      "en": "had you almost given up on finding a good AI tool for English?",
+      "path": "audio/20/20604f9cb793bb1a8d10ec25fad9ef978236b834b19ff2bcd7a077e509283a64.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.489
     },
     "206c4cfcad3d521e5108973e8e38d3b4b0120883e6cd97c15d7d81782863c9ef": {
       "bytes": 6240,
@@ -970,6 +1000,16 @@
         "chat"
       ],
       "seconds": 2.039
+    },
+    "2a8cdf11278e2a1c3f1afa2dcbd2b9027fcc2b7bd1184d3b7133d29007edf23e": {
+      "bytes": 21768,
+      "createdAt": "2026-08-31T15:10:14+00:00",
+      "en": "I just meant our chat session for today is coming to a natural stopping point",
+      "path": "audio/2a/2a8cdf11278e2a1c3f1afa2dcbd2b9027fcc2b7bd1184d3b7133d29007edf23e.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.447
     },
     "2aafc36b740af7ed48469e7df8f4364af74a917a71bd208739044c85829cd3d5": {
       "bytes": 7368,
@@ -1211,6 +1251,16 @@
       ],
       "seconds": 1.984
     },
+    "3180651413a5914d8bc59c0aa6a526a123ecb7ec8f15d0739443e074846205da": {
+      "bytes": 18024,
+      "createdAt": "2026-08-31T15:10:21+00:00",
+      "en": "Since I'm an AI, we can literally chat as long as you want.",
+      "path": "audio/31/3180651413a5914d8bc59c0aa6a526a123ecb7ec8f15d0739443e074846205da.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.619
+    },
     "31cfbce3d0fdad2f1ae01e0ecf798ebc7857b914bd04d8b0b6a2b486c3db143a": {
       "bytes": 6720,
       "createdAt": "2026-08-23T23:54:45+00:00",
@@ -1241,6 +1291,16 @@
       ],
       "seconds": 1.321
     },
+    "33e38fb52eb993382d9c5f4fdc90a0ebd4a43585595c48f79d6029f6fe53d7ea": {
+      "bytes": 7728,
+      "createdAt": "2026-08-31T15:10:20+00:00",
+      "en": "There's no timer at all!",
+      "path": "audio/33/33e38fb52eb993382d9c5f4fdc90a0ebd4a43585595c48f79d6029f6fe53d7ea.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.47
+    },
     "34a0f6807231e512752da422a832228433ccdd1e2b22da8e72fdcad21e05ff68": {
       "bytes": 8736,
       "createdAt": "2026-08-14T12:01:31+00:00",
@@ -1261,6 +1321,16 @@
       ],
       "seconds": 10.603
     },
+    "35648e3588c7a694b718966814982817b1f7e652480f2e0ea16a906f03f7bf43": {
+      "bytes": 12936,
+      "createdAt": "2026-08-31T15:10:27+00:00",
+      "en": "Before you started using this ongoing chat with me",
+      "path": "audio/35/35648e3588c7a694b718966814982817b1f7e652480f2e0ea16a906f03f7bf43.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.519
+    },
     "359068d401dff1fe14466d8e42cd17602ab8838efe1eeea90956516a9ade05fe": {
       "bytes": 11424,
       "createdAt": "2026-08-14T12:05:29+00:00",
@@ -1270,6 +1340,16 @@
         "chat"
       ],
       "seconds": 2.206
+    },
+    "365741f4c8cc5c717334be89842f4d19ab5a5f0f423fb3da6fa87ff923ed497b": {
+      "bytes": 16128,
+      "createdAt": "2026-08-31T15:10:17+00:00",
+      "en": "Yes, I had thought our chat session was unlimited in time",
+      "path": "audio/36/365741f4c8cc5c717334be89842f4d19ab5a5f0f423fb3da6fa87ff923ed497b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.196
     },
     "3746c5b53d1ed6e4e90104df5922200ccde528e8e7dcea763d0bae9ab0d98f65": {
       "bytes": 7848,
@@ -1681,6 +1761,16 @@
       ],
       "seconds": 1.27
     },
+    "48733e0a6ab58336a4651766e10f982101f1c922827d9cebceb132606d0fce89": {
+      "bytes": 8016,
+      "createdAt": "2026-08-31T15:10:22+00:00",
+      "en": "My bad for confusing you.",
+      "path": "audio/48/48733e0a6ab58336a4651766e10f982101f1c922827d9cebceb132606d0fce89.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.592
+    },
     "487b7710f1f992a09b0044692688623d86832aaa16f12c41e140d8175d73145b": {
       "bytes": 12624,
       "createdAt": "2026-08-14T12:14:47+00:00",
@@ -1871,6 +1961,16 @@
       ],
       "seconds": 1.366
     },
+    "521a8215a9738fc5ff39c2d96da90d3f62787eeb39feacb3aab6644776a1a250": {
+      "bytes": 11448,
+      "createdAt": "2026-08-31T15:10:29+00:00",
+      "en": "instead of using any other AI apps.",
+      "path": "audio/52/521a8215a9738fc5ff39c2d96da90d3f62787eeb39feacb3aab6644776a1a250.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.22
+    },
     "52388fd1d02b2b0b643912edf0be32db3d8f8412415d0224e54c821a1869e8c9": {
       "bytes": 9576,
       "createdAt": "2026-08-14T12:03:05+00:00",
@@ -1991,6 +2091,16 @@
       ],
       "seconds": 1.558
     },
+    "573baccbac89e6b064dc4c590c9f905840025c751b97022f784771485b3357d4": {
+      "bytes": 14232,
+      "createdAt": "2026-08-31T15:10:16+00:00",
+      "en": "had you thought our lessons were unlimited in time?",
+      "path": "audio/57/573baccbac89e6b064dc4c590c9f905840025c751b97022f784771485b3357d4.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.618
+    },
     "579877d8912ac6fc8c5fe5baee080562e90096f46d8a7909abf5cd9ac0ab7719": {
       "bytes": 7944,
       "createdAt": "2026-08-22T10:57:24+00:00",
@@ -2010,6 +2120,16 @@
         "speak"
       ],
       "seconds": 1.155
+    },
+    "58219a93cb7ec3cd9fb76bc421e345be626c84b12586301e8363639fd4de31d2": {
+      "bytes": 6792,
+      "createdAt": "2026-08-31T15:10:12+00:00",
+      "en": "I have kept the receipt.",
+      "path": "audio/58/58219a93cb7ec3cd9fb76bc421e345be626c84b12586301e8363639fd4de31d2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.356
     },
     "5833cfc3bc37cbee080b04f4411aaad8a09963daf76be30fbb544f0bc2236a26": {
       "bytes": 5832,
@@ -2611,6 +2731,16 @@
       ],
       "seconds": 1.576
     },
+    "6be9fa7b22305f2ed291e98135e6e62b7b325e03c1f22ffb1ee7ddf6ee6ccd9f": {
+      "bytes": 8592,
+      "createdAt": "2026-08-31T15:10:18+00:00",
+      "en": "before you said our time ran out.",
+      "path": "audio/6b/6be9fa7b22305f2ed291e98135e6e62b7b325e03c1f22ffb1ee7ddf6ee6ccd9f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.726
+    },
     "6c8225edacfda04da987c97a99111a6240f38205b15a7993e8e8e25087160310": {
       "bytes": 7632,
       "createdAt": "2026-08-14T12:02:35+00:00",
@@ -2650,6 +2780,16 @@
         "speak"
       ],
       "seconds": 1.747
+    },
+    "6ddd1ef2c7cc381653a29b7ba34743c94e84789fded99492a5ecd6cf8993d6a1": {
+      "bytes": 4464,
+      "createdAt": "2026-08-31T15:10:25+00:00",
+      "en": "Not at all!",
+      "path": "audio/6d/6ddd1ef2c7cc381653a29b7ba34743c94e84789fded99492a5ecd6cf8993d6a1.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.874
     },
     "6df870db37c4fd364642f13d87e42b2f62ad63049d733a22046b44efde4a9efb": {
       "bytes": 9984,
@@ -2720,6 +2860,16 @@
         "chat"
       ],
       "seconds": 1.524
+    },
+    "71bcdd0fbe37166502889b1fb52418d33ff53854cbcdcfbe26e29896fc7fe0dc": {
+      "bytes": 9768,
+      "createdAt": "2026-08-31T15:10:23+00:00",
+      "en": "Before this little misunderstanding",
+      "path": "audio/71/71bcdd0fbe37166502889b1fb52418d33ff53854cbcdcfbe26e29896fc7fe0dc.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.833
     },
     "721ddecf40e551bbeac1c89add2650b907404268f38003864be6f049dd983870": {
       "bytes": 6624,
@@ -2921,6 +3071,16 @@
       ],
       "seconds": 1.583
     },
+    "798958f8bb9a8f5682d691166920f35844e1e7e54f5fc3f2d8650d422d271423": {
+      "bytes": 7128,
+      "createdAt": "2026-08-31T15:10:11+00:00",
+      "en": "He has hidden the sidebar.",
+      "path": "audio/79/798958f8bb9a8f5682d691166920f35844e1e7e54f5fc3f2d8650d422d271423.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.431
+    },
     "7a331fa0b821d41bf441c7c24c2f230ad9dc75a79a32ea153a98e27ed49aa7b5": {
       "bytes": 23880,
       "createdAt": "2026-08-14T14:35:47+00:00",
@@ -3121,6 +3281,16 @@
       ],
       "seconds": 1.766
     },
+    "827722e10c77446a9be4a14bdf63cba4b67b812c309aa5c470f89bedf0412e8d": {
+      "bytes": 8880,
+      "createdAt": "2026-08-31T15:10:10+00:00",
+      "en": "They have changed the brand color.",
+      "path": "audio/82/827722e10c77446a9be4a14bdf63cba4b67b812c309aa5c470f89bedf0412e8d.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.68
+    },
     "82a65bbffa7564f3c71fe17adf9c37b4c13a715fbf3324e2244065a0b0ca216f": {
       "bytes": 7992,
       "createdAt": "2026-08-14T12:01:40+00:00",
@@ -3221,6 +3391,16 @@
       ],
       "seconds": 1.369
     },
+    "867aa6ea0b48b537054716bfe91d2dd6b9327fa16e6d983b2020ae27426912fe": {
+      "bytes": 13320,
+      "createdAt": "2026-08-31T15:10:26+00:00",
+      "en": "There's no such thing as \"too long\" for an AI!",
+      "path": "audio/86/867aa6ea0b48b537054716bfe91d2dd6b9327fa16e6d983b2020ae27426912fe.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.496
+    },
     "86c9c09a9314437cacd0e1be2da06687e983640e2422bf7386d8a551295723cd": {
       "bytes": 8376,
       "createdAt": "2026-08-14T12:01:46+00:00",
@@ -3260,6 +3440,16 @@
         "chat"
       ],
       "seconds": 3.977
+    },
+    "88a29bebd8c7da615f33be2aa7889853531156bfad3575d51db41f9086453181": {
+      "bytes": 6024,
+      "createdAt": "2026-08-31T15:10:28+00:00",
+      "en": "chat with an AI",
+      "path": "audio/88/88a29bebd8c7da615f33be2aa7889853531156bfad3575d51db41f9086453181.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.225
     },
     "890f7eb1eda9a4d06103209b793fa123ef590382d9c64d5648805fe16018d475": {
       "bytes": 6096,
@@ -3921,6 +4111,16 @@
       ],
       "seconds": 3.357
     },
+    "a0ebae906d26bdecc5875768e807dc776bab0df56103163d45cd168719e315e8": {
+      "bytes": 8784,
+      "createdAt": "2026-08-31T15:10:28+00:00",
+      "en": "I've tried a bunch of AI apps",
+      "path": "audio/a0/a0ebae906d26bdecc5875768e807dc776bab0df56103163d45cd168719e315e8.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.772
+    },
     "a1d1ef4975cb78d8c0d892447bd6b393324a1cc83495f6ccbb22a0c4593ac89a": {
       "bytes": 9936,
       "createdAt": "2026-08-14T12:07:58+00:00",
@@ -3980,6 +4180,16 @@
         "chat"
       ],
       "seconds": 1.848
+    },
+    "a4c170c53e7900038b6c676f403b9cab1dabe4d8b0838b604305e6b048ee26e8": {
+      "bytes": 12120,
+      "createdAt": "2026-08-31T15:10:19+00:00",
+      "en": "Since you're an AI and we didn't set a timer",
+      "path": "audio/a4/a4c170c53e7900038b6c676f403b9cab1dabe4d8b0838b604305e6b048ee26e8.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.429
     },
     "a4cfa7b27c4432641711994ccbb78a8079ee7f894ee7e734dfb11ff32a6d7734": {
       "bytes": 7536,
@@ -4780,6 +4990,16 @@
         "chat"
       ],
       "seconds": 3.748
+    },
+    "c1c4213712b799642d182402a17760eaece7b193953085822f39c53f4f88208a": {
+      "bytes": 7560,
+      "createdAt": "2026-08-31T15:10:24+00:00",
+      "en": "it’s gone on for too long.",
+      "path": "audio/c1/c1c4213712b799642d182402a17760eaece7b193953085822f39c53f4f88208a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.493
     },
     "c200d4be62dd551569a19d621e6083b4870510c33c62d859d407f031235c9f97": {
       "bytes": 5424,
@@ -6343,7 +6563,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-08-31T00:02:23+00:00",
+  "updatedAt": "2026-08-31T15:10:32+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
