@@ -441,6 +441,16 @@
       ],
       "seconds": 1.478
     },
+    "0ccff88b51ae0b11e24db9253efd681e154379deb5642c32f45daeab40bf7b02": {
+      "bytes": 11880,
+      "createdAt": "2026-09-07T23:57:19+00:00",
+      "en": "We didn’t live in the same city when we were kids",
+      "path": "audio/0c/0ccff88b51ae0b11e24db9253efd681e154379deb5642c32f45daeab40bf7b02.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.481
+    },
     "0d086619444356d13f13752465ba7e3c9a33b4cab65816bfb2548414d39dac18": {
       "bytes": 27288,
       "createdAt": "2026-08-14T12:06:18+00:00",
@@ -500,6 +510,16 @@
         "chat"
       ],
       "seconds": 3.46
+    },
+    "106dab41b447b0ebb688152144dd42270bd4da66ecbe7dd4fbad1f208ff4a701": {
+      "bytes": 17520,
+      "createdAt": "2026-09-07T23:57:32+00:00",
+      "en": "She showed me around lots of cool places and good restaurants.",
+      "path": "audio/10/106dab41b447b0ebb688152144dd42270bd4da66ecbe7dd4fbad1f208ff4a701.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.605
     },
     "10dda05d2d43d8e40efb867f4e37719f61b5ddc443f78967254a7254a80f1b53": {
       "bytes": 14208,
@@ -901,6 +921,16 @@
       ],
       "seconds": 1.523
     },
+    "1fa119ad0f88c701b934c85841218a18fc96be3958f5355e2a899a637a38ee11": {
+      "bytes": 13656,
+      "createdAt": "2026-09-07T23:57:20+00:00",
+      "en": "had you guys always been pretty close growing up?",
+      "path": "audio/1f/1fa119ad0f88c701b934c85841218a18fc96be3958f5355e2a899a637a38ee11.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.76
+    },
     "201128a624071a086a889cfa63e700f00d196c11f8f2b00208ec366a7e08ab5c": {
       "bytes": 14712,
       "createdAt": "2026-08-14T12:14:48+00:00",
@@ -1171,6 +1201,16 @@
       ],
       "seconds": 5.568
     },
+    "2b777a99c3f4de18ff6d33fbfb6b7042c180aeaab4f2344c029d4b1ede8f23fb": {
+      "bytes": 24240,
+      "createdAt": "2026-09-07T23:57:36+00:00",
+      "en": "Yeah, I'd been to a bunch of countries before Singapore, mostly in Asia like Thailand",
+      "path": "audio/2b/2b777a99c3f4de18ff6d33fbfb6b7042c180aeaab4f2344c029d4b1ede8f23fb.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 5.036
+    },
     "2c5629a7ff81db707bcd0c62ff7f727bacfd926614f4dd9c4264f109cfdf1b91": {
       "bytes": 4296,
       "createdAt": "2026-08-31T00:02:12+00:00",
@@ -1220,6 +1260,16 @@
         "chat"
       ],
       "seconds": 1.372
+    },
+    "2d6dedbdd8552ae0856248e41a024d5e7c892e928b175074cdfe183477a3ac92": {
+      "bytes": 17400,
+      "createdAt": "2026-09-07T23:57:25+00:00",
+      "en": "Growing up in different cities definitely keeps you a bit distant",
+      "path": "audio/2d/2d6dedbdd8552ae0856248e41a024d5e7c892e928b175074cdfe183477a3ac92.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.597
     },
     "2d9019f73392f30050a7de4daa07eba410db6e9fe02c72b4062b95dfbae1cbc0": {
       "bytes": 15912,
@@ -1631,6 +1681,16 @@
       ],
       "seconds": 1.738
     },
+    "3b8bccd83278ba6462744061094eae6e6e218af5aa2eea87b1cac3866a05388d": {
+      "bytes": 17640,
+      "createdAt": "2026-09-07T23:57:27+00:00",
+      "en": "had you guys ever traveled anywhere together just the two of you?",
+      "path": "audio/3b/3b8bccd83278ba6462744061094eae6e6e218af5aa2eea87b1cac3866a05388d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.464
+    },
     "3c033b9f53bca2e98c89caae712dfe5c8f2459d791b6d939d7ecdc4d59fea2f6": {
       "bytes": 21624,
       "createdAt": "2026-08-14T12:07:36+00:00",
@@ -1720,6 +1780,16 @@
         "chat"
       ],
       "seconds": 14.442
+    },
+    "3e9d40ba701657733026aab95053555c9e5c8438f3f34f1fcdeb5078b7c6a4fc": {
+      "bytes": 14664,
+      "createdAt": "2026-09-07T23:57:17+00:00",
+      "en": "We had reused the old component before the deadline.",
+      "path": "audio/3e/3e9d40ba701657733026aab95053555c9e5c8438f3f34f1fcdeb5078b7c6a4fc.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.866
     },
     "3efafcb50f2ecf1bef45cd47991b003d0c39d88dbe8e06b7336cc1b512cf747e": {
       "bytes": 6936,
@@ -1830,6 +1900,16 @@
         "speak"
       ],
       "seconds": 1.298
+    },
+    "4271efdc16dc2fe548cac5a7fd9851927365634867aaf9289447035c87f98821": {
+      "bytes": 17568,
+      "createdAt": "2026-09-07T23:57:22+00:00",
+      "en": "usually during Chinese New Year or some family gatherings.",
+      "path": "audio/42/4271efdc16dc2fe548cac5a7fd9851927365634867aaf9289447035c87f98821.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.552
     },
     "42f7f5699af3e3b7155f7cf2802a24de44083f67f9de9dccc0b6e61e1e95469c": {
       "bytes": 8880,
@@ -2051,6 +2131,16 @@
       ],
       "seconds": 1.785
     },
+    "4af988ab6a8a8d67b0998a5808858399e9876fae88bf5a6e6a9263e6f256ac5d": {
+      "bytes": 13512,
+      "createdAt": "2026-09-07T23:57:34+00:00",
+      "en": "had you ever traveled outside of China before?",
+      "path": "audio/4a/4af988ab6a8a8d67b0998a5808858399e9876fae88bf5a6e6a9263e6f256ac5d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.573
+    },
     "4b0a9402467d203548a5dba7560e99072fd019a157585a68aa379d942716e224": {
       "bytes": 6168,
       "createdAt": "2026-08-14T12:05:19+00:00",
@@ -2231,6 +2321,16 @@
       ],
       "seconds": 1.627
     },
+    "54144b9c54c475ba527ff58c38fbf1e781cc774a591803bc7021cc1ee63b92f7": {
+      "bytes": 7248,
+      "createdAt": "2026-09-07T23:57:16+00:00",
+      "en": "I have understood your point.",
+      "path": "audio/54/54144b9c54c475ba527ff58c38fbf1e781cc774a591803bc7021cc1ee63b92f7.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.42
+    },
     "54b49fc744ab543d4e8d06153ac81d7eb35004c010da1c4ec676fb0e26c7a920": {
       "bytes": 9120,
       "createdAt": "2026-08-14T12:02:43+00:00",
@@ -2350,6 +2450,16 @@
         "chat"
       ],
       "seconds": 1.23
+    },
+    "591d429be39642facde497f7b63d315801c3782ced710de7d70a15f1c4325d67": {
+      "bytes": 13728,
+      "createdAt": "2026-09-07T23:57:28+00:00",
+      "en": "I traveled to Singapore and stayed at her apartment",
+      "path": "audio/59/591d429be39642facde497f7b63d315801c3782ced710de7d70a15f1c4325d67.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.856
     },
     "594923dcfbd8ba025fad13f6533535f3339bcffdcd3ce696b2703361ccdcf7da": {
       "bytes": 7248,
@@ -3281,6 +3391,16 @@
       ],
       "seconds": 1.506
     },
+    "78732b818607bc507357cde5883715cac31fa0786f8b8ce2d2b4dc166812c346": {
+      "bytes": 10440,
+      "createdAt": "2026-09-07T23:57:18+00:00",
+      "en": "I had called her before she texted me.",
+      "path": "audio/78/78732b818607bc507357cde5883715cac31fa0786f8b8ce2d2b4dc166812c346.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.017
+    },
     "78db988222cfde921597b420a75120fb00366a6bd5d36c5b83fbebe3fd6a5567": {
       "bytes": 6216,
       "createdAt": "2026-08-17T14:13:03+00:00",
@@ -3761,6 +3881,16 @@
       ],
       "seconds": 1.321
     },
+    "8a01cdaced615dc936f0f33973398886de2a99319a0388aff9cfe71ac1e2c143": {
+      "bytes": 7632,
+      "createdAt": "2026-09-07T23:57:15+00:00",
+      "en": "I have applied for more time.",
+      "path": "audio/8a/8a01cdaced615dc936f0f33973398886de2a99319a0388aff9cfe71ac1e2c143.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.591
+    },
     "8a5d6d276a45722101664da6c3236c8d6e7bea3aadaa2a72285e50fb64cf6cdf": {
       "bytes": 8424,
       "createdAt": "2026-08-22T10:57:22+00:00",
@@ -4031,6 +4161,16 @@
       ],
       "seconds": 1.556
     },
+    "93608ffe30a18a0e0c845c5b36374de81b10fe4616bb4a45c72cc9ed408459fe": {
+      "bytes": 7968,
+      "createdAt": "2026-09-07T23:57:11+00:00",
+      "en": "I have replied to the client.",
+      "path": "audio/93/93608ffe30a18a0e0c845c5b36374de81b10fe4616bb4a45c72cc9ed408459fe.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.604
+    },
     "93bb68aa2b7f8592720e00b9110275711a784097908661d8f8072587f3324202": {
       "bytes": 9864,
       "createdAt": "2026-08-20T00:06:41+00:00",
@@ -4040,6 +4180,16 @@
         "speak"
       ],
       "seconds": 1.936
+    },
+    "943d19a023ecd455ee2669d4d0ff357ea06f1cb835d9e15faf19aa84a82a82e2": {
+      "bytes": 8592,
+      "createdAt": "2026-09-07T23:57:12+00:00",
+      "en": "We have seen this pattern before.",
+      "path": "audio/94/943d19a023ecd455ee2669d4d0ff357ea06f1cb835d9e15faf19aa84a82a82e2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.674
     },
     "948eb7079fa8277183037b7d6561f20329424ac8d7b90423c01c6f792dc1471d": {
       "bytes": 7248,
@@ -4250,6 +4400,16 @@
         "speak"
       ],
       "seconds": 2.062
+    },
+    "9d9f5b9c88fbeaa2b3df73bb0c91ee83ce97bbcdc104648ef08cc9b61a326bd5": {
+      "bytes": 13608,
+      "createdAt": "2026-09-07T23:57:23+00:00",
+      "en": "but family gatherings are a great way to catch up!",
+      "path": "audio/9d/9d9f5b9c88fbeaa2b3df73bb0c91ee83ce97bbcdc104648ef08cc9b61a326bd5.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.74
     },
     "9dafd6c117c08fce0b35060f3847d6f68dcd4016b3ea07f5f18cdd2a30bdc876": {
       "bytes": 6792,
@@ -4771,6 +4931,16 @@
       ],
       "seconds": 2.746
     },
+    "b03a11baa4de3a33808f1f75ec33a18518d7218c14ac719471fcdec0fe5b1d98": {
+      "bytes": 10248,
+      "createdAt": "2026-09-07T23:57:13+00:00",
+      "en": "She has never flown business class.",
+      "path": "audio/b0/b03a11baa4de3a33808f1f75ec33a18518d7218c14ac719471fcdec0fe5b1d98.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.907
+    },
     "b06ec96a61b70da3d1ef147a59dd347d7512c47083b10bd1733489fe7968f3e3": {
       "bytes": 5208,
       "createdAt": "2026-08-14T12:01:07+00:00",
@@ -5011,6 +5181,16 @@
       ],
       "seconds": 2.054
     },
+    "b8af4462a926641a0fe10debb3a43550ddc9a21cda81e0a2fb0db728e6b9caf1": {
+      "bytes": 11352,
+      "createdAt": "2026-09-07T23:57:14+00:00",
+      "en": "We had collected the feedback by Monday.",
+      "path": "audio/b8/b8af4462a926641a0fe10debb3a43550ddc9a21cda81e0a2fb0db728e6b9caf1.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.145
+    },
     "b8cab532ee0a40e0fa272e628192d6604ef4097f48f18de0b84fdc4b52e74c73": {
       "bytes": 7248,
       "createdAt": "2026-08-14T12:01:11+00:00",
@@ -5020,6 +5200,16 @@
         "speak"
       ],
       "seconds": 1.441
+    },
+    "b8e16e20b07c54174b8815ff6bab7b01d72057a446cd457c8f04dcb313f9e32c": {
+      "bytes": 7368,
+      "createdAt": "2026-09-07T23:57:25+00:00",
+      "en": "she headed off to Singapore",
+      "path": "audio/b8/b8e16e20b07c54174b8815ff6bab7b01d72057a446cd457c8f04dcb313f9e32c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.503
     },
     "b9192f5ecaecc015eb4c0d249f3363cc4edc84958fe369cbc4addf886fb07ee7": {
       "bytes": 9408,
@@ -5801,6 +5991,16 @@
       ],
       "seconds": 1.42
     },
+    "d65b2f7521435007e85d404561d75745ee35326ae73d6247ad724b706e665939": {
+      "bytes": 4992,
+      "createdAt": "2026-09-07T23:57:33+00:00",
+      "en": "That's spot on!",
+      "path": "audio/d6/d65b2f7521435007e85d404561d75745ee35326ae73d6247ad724b706e665939.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.038
+    },
     "d6d0f4f573d253c752161f33a5c3f91b92a0292cdb88ad7b7909c2e6c3e825fa": {
       "bytes": 8064,
       "createdAt": "2026-08-14T12:03:30+00:00",
@@ -6551,6 +6751,16 @@
       ],
       "seconds": 1.31
     },
+    "f3d7e6ff7709a088d248ae082308647193106ea662053a6c0b18b46dcb110343": {
+      "bytes": 29808,
+      "createdAt": "2026-09-07T23:57:31+00:00",
+      "en": "During that time, she was like my tour guide and took me to lots of famous sights and some nice restaurants.",
+      "path": "audio/f3/f3d7e6ff7709a088d248ae082308647193106ea662053a6c0b18b46dcb110343.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 6.155
+    },
     "f4115405a4a72dfacac01c8fa0b6df106248adde92c15767ae26be4b964635b9": {
       "bytes": 8544,
       "createdAt": "2026-08-22T10:57:31+00:00",
@@ -6893,7 +7103,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-03T14:05:25+00:00",
+  "updatedAt": "2026-09-07T23:57:36+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
