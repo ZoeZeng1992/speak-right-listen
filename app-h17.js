@@ -3,7 +3,8 @@ const CACHE_KEY="sr_listen_pack_cache";
 const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
-const APP_BUILD="20260817-sweep1";
+const REMOVED_KEY="sr_removed_ens";
+const APP_BUILD="20260820-unfav1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -65,6 +66,20 @@ function parseFavSyncId(raw){
   return { provider:"jsonblob", id:s };
 }
 
+/* 手机取消收藏：本地删掉还不够，电脑那边仍收藏着，下次同步又会推回来。
+   所以把取消掉的英文记在本地，一路带到回写包里交给电脑；同时在收到的包里
+   把它们过滤掉，直到电脑真的删掉为止（那之后包里就没有了，自动收敛）。 */
+function loadRemoved(){
+  try{ const a=JSON.parse(localStorage.getItem(REMOVED_KEY)||"[]"); return Array.isArray(a)?a.filter(Boolean):[]; }
+  catch(e){ return []; }
+}
+function saveRemoved(list){
+  try{ localStorage.setItem(REMOVED_KEY, JSON.stringify([...new Set(list||[])].slice(0,500))); }catch(e){}
+}
+function markRemoved(en){
+  if(!en) return;
+  const list=loadRemoved(); list.push(en); saveRemoved(list);
+}
 function loadPrefs(){
   try{
     const p=JSON.parse(localStorage.getItem(PREF_KEY)||"{}");
@@ -425,6 +440,18 @@ function mergeKeepingOrder(orderItems, otherItems){
 }
 function applyPack(pack, source, opts){
   if(!pack || !Array.isArray(pack.items)) throw new Error("听练包格式不对");
+  // 已取消收藏的句子：电脑消化前会一直出现在包里，先挡掉；
+  // 包里已经没有的说明电脑删好了，就把它从待办名单里清掉。
+  const removed=loadRemoved();
+  if(removed.length){
+    const inPack=new Set(pack.items.map(x=>x&&x.en).filter(Boolean));
+    const stillPending=removed.filter(en=>inPack.has(en));
+    if(stillPending.length!==removed.length) saveRemoved(stillPending);
+    if(stillPending.length){
+      const drop=new Set(stillPending);
+      pack={ ...pack, items: pack.items.filter(x=>!(x&&drop.has(x.en))) };
+    }
+  }
   pack={ ...pack, items: fixPackItems(pack.items) };
   const resetIdx=!!(opts&&opts.resetIdx);
   // 手动刷新 / 首次载入：按当前排序重排；后台静默同步：只合并次数、不打乱听练顺序
@@ -617,7 +644,10 @@ function buildStatsPack(){
     if(!x||!x.en) return;
     stats[x.en]=[+(x.fails||0)||0, +(x.gots||0)||0];
   });
-  return { v:6, updatedAt:Date.now(), stats };
+  const removed=loadRemoved();
+  return removed.length
+    ? { v:6, updatedAt:Date.now(), stats, removed }
+    : { v:6, updatedAt:Date.now(), stats };
 }
 /** 读云端次数，兼容 v6 小包和旧的 v4 整包 */
 function readStatsPack(pack){
@@ -1689,6 +1719,46 @@ if($("restartBtn")) $("restartBtn").onclick=()=>{
   render();
 };
 if($("missBtn")) $("missBtn").onclick=()=>recordPractice();
+/* ---- 取消收藏（必须二次确认：这是破坏性操作，且撤销要回电脑上做） ---- */
+let _unfavEn="";
+function openUnfavConfirm(){
+  const cur=current();
+  if(!cur||!cur.en){ toast("当前没有句子", true); return; }
+  _unfavEn=cur.en;
+  const box=$("unfavEn"); if(box) box.textContent=cur.en;
+  const mask=$("unfavMask"); if(mask) mask.classList.add("show");
+}
+function closeUnfavConfirm(){
+  const mask=$("unfavMask"); if(mask) mask.classList.remove("show");
+  _unfavEn="";
+}
+function doUnfav(){
+  const en=_unfavEn;
+  if(!en){ closeUnfavConfirm(); return; }
+  stopLoop();                                   // 别让它继续播已经删掉的句子
+  markRemoved(en);                              // 记进待办，交给电脑
+  const wasIdx=state.idx;
+  state.items=state.items.filter(x=>!(x&&x.en===en));
+  state.playOrder=(state.playOrder||[]).filter(e=>e!==en);
+  if(state.currentEn===en) state.currentEn="";
+  const len=playLen();
+  state.idx=Math.min(Math.max(0, wasIdx), Math.max(0, len-1));
+  try{
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      v:4, updatedAt:Date.now(), items:state.items, source:"取消收藏"
+    }));
+  }catch(e){}
+  savePrefs();
+  closeUnfavConfirm();
+  render();
+  schedulePushStats();                          // 把 removed 带给电脑
+  toast("已取消收藏，剩 "+state.items.length+" 句", false);
+}
+if($("unfavBtn"))    $("unfavBtn").onclick=openUnfavConfirm;
+if($("unfavCancel")) $("unfavCancel").onclick=closeUnfavConfirm;
+if($("unfavOk"))     $("unfavOk").onclick=doUnfav;
+if($("unfavMask"))   $("unfavMask").onclick=e=>{ if(e.target===$("unfavMask")) closeUnfavConfirm(); };
+
 if($("jsonbinKeyInput")){
   $("jsonbinKeyInput").value=state.jsonbinKey||"";
   $("jsonbinKeyInput").onchange=e=>saveJsonbinKey(e.target.value);

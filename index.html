@@ -74,6 +74,17 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
+  .tog.danger{color:#b3261e;border-color:#f0c8c4}
+  .confirm-mask{display:none;position:fixed;inset:0;z-index:60;background:rgba(28,25,23,.45);
+    align-items:center;justify-content:center;padding:20px}
+  .confirm-mask.show{display:flex}
+  .confirm-box{background:var(--surface,#fff);border-radius:20px;padding:20px 18px 16px;max-width:340px;width:100%;
+    box-shadow:0 18px 50px rgba(0,0,0,.25)}
+  .confirm-box h3{margin:0 0 10px;font-size:17px}
+  .confirm-en{margin:0 0 10px;font-family:var(--font-en);font-size:17px;line-height:1.35;word-break:break-word}
+  .confirm-tip{margin:0 0 16px;font-size:12.5px;line-height:1.6;color:var(--muted)}
+  .confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .confirm-actions .btn{height:46px;font-size:15px}
   .icon-btn{
     height:40px;padding:0 14px;border-radius:999px;
     border:1px solid var(--line-strong);
@@ -346,6 +357,17 @@
   <!-- 极轻循环音：维持 iOS「正在播放」，AirPods 下一曲才能进网页 -->
   <audio id="mediaKeeper" src="silence.wav" loop preload="auto" playsinline webkit-playsinline style="display:none"></audio>
 
+  <div class="confirm-mask" id="unfavMask" role="dialog" aria-modal="true" aria-labelledby="unfavTitle">
+    <div class="confirm-box">
+      <h3 id="unfavTitle">取消收藏这句？</h3>
+      <p class="confirm-en" id="unfavEn"></p>
+      <p class="confirm-tip">会从错题集里移除，错误次数一并清掉，并同步到电脑。<br>撤销需要在电脑上重新收藏。</p>
+      <div class="confirm-actions">
+        <button class="btn" type="button" id="unfavCancel">再想想</button>
+        <button class="btn bad" type="button" id="unfavOk">取消收藏</button>
+      </div>
+    </div>
+  </div>
   <section class="player" id="player">
     <div class="stage">
       <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
@@ -354,6 +376,7 @@
       <div class="toggles">
         <button type="button" class="tog" id="showCnBtn">中文</button>
         <button type="button" class="tog" id="showNoteBtn">备注</button>
+        <button type="button" class="tog danger" id="unfavBtn">取消收藏</button>
       </div>
       <div class="panel cn" id="cnPanel"></div>
       <div class="panel note" id="notePanel"></div>
