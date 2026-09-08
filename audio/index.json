@@ -11,6 +11,16 @@
       ],
       "seconds": 1.506
     },
+    "004c6c62588cbf155d028b207d94428a9f246ad2c027ccb8238794de14080ab1": {
+      "bytes": 6816,
+      "createdAt": "2026-09-08T23:22:16+00:00",
+      "en": "travel agencies",
+      "path": "audio/00/004c6c62588cbf155d028b207d94428a9f246ad2c027ccb8238794de14080ab1.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.282
+    },
     "005b13cfb679177b102dd2035bb26969723a879d0d98534a3bb082fd83b51acb": {
       "bytes": 6840,
       "createdAt": "2026-08-14T12:03:14+00:00",
@@ -630,6 +640,16 @@
         "chat"
       ],
       "seconds": 1.669
+    },
+    "14dc7fcf3c6545615826a1a4fcf20bf52e49fd86add4cb5900368820adbcd28b": {
+      "bytes": 8112,
+      "createdAt": "2026-09-08T23:22:14+00:00",
+      "en": "They have joined a walking tour.",
+      "path": "audio/14/14dc7fcf3c6545615826a1a4fcf20bf52e49fd86add4cb5900368820adbcd28b.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.616
     },
     "16469ce90f6c5759b6816e7f70c0d75cb124a122a946c581ae482fd96a4c7ad3": {
       "bytes": 7752,
@@ -1751,6 +1771,16 @@
       ],
       "seconds": 1.924
     },
+    "3dc2077dba5c9fa124057b9343182dc2f7cf1425f1c35f2961ec6bf69882c82e": {
+      "bytes": 7992,
+      "createdAt": "2026-09-08T23:22:12+00:00",
+      "en": "He has explained the problem.",
+      "path": "audio/3d/3dc2077dba5c9fa124057b9343182dc2f7cf1425f1c35f2961ec6bf69882c82e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.554
+    },
     "3dd839a1c22560369fac722d9e086079d4c4202a14e53b2107bc88b56860ec4e": {
       "bytes": 7392,
       "createdAt": "2026-08-14T12:08:00+00:00",
@@ -2511,6 +2541,16 @@
       ],
       "seconds": 1.376
     },
+    "5b4d3f08c5f82c2cf38c091260db4cd1b9f56f7e055b781e2e64e4bdd33d0ff2": {
+      "bytes": 5568,
+      "createdAt": "2026-09-08T23:22:09+00:00",
+      "en": "Has she come back?",
+      "path": "audio/5b/5b4d3f08c5f82c2cf38c091260db4cd1b9f56f7e055b781e2e64e4bdd33d0ff2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.134
+    },
     "5b940a9e401d642a17f2ece2e0dd60ff92e8fb380c4f94ae4c5c48a2c5ddd653": {
       "bytes": 11904,
       "createdAt": "2026-08-14T12:07:24+00:00",
@@ -3171,6 +3211,16 @@
       ],
       "seconds": 2.808
     },
+    "6f6feaf3af48b64110af731c0f4e4cb434005503ec35d436e7670c4a2c31c2de": {
+      "bytes": 11280,
+      "createdAt": "2026-09-08T23:22:12+00:00",
+      "en": "We had arrived at the hotel before it rained.",
+      "path": "audio/6f/6f6feaf3af48b64110af731c0f4e4cb434005503ec35d436e7670c4a2c31c2de.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.368
+    },
     "70f9982a7dadd2bee7c2fe8561b0786b53228425662b9be0eec1f90930197d18": {
       "bytes": 12336,
       "createdAt": "2026-08-22T10:57:28+00:00",
@@ -3370,6 +3420,16 @@
         "speak"
       ],
       "seconds": 1.631
+    },
+    "76e4a4ed708b3f372fc3ae3abe34363614233da734e5b6a3dfd24ad1ffcfd05f": {
+      "bytes": 14184,
+      "createdAt": "2026-09-08T23:22:18+00:00",
+      "en": "Being your own tour guide and planner is way more fun",
+      "path": "audio/76/76e4a4ed708b3f372fc3ae3abe34363614233da734e5b6a3dfd24ad1ffcfd05f.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.843
     },
     "78191c1143d526e39183451528c8711a471b85f7cd3d6f48abc4f65ff2c1421b": {
       "bytes": 6000,
@@ -3580,6 +3640,16 @@
         "chat"
       ],
       "seconds": 2.53
+    },
+    "7f0d0c4ca9be0d786b20b208512f99f514a27cfa168a3fa740efd28d39d5c855": {
+      "bytes": 11112,
+      "createdAt": "2026-09-08T23:22:15+00:00",
+      "en": "We had known each other before the class.",
+      "path": "audio/7f/7f0d0c4ca9be0d786b20b208512f99f514a27cfa168a3fa740efd28d39d5c855.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.136
     },
     "7f67f3e797682e83000cc56747c1ce70f0546209ab4fbcbab706d7b5af4c6ba2": {
       "bytes": 17136,
@@ -4381,6 +4451,16 @@
       ],
       "seconds": 1.284
     },
+    "9c90961f493367522131c9bdf4126e7865547f70c23bec31a9c202f223180f8e": {
+      "bytes": 6528,
+      "createdAt": "2026-09-08T23:22:10+00:00",
+      "en": "She has just left.",
+      "path": "audio/9c/9c90961f493367522131c9bdf4126e7865547f70c23bec31a9c202f223180f8e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.228
+    },
     "9c92a52118b604dbeab019b1f789298255b206c550e8ba2ce6fc2c90d0852b1b": {
       "bytes": 5760,
       "createdAt": "2026-08-14T12:03:41+00:00",
@@ -4560,6 +4640,16 @@
         "speak"
       ],
       "seconds": 1.399
+    },
+    "a2964630fb34102f4763cadded68e63d974cf703d529d8af47f19e8072e0af9c": {
+      "bytes": 6648,
+      "createdAt": "2026-09-08T23:22:19+00:00",
+      "en": "travel arrangements",
+      "path": "audio/a2/a2964630fb34102f4763cadded68e63d974cf703d529d8af47f19e8072e0af9c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.308
     },
     "a4014d9b708604a2a3ae999769630edc6df3af05bd2cfb641ba5377c785edf65": {
       "bytes": 6480,
@@ -4860,6 +4950,16 @@
         "speak"
       ],
       "seconds": 1.398
+    },
+    "ae110ab3b4a815df02962ed8c4cceda27cdba526297e12f8437b69ec7adba94c": {
+      "bytes": 7248,
+      "createdAt": "2026-09-08T23:22:10+00:00",
+      "en": "We have passed customs.",
+      "path": "audio/ae/ae110ab3b4a815df02962ed8c4cceda27cdba526297e12f8437b69ec7adba94c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.358
     },
     "ae3d92f54a348595ccf57a885575ef0b1775b5bd6f3fe00fe8fcd5e1cce733da": {
       "bytes": 15384,
@@ -5871,6 +5971,16 @@
       ],
       "seconds": 1.536
     },
+    "cfe19e4774dede9e296938cbf9bda0bac02a5f7b71cd5fc9693d0461df4da389": {
+      "bytes": 10680,
+      "createdAt": "2026-09-08T23:22:17+00:00",
+      "en": "I've never used a travel agency.",
+      "path": "audio/cf/cfe19e4774dede9e296938cbf9bda0bac02a5f7b71cd5fc9693d0461df4da389.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.022
+    },
     "d0a10dc0a243af360564e840f5df9191985e73a1461d49a0ab1e7c8078d5920b": {
       "bytes": 9216,
       "createdAt": "2026-08-14T12:01:43+00:00",
@@ -5940,6 +6050,16 @@
         "speak"
       ],
       "seconds": 1.521
+    },
+    "d31d1f1dcd5578ebe0bc8ba79c5595dcb729f839240f00ac570d418aa253a7df": {
+      "bytes": 9336,
+      "createdAt": "2026-09-08T23:22:08+00:00",
+      "en": "He has driven for three hours.",
+      "path": "audio/d3/d31d1f1dcd5578ebe0bc8ba79c5595dcb729f839240f00ac570d418aa253a7df.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.726
     },
     "d485f062ea6f38529fbd51ea5488670dbfe35d0451660dd4dcab6664beccfe0c": {
       "bytes": 19080,
@@ -6390,6 +6510,16 @@
         "speak"
       ],
       "seconds": 1.351
+    },
+    "e45a00b27fc83bea0a69efd58cd2251c9ba271a95983b377467ba1bc3f07e8bf": {
+      "bytes": 16368,
+      "createdAt": "2026-09-08T23:22:20+00:00",
+      "en": "My family always worries about my safety when I travel",
+      "path": "audio/e4/e45a00b27fc83bea0a69efd58cd2251c9ba271a95983b377467ba1bc3f07e8bf.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.333
     },
     "e47e7f800e35c6a6a6aee0a99d7748f6afb00f93e5717abd4f29620eb26d1372": {
       "bytes": 9432,
@@ -7101,6 +7231,16 @@
       ],
       "seconds": 1.405
     },
+    "ff183f013f65d73e92855f9476a1dc3fc1579f65dcd2117e524c2ea449a9c02e": {
+      "bytes": 7344,
+      "createdAt": "2026-09-08T23:22:13+00:00",
+      "en": "He has already left home.",
+      "path": "audio/ff/ff183f013f65d73e92855f9476a1dc3fc1579f65dcd2117e524c2ea449a9c02e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.436
+    },
     "ffeba516f7f15af1a81aee37d0982be2a146c844b6899a22941555518ec51fa4": {
       "bytes": 9024,
       "createdAt": "2026-08-14T12:03:48+00:00",
@@ -7113,7 +7253,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-08T09:47:44+00:00",
+  "updatedAt": "2026-09-08T23:22:20+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
