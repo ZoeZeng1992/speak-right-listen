@@ -531,6 +531,16 @@
       ],
       "seconds": 2.976
     },
+    "11c25962c1a17c440f6803bdbe1098966457fbb7a72d6adc754f4acde5f2f8fb": {
+      "bytes": 4584,
+      "createdAt": "2026-09-08T09:47:44+00:00",
+      "en": "wind down",
+      "path": "audio/11/11c25962c1a17c440f6803bdbe1098966457fbb7a72d6adc754f4acde5f2f8fb.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.913
+    },
     "12584798c29cfdd37f3fa67f0b09b88e559eccac2db8d6ac43e6073e9a727f64": {
       "bytes": 9744,
       "createdAt": "2026-08-14T12:03:56+00:00",
@@ -7103,7 +7113,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-07T23:57:36+00:00",
+  "updatedAt": "2026-09-08T09:47:44+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
