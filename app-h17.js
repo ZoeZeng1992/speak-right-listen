@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260820-wrap1";
+const APP_BUILD="20260820-pron1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -828,8 +828,17 @@ async function sha256Hex(text){
   const digest=await crypto.subtle.digest("SHA-256",data);
   return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join("");
 }
+/* 与 audio-tools/generate_audio.py 的 PRON_OVERRIDES 必须列出同样的键。
+   这些条目的音频用了人工指定的音素（如 "wind down" 要念 /waɪnd/ 而不是「风」），
+   哈希里多加一段 "pron" 加以区分 —— 少同步一条，手机就会 404 退回系统朗读。 */
+const PRON_OVERRIDE_TEXTS = new Set([
+  "wind down"
+]);
 async function audioPathForEn(en){
-  const digest=await sha256Hex(AUDIO_PROFILE+"\n"+canonicalAudioText(en));
+  const canonical=canonicalAudioText(en);
+  let raw=AUDIO_PROFILE+"\n"+canonical;
+  if(PRON_OVERRIDE_TEXTS.has(canonical)) raw+="\npron";
+  const digest=await sha256Hex(raw);
   return "audio/"+digest.slice(0,2)+"/"+digest+".mp3";
 }
 function audioWindowEns(){
