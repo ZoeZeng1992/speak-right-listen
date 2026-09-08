@@ -4,7 +4,8 @@ const PREF_KEY="sr_fav_listen_prefs";
 const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
-const APP_BUILD="20260820-unfav1";
+const NOTE_EDIT_KEY="sr_note_edits";
+const APP_BUILD="20260820-note1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -69,6 +70,20 @@ function parseFavSyncId(raw){
 /* 手机取消收藏：本地删掉还不够，电脑那边仍收藏着，下次同步又会推回来。
    所以把取消掉的英文记在本地，一路带到回写包里交给电脑；同时在收到的包里
    把它们过滤掉，直到电脑真的删掉为止（那之后包里就没有了，自动收敛）。 */
+/* 手机上写的备注同样要回传电脑，否则电脑下次推包就把它盖掉。
+   只回传「本机改过的那几条」，不整包回传 —— 免得手机上的旧副本反过来
+   覆盖掉电脑上新写的备注。电脑消化后，收到的包里备注就一致了，自动出队。 */
+function loadNoteEdits(){
+  try{ const o=JSON.parse(localStorage.getItem(NOTE_EDIT_KEY)||"{}"); return (o&&typeof o==="object")?o:{}; }
+  catch(e){ return {}; }
+}
+function saveNoteEdits(map){
+  try{ localStorage.setItem(NOTE_EDIT_KEY, JSON.stringify(map||{})); }catch(e){}
+}
+function markNoteEdit(en, note){
+  if(!en) return;
+  const m=loadNoteEdits(); m[en]=String(note||""); saveNoteEdits(m);
+}
 function loadRemoved(){
   try{ const a=JSON.parse(localStorage.getItem(REMOVED_KEY)||"[]"); return Array.isArray(a)?a.filter(Boolean):[]; }
   catch(e){ return []; }
@@ -452,6 +467,21 @@ function applyPack(pack, source, opts){
       pack={ ...pack, items: pack.items.filter(x=>!(x&&drop.has(x.en))) };
     }
   }
+  // 本机写过的备注：电脑消化前先盖在包上，别被旧值顶掉；一致了就出队
+  const noteEdits=loadNoteEdits();
+  if(Object.keys(noteEdits).length){
+    const settled=[];
+    pack={ ...pack, items: pack.items.map(x=>{
+      if(!x||!x.en||!(x.en in noteEdits)) return x;
+      const mine=noteEdits[x.en];
+      if((x.note||"")===mine){ settled.push(x.en); return x; }
+      return { ...x, note: mine };
+    })};
+    if(settled.length){
+      settled.forEach(en=>{ delete noteEdits[en]; });
+      saveNoteEdits(noteEdits);
+    }
+  }
   pack={ ...pack, items: fixPackItems(pack.items) };
   const resetIdx=!!(opts&&opts.resetIdx);
   // 手动刷新 / 首次载入：按当前排序重排；后台静默同步：只合并次数、不打乱听练顺序
@@ -644,10 +674,12 @@ function buildStatsPack(){
     if(!x||!x.en) return;
     stats[x.en]=[+(x.fails||0)||0, +(x.gots||0)||0];
   });
+  const pack={ v:6, updatedAt:Date.now(), stats };
   const removed=loadRemoved();
-  return removed.length
-    ? { v:6, updatedAt:Date.now(), stats, removed }
-    : { v:6, updatedAt:Date.now(), stats };
+  if(removed.length) pack.removed=removed;
+  const notes=loadNoteEdits();
+  if(Object.keys(notes).length) pack.notes=notes;
+  return pack;
 }
 /** 读云端次数，兼容 v6 小包和旧的 v4 整包 */
 function readStatsPack(pack){
@@ -1754,6 +1786,45 @@ function doUnfav(){
   schedulePushStats();                          // 把 removed 带给电脑
   toast("已取消收藏，剩 "+state.items.length+" 句", false);
 }
+
+/* ---- 手机上写备注 ---- */
+let _noteEditEn="";
+function openNoteEditor(){
+  const cur=current();
+  if(!cur||!cur.en){ toast("当前没有句子", true); return; }
+  _noteEditEn=cur.en;
+  const enBox=$("noteEditEn"); if(enBox) enBox.textContent=cur.en;
+  const box=$("noteEditInput"); if(box) box.value=(cur.note||"");
+  const mask=$("noteMask"); if(mask) mask.classList.add("show");
+  if(box) setTimeout(()=>box.focus(), 60);
+}
+function closeNoteEditor(){
+  const mask=$("noteMask"); if(mask) mask.classList.remove("show");
+  _noteEditEn="";
+}
+function saveNoteEditor(){
+  const en=_noteEditEn;
+  if(!en){ closeNoteEditor(); return; }
+  const text=(($("noteEditInput")&&$("noteEditInput").value)||"").trim();
+  const it=state.items.find(x=>x&&x.en===en);
+  if(it) it.note=text;
+  markNoteEdit(en, text);
+  try{
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      v:4, updatedAt:Date.now(), items:state.items, source:"写备注"
+    }));
+  }catch(e){}
+  state.showNote=true;                 // 存完直接展开，能立刻看到写了什么
+  savePrefs();
+  closeNoteEditor();
+  render();
+  schedulePushStats();                 // 带着 notes 回传电脑
+  toast(text?"备注已保存":"备注已清空", false);
+}
+if($("editNoteBtn")) $("editNoteBtn").onclick=openNoteEditor;
+if($("noteCancel"))  $("noteCancel").onclick=closeNoteEditor;
+if($("noteSave"))    $("noteSave").onclick=saveNoteEditor;
+if($("noteMask"))    $("noteMask").onclick=e=>{ if(e.target===$("noteMask")) closeNoteEditor(); };
 if($("unfavBtn"))    $("unfavBtn").onclick=openUnfavConfirm;
 if($("unfavCancel")) $("unfavCancel").onclick=closeUnfavConfirm;
 if($("unfavOk"))     $("unfavOk").onclick=doUnfav;

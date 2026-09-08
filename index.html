@@ -74,6 +74,10 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
+  .note-edit{width:100%;min-height:110px;box-sizing:border-box;border:1px solid var(--line);
+    border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.6;font-family:inherit;
+    color:var(--ink);background:#fff;resize:vertical;margin:0 0 10px}
+  .note-edit:focus{outline:2px solid rgba(15,118,110,.35);outline-offset:1px}
   .tog.danger{color:#b3261e;border-color:#f0c8c4}
   .confirm-mask{display:none;position:fixed;inset:0;z-index:60;background:rgba(28,25,23,.45);
     align-items:center;justify-content:center;padding:20px}
@@ -368,6 +372,18 @@
       </div>
     </div>
   </div>
+  <div class="confirm-mask" id="noteMask" role="dialog" aria-modal="true" aria-labelledby="noteTitle">
+    <div class="confirm-box">
+      <h3 id="noteTitle">备注</h3>
+      <p class="confirm-en" id="noteEditEn"></p>
+      <textarea id="noteEditInput" class="note-edit" placeholder="例：把 are 说成了 is；忘了第三人称加 -s"></textarea>
+      <p class="confirm-tip">保存后会同步回电脑；电脑上的旧备注会被这条覆盖。</p>
+      <div class="confirm-actions">
+        <button class="btn" type="button" id="noteCancel">取消</button>
+        <button class="btn primary" type="button" id="noteSave">保存</button>
+      </div>
+    </div>
+  </div>
   <section class="player" id="player">
     <div class="stage">
       <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
@@ -376,6 +392,7 @@
       <div class="toggles">
         <button type="button" class="tog" id="showCnBtn">中文</button>
         <button type="button" class="tog" id="showNoteBtn">备注</button>
+        <button type="button" class="tog" id="editNoteBtn">写备注</button>
         <button type="button" class="tog danger" id="unfavBtn">取消收藏</button>
       </div>
       <div class="panel cn" id="cnPanel"></div>
