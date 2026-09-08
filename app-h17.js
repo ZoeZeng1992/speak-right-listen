@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260820-note1";
+const APP_BUILD="20260820-wrap1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1170,6 +1170,10 @@ function goPrev(fromRemote){
   const wasPlaying=loopPlaying||userWantsPlay;
   const rate=playRateNow||1;
   if(state.idx>0) state.idx--;
+  else if(playLen()>1){
+    state.idx=playLen()-1;
+    toast("已回到最后一句", false);
+  }
   else if(fromRemote){ toast("已经是第一句", false); return; }
   if(fromRemote) toast("耳机 · 上一句", false);
   savePrefs();
@@ -1186,6 +1190,17 @@ function goNext(fromRemote){
   const wasPlaying=loopPlaying||userWantsPlay;
   const rate=playRateNow||1;
   if(state.idx<playLen()-1) state.idx++;
+  else if(playLen()>1){
+    // 到底了就绕回开头，别让「下一句」按下去毫无反应。
+    // 随机模式重新洗一次牌，否则第二轮和第一轮顺序完全一样。
+    if(state.sort==="random"){
+      state.playOrder=shuffleItems(state.playOrder.slice());
+      toast("已过完一轮 · 重新打乱，从头开始", false);
+    }else{
+      toast("已过完一轮 · 回到第一句", false);
+    }
+    state.idx=0;
+  }
   else if(fromRemote){ toast("已经是最后一句", false); return; }
   if(fromRemote) toast("耳机 · 下一句", false);
   savePrefs();
@@ -1309,7 +1324,7 @@ function startLoop(rate, opts){
     }
     // 播完后记住当前句，但停止全部音频并让出系统音频通道。
     pausePlayback(false);
-    if($("status") && lim>0 && state.idx >= playLen()-1) $("status").textContent="已到最后一句";
+    if($("status") && lim>0 && state.idx >= playLen()-1) $("status").textContent="已过完一轮 · 点「下一句」或「从头」继续";
   };
 
   const afterOne=()=>{
