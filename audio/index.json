@@ -1711,6 +1711,16 @@
       ],
       "seconds": 1.738
     },
+    "3b7a8d98b45ceaad67dfa0da3d1ff6a650cc0a751374d96f5afc825bc98086e3": {
+      "bytes": 10920,
+      "createdAt": "2026-09-09T23:26:27+00:00",
+      "en": "They had solved the issue before the meeting.",
+      "path": "audio/3b/3b7a8d98b45ceaad67dfa0da3d1ff6a650cc0a751374d96f5afc825bc98086e3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.157
+    },
     "3b8bccd83278ba6462744061094eae6e6e218af5aa2eea87b1cac3866a05388d": {
       "bytes": 17640,
       "createdAt": "2026-09-07T23:57:27+00:00",
@@ -2421,6 +2431,16 @@
       ],
       "seconds": 0.814
     },
+    "5643c94951a68410b132015e727c9c35287168d19aa08c8c6d2d3fc50b1577d6": {
+      "bytes": 4344,
+      "createdAt": "2026-09-09T23:26:29+00:00",
+      "en": "Not really",
+      "path": "audio/56/5643c94951a68410b132015e727c9c35287168d19aa08c8c6d2d3fc50b1577d6.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.834
+    },
     "56633c798f570837d0fcfed9f3b3ca541e35b5fed0a9ba3b17c1a9fb2d16591f": {
       "bytes": 8976,
       "createdAt": "2026-08-22T10:57:24+00:00",
@@ -2520,6 +2540,16 @@
         "chat"
       ],
       "seconds": 2.325
+    },
+    "5a2ef7df4bdfd05a273a8719646297b362ebb885703b3a87dd821568a29a1643": {
+      "bytes": 7560,
+      "createdAt": "2026-09-09T23:26:26+00:00",
+      "en": "I have understood the rules.",
+      "path": "audio/5a/5a2ef7df4bdfd05a273a8719646297b362ebb885703b3a87dd821568a29a1643.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.409
     },
     "5b09c7478bc8c32552ab10102f9242c846191d721e2eb7066393081e671505dc": {
       "bytes": 7056,
@@ -2860,6 +2890,16 @@
         "chat"
       ],
       "seconds": 1.088
+    },
+    "64a5b91ea95f28dad67c28de600963a5afbc8595d79f72dc4b01e27e25483be3": {
+      "bytes": 12720,
+      "createdAt": "2026-09-09T23:26:29+00:00",
+      "en": "had your parents ever tried to stop you from going?",
+      "path": "audio/64/64a5b91ea95f28dad67c28de600963a5afbc8595d79f72dc4b01e27e25483be3.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.546
     },
     "64b8419e30994fc6aee2a63c31f47f64f1aa5d6d40698585ed969e09c4e0359b": {
       "bytes": 7104,
@@ -4551,6 +4591,16 @@
       ],
       "seconds": 1.579
     },
+    "9f36faaeb931050e681f52f144fadbe6bd208a2c7db63aed12c059c1f73fb276": {
+      "bytes": 12576,
+      "createdAt": "2026-09-09T23:26:30+00:00",
+      "en": "there was this scam known as “telecom fraud”.",
+      "path": "audio/9f/9f36faaeb931050e681f52f144fadbe6bd208a2c7db63aed12c059c1f73fb276.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.409
+    },
     "9f8ea2a92ff988f1756b5128c7bba7cb905431c502b0eb1008a6215ce36943db": {
       "bytes": 7800,
       "createdAt": "2026-08-14T12:07:50+00:00",
@@ -5090,6 +5140,16 @@
         "chat"
       ],
       "seconds": 4.317
+    },
+    "b245a7b75d1e5526e04a70e3dc1d4ce3bb3e60afe557ad7b1c874dccc3700333": {
+      "bytes": 17712,
+      "createdAt": "2026-09-09T23:26:32+00:00",
+      "en": "Criminal groups tricked many Chinese people into going abroad,",
+      "path": "audio/b2/b245a7b75d1e5526e04a70e3dc1d4ce3bb3e60afe557ad7b1c874dccc3700333.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 3.442
     },
     "b261995fafa41789b0ab4bd9632ee244146f58d214f99496217ab7e745b4a7b4": {
       "bytes": 12720,
@@ -6000,6 +6060,16 @@
         "speak"
       ],
       "seconds": 2.119
+    },
+    "d1049efa2d938b5b33c90c200caa3b64bf39f7cdd14f0e81bdef097ba78fc045": {
+      "bytes": 8016,
+      "createdAt": "2026-09-09T23:26:32+00:00",
+      "en": "Once the victims got there",
+      "path": "audio/d1/d1049efa2d938b5b33c90c200caa3b64bf39f7cdd14f0e81bdef097ba78fc045.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.562
     },
     "d1826738885875a9a762e2adaa3db6ba741e0e75d7c4212a1109550f55ca9320": {
       "bytes": 43536,
@@ -7253,7 +7323,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-08T23:22:20+00:00",
+  "updatedAt": "2026-09-09T23:26:33+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
