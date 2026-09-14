@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260914-order1";
+const APP_BUILD="20260914-order2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -394,7 +394,7 @@ function shuffleItems(arr){
   return a;
 }
 /** 随机模式：优先沿用上次存下的顺序，而不是重洗。
- *  只在「过完一轮」或用户再点一次「随机」时才重洗（那两处会自己调 shuffleItems）。
+ *  只在「过完一轮」时才重洗（goNext 绕回处会自己调 shuffleItems）；再点「随机」不重洗。
  *  返回 true 表示已用存档顺序，调用方就不要再 sortItems 了。 */
 function restoreSavedOrder(){
   if(state.sort!=="random") return false;
@@ -1767,14 +1767,9 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
   const wasPlaying=loopPlaying;
   const rate=playRateNow||1;
   if(next===state.sort){
-    if(next==="random"){
-      sortItems(false);
-      state.idx=0;
-      savePrefs();
-      render();
-      toast("已重新随机", false);
-      if(wasPlaying) startLoop(rate);
-    }
+    // 已在随机模式时再点一次不重洗：重洗只在过完一轮时发生，
+    // 否则一副牌永远听不到底（用户明确要求）。
+    if(next==="random") toast("已是随机模式 · 过完一轮会自动重新打乱", false);
     return;
   }
   state.sort=next;
