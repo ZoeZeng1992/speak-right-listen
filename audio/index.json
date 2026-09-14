@@ -1151,6 +1151,16 @@
       ],
       "seconds": 1.692
     },
+    "28fe003dfab24239777c4d816581f2a4ce2366442bd81f21042b20b7d79a4937": {
+      "bytes": 6936,
+      "createdAt": "2026-09-14T06:03:09+00:00",
+      "en": "You asked me suddenly.",
+      "path": "audio/28/28fe003dfab24239777c4d816581f2a4ce2366442bd81f21042b20b7d79a4937.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.293
+    },
     "2956439070a76d487b8a7eb809c2895bf5012a95f15a2527b9926fbef4458702": {
       "bytes": 6192,
       "createdAt": "2026-08-20T00:06:49+00:00",
@@ -1460,6 +1470,16 @@
         "chat"
       ],
       "seconds": 1.984
+    },
+    "31789e1e3e68d1633e17a24fdd37ca7674ed79dbfe990f8e6456afea676c0868": {
+      "bytes": 9024,
+      "createdAt": "2026-09-14T06:03:04+00:00",
+      "en": "Before we finish up our chat today",
+      "path": "audio/31/31789e1e3e68d1633e17a24fdd37ca7674ed79dbfe990f8e6456afea676c0868.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.736
     },
     "3180651413a5914d8bc59c0aa6a526a123ecb7ec8f15d0739443e074846205da": {
       "bytes": 18024,
@@ -1781,6 +1801,16 @@
       ],
       "seconds": 1.924
     },
+    "3db57715b735df2166859a9db154387980951183565e3d2f4085d3d9efc2c165": {
+      "bytes": 7920,
+      "createdAt": "2026-09-14T06:03:09+00:00",
+      "en": "I don’t tend to remember them",
+      "path": "audio/3d/3db57715b735df2166859a9db154387980951183565e3d2f4085d3d9efc2c165.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.523
+    },
     "3dc2077dba5c9fa124057b9343182dc2f7cf1425f1c35f2961ec6bf69882c82e": {
       "bytes": 7992,
       "createdAt": "2026-09-08T23:22:12+00:00",
@@ -1931,6 +1961,16 @@
       ],
       "seconds": 1.445
     },
+    "41fa9a76fb321df1760987e59c15d3902a05baa8215d02932989c4b17b67a585": {
+      "bytes": 9192,
+      "createdAt": "2026-09-14T06:03:16+00:00",
+      "en": "Yeah, it comes with the territory",
+      "path": "audio/41/41fa9a76fb321df1760987e59c15d3902a05baa8215d02932989c4b17b67a585.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.838
+    },
     "41fd35f956a7f3cd1a7af5b7752edfbe32b33573b5bf32e83f688c653d7519d1": {
       "bytes": 7920,
       "createdAt": "2026-08-14T14:35:35+00:00",
@@ -2010,6 +2050,16 @@
         "speak"
       ],
       "seconds": 0
+    },
+    "448f63b9b8303a4f57e3c27f590fdfe02e82960885c0e402005a9885b6bdd75a": {
+      "bytes": 22440,
+      "createdAt": "2026-09-14T06:03:00+00:00",
+      "en": "had you already reassured your parents that you were going with friends and staying safe?",
+      "path": "audio/44/448f63b9b8303a4f57e3c27f590fdfe02e82960885c0e402005a9885b6bdd75a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.54
     },
     "4519b467fbb01fb5839057b2ea99b2289d15c6abcca9c1035065bfaccb4bb80e": {
       "bytes": 7896,
@@ -2311,6 +2361,16 @@
       ],
       "seconds": 2.22
     },
+    "522b80b8daf982f9e5a87d19b463229accc84b969d0aeeae26ab1f1207dbaa77": {
+      "bytes": 10344,
+      "createdAt": "2026-09-14T06:03:10+00:00",
+      "en": "I can't think of an example right now.",
+      "path": "audio/52/522b80b8daf982f9e5a87d19b463229accc84b969d0aeeae26ab1f1207dbaa77.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.021
+    },
     "52388fd1d02b2b0b643912edf0be32db3d8f8412415d0224e54c821a1869e8c9": {
       "bytes": 9576,
       "createdAt": "2026-08-14T12:03:05+00:00",
@@ -2440,6 +2500,16 @@
         "chat"
       ],
       "seconds": 0.834
+    },
+    "564d50d9091870c8d89e5f8c1c06a81c5ef0c70e2e0bf5a614093cb67d320ff1": {
+      "bytes": 4584,
+      "createdAt": "2026-09-14T06:03:02+00:00",
+      "en": "pretty much",
+      "path": "audio/56/564d50d9091870c8d89e5f8c1c06a81c5ef0c70e2e0bf5a614093cb67d320ff1.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.888
     },
     "56633c798f570837d0fcfed9f3b3ca541e35b5fed0a9ba3b17c1a9fb2d16591f": {
       "bytes": 8976,
@@ -3251,6 +3321,16 @@
       ],
       "seconds": 2.808
     },
+    "6f66a30eb507a3870ff506bd2a6983675bbab7a42fce00e2f2225e8d69f047ec": {
+      "bytes": 9816,
+      "createdAt": "2026-09-14T06:03:08+00:00",
+      "en": "These situations happen a lot",
+      "path": "audio/6f/6f66a30eb507a3870ff506bd2a6983675bbab7a42fce00e2f2225e8d69f047ec.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.945
+    },
     "6f6feaf3af48b64110af731c0f4e4cb434005503ec35d436e7670c4a2c31c2de": {
       "bytes": 11280,
       "createdAt": "2026-09-08T23:22:12+00:00",
@@ -3520,6 +3600,16 @@
         "speak"
       ],
       "seconds": 1.195
+    },
+    "7939de99a7e3d66064b108d5a06d377b479289ed2cdc31c3293c76a1e982d139": {
+      "bytes": 22848,
+      "createdAt": "2026-09-14T06:03:06+00:00",
+      "en": "have you ever run into a totally confusing user interface in real life",
+      "path": "audio/79/7939de99a7e3d66064b108d5a06d377b479289ed2cdc31c3293c76a1e982d139.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.584
     },
     "7950f8caea9f0071188a8db0df41104a2e78cac175c6651fbcc5f86438808394": {
       "bytes": 7824,
@@ -4031,6 +4121,16 @@
       ],
       "seconds": 1.828
     },
+    "8ba0b70429111456f0eafedb9eb7ea573b8bd27a37dc550e63510808b3ea19a0": {
+      "bytes": 7392,
+      "createdAt": "2026-09-14T06:03:04+00:00",
+      "en": "since you work in UX",
+      "path": "audio/8b/8ba0b70429111456f0eafedb9eb7ea573b8bd27a37dc550e63510808b3ea19a0.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.379
+    },
     "8bf9905ba3bbbc4af65feba9c105ed13c5115499a6378785511427c31e6b96b5": {
       "bytes": 10128,
       "createdAt": "2026-08-14T12:06:40+00:00",
@@ -4471,6 +4571,16 @@
       ],
       "seconds": 1.436
     },
+    "9b4e1452f36fe55fc43abab9669a5e2a43bf252e25e629f578afb60c6daa1e6c": {
+      "bytes": 5880,
+      "createdAt": "2026-09-14T06:03:01+00:00",
+      "en": "something like this",
+      "path": "audio/9b/9b4e1452f36fe55fc43abab9669a5e2a43bf252e25e629f578afb60c6daa1e6c.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.129
+    },
     "9b68e6b080436ce1572fc8cb1ca7f0b7ddf7ba9ba861dd4786c5fb5e9b35ef63": {
       "bytes": 14232,
       "createdAt": "2026-08-14T14:35:51+00:00",
@@ -4700,6 +4810,16 @@
         "chat"
       ],
       "seconds": 1.308
+    },
+    "a3200478e05ebc11c597c46e344b18f0fd8382abb4f4da0db18091553b94c5ed": {
+      "bytes": 4608,
+      "createdAt": "2026-09-14T06:03:16+00:00",
+      "en": "instinct",
+      "path": "audio/a3/a3200478e05ebc11c597c46e344b18f0fd8382abb4f4da0db18091553b94c5ed.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 0.8
     },
     "a4014d9b708604a2a3ae999769630edc6df3af05bd2cfb641ba5377c785edf65": {
       "bytes": 6480,
@@ -5981,6 +6101,16 @@
       ],
       "seconds": 1.626
     },
+    "ccaf09f223d4198a3c9570547fab293835432fa67c955066792492cd66ca07e4": {
+      "bytes": 10920,
+      "createdAt": "2026-09-14T06:03:13+00:00",
+      "en": "when using everyday apps or machines",
+      "path": "audio/cc/ccaf09f223d4198a3c9570547fab293835432fa67c955066792492cd66ca07e4.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.098
+    },
     "ccbd982fcf45202c14def5ba03f171416023e9f9e9692faa47cdddf17a0ee0fd": {
       "bytes": 9960,
       "createdAt": "2026-08-14T12:07:33+00:00",
@@ -6781,6 +6911,16 @@
       ],
       "seconds": 1.452
     },
+    "ecc9031912ab6b58949f2b8950b690baeab30a8144e31c8163d1e9af469e610b": {
+      "bytes": 13656,
+      "createdAt": "2026-09-14T06:03:15+00:00",
+      "en": "Totally, it's just a professional deformation!",
+      "path": "audio/ec/ecc9031912ab6b58949f2b8950b690baeab30a8144e31c8163d1e9af469e610b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.731
+    },
     "ed10cdc9cee146cc214912401ecd394511532aa952f2bf612dbcd4ebc42d0959": {
       "bytes": 7848,
       "createdAt": "2026-08-14T12:02:39+00:00",
@@ -6800,6 +6940,16 @@
         "chat"
       ],
       "seconds": 1.84
+    },
+    "eda39293196eba55ac389e2579ecc51f956f67d3e1501ac718e51e4bfd2d405d": {
+      "bytes": 22560,
+      "createdAt": "2026-09-14T06:03:12+00:00",
+      "en": "had you ever noticed how UX designers are usually the most picky people",
+      "path": "audio/ed/eda39293196eba55ac389e2579ecc51f956f67d3e1501ac718e51e4bfd2d405d.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 4.454
     },
     "edd28dc2b1a160c9e7d182f268b0e638c9f6fe1a0dc9526d39934ded706ad2ae": {
       "bytes": 7608,
@@ -6951,6 +7101,16 @@
       ],
       "seconds": 2.205
     },
+    "f376552fca29008060d1408ab74cb11518bb002779d9a2ab438d10d6d149554b": {
+      "bytes": 7008,
+      "createdAt": "2026-09-14T06:03:07+00:00",
+      "en": "you put me on the spot!",
+      "path": "audio/f3/f376552fca29008060d1408ab74cb11518bb002779d9a2ab438d10d6d149554b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.322
+    },
     "f3c72d7838767c6af11b8279aa71db447b44e531bb2dc906cb35211bedeb059d": {
       "bytes": 6672,
       "createdAt": "2026-08-19T00:06:36+00:00",
@@ -7070,6 +7230,16 @@
         "chat"
       ],
       "seconds": 2.907
+    },
+    "f71a3f2d9d85ae3a0b05ea40ab61922f403f63b218ec65d656c80e873a5e41f9": {
+      "bytes": 12600,
+      "createdAt": "2026-09-14T06:03:03+00:00",
+      "en": "I did my best to convince them to let me go",
+      "path": "audio/f7/f71a3f2d9d85ae3a0b05ea40ab61922f403f63b218ec65d656c80e873a5e41f9.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.548
     },
     "f7d0c1293f2f25befd0dc850e065fa688d6055e2153a2f06eacfa65e79eb782f": {
       "bytes": 8976,
@@ -7323,7 +7493,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-09T23:26:33+00:00",
+  "updatedAt": "2026-09-14T06:03:16+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
