@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260820-vp1";
+const APP_BUILD="20260914-order1";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -105,6 +105,7 @@ function loadPrefs(){
     if(typeof p.currentEn==="string") state.currentEn=p.currentEn;
     if(p.sort==="recent" || p.sort==="fails" || p.sort==="random") state.sort=p.sort;
     if(typeof p.voiceURI==="string") state.voiceURI=p.voiceURI;
+    if(Array.isArray(p.playOrder)) state._savedPlayOrder=p.playOrder.filter(Boolean);
   }catch(e){}
   try{ state.jsonbinKey=(localStorage.getItem(JSONBIN_KEY)||"").trim(); }catch(e){}
 }
@@ -114,7 +115,10 @@ function savePrefs(){
   localStorage.setItem(PREF_KEY, JSON.stringify({
     loop: state.loop, showCn: state.showCn, showNote: state.showNote,
     idx: state.idx, currentEn: state.currentEn||"",
-    sort: state.sort, voiceURI: state.voiceURI
+    sort: state.sort, voiceURI: state.voiceURI,
+    // 随机顺序必须存下来。以前没存，每次打开 app 都整副重洗，用户永远只听到
+    // "新牌最上面几张"：710 句听了 1000 多遍仍有 150 句一次没遇到、140 句遇到 3 次以上。
+    playOrder: state.sort==="random" ? (state.playOrder||[]) : undefined
   }));
 }
 function saveJsonbinKey(key){
@@ -389,6 +393,22 @@ function shuffleItems(arr){
   }
   return a;
 }
+/** 随机模式：优先沿用上次存下的顺序，而不是重洗。
+ *  只在「过完一轮」或用户再点一次「随机」时才重洗（那两处会自己调 shuffleItems）。
+ *  返回 true 表示已用存档顺序，调用方就不要再 sortItems 了。 */
+function restoreSavedOrder(){
+  if(state.sort!=="random") return false;
+  const saved=state._savedPlayOrder;
+  if(!Array.isArray(saved)||!saved.length) return false;
+  const have=new Map(state.items.map(x=>[x.en,x]));
+  const kept=saved.filter(en=>have.has(en));
+  if(kept.length < Math.max(10, state.items.length*0.5)) return false;   // 存档和当前句子对不上，放弃
+  const inKept=new Set(kept);
+  const extra=shuffleItems(state.items.map(x=>x.en).filter(en=>!inKept.has(en)));  // 新收藏的随机插到末尾
+  state.playOrder=kept.concat(extra);
+  state.items=state.playOrder.map(en=>have.get(en));
+  return true;
+}
 function sortItems(keepCurrent){
   const cur=typeof keepCurrent==="string"
     ? keepCurrent
@@ -490,7 +510,9 @@ function applyPack(pack, source, opts){
     (current()&&current().en) || state.currentEn || ""
   );
   const prevItems=state.items.slice();
-  if(prevItems.length && !forceResort){
+  // 随机模式下手动刷新也保持顺序：否则每按一次刷新就等于重洗一副牌，又回到"听不完"的老问题
+  const keepOrder = prevItems.length && (!forceResort || state.sort==="random");
+  if(keepOrder){
     state.items=mergeKeepingOrder(prevItems, pack.items);
     // 保留既有 playOrder；去掉已不存在的句子，新句子追加末尾
     const have=new Set(state.items.map(x=>x.en));
@@ -551,7 +573,7 @@ function loadCache(){
           v:4, updatedAt:state.updatedAt, items:state.items, source:pack.source||"cache-fix", build:APP_BUILD
         }));
       }catch(e){}
-      sortItems(false);
+      if(!restoreSavedOrder()) sortItems(false);
       if(state.currentEn){
         const fixedCur=(PACK_SENTENCE_FIXES[state.currentEn]&&PACK_SENTENCE_FIXES[state.currentEn].en)||state.currentEn;
         state.currentEn=fixedCur;
