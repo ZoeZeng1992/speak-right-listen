@@ -2861,6 +2861,16 @@
       ],
       "seconds": 3.691
     },
+    "5d5a9a6445d424106871ed7e6e6ee1577078ce2c14360412fd6eec49cb2ab034": {
+      "bytes": 7536,
+      "createdAt": "2026-09-17T02:42:25+00:00",
+      "en": "They’ve gone out for a stroll.",
+      "path": "audio/5d/5d5a9a6445d424106871ed7e6e6ee1577078ce2c14360412fd6eec49cb2ab034.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.488
+    },
     "5d5d1dd222566e036268124ac4c6e2d22ac6897754254965b7be83c8d0236ee3": {
       "bytes": 8016,
       "createdAt": "2026-08-20T00:06:47+00:00",
@@ -4490,6 +4500,16 @@
         "speak"
       ],
       "seconds": 1.439
+    },
+    "8f089dc14c1b6bd37f0f8395314217b9725f47e910893f8039702cd565747283": {
+      "bytes": 8232,
+      "createdAt": "2026-09-17T02:42:26+00:00",
+      "en": "I have made a few changes.",
+      "path": "audio/8f/8f089dc14c1b6bd37f0f8395314217b9725f47e910893f8039702cd565747283.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.556
     },
     "8f988d353ab9da04806a65ff9cb6e8619a542b0f52bebf326ecddaec89f81c4c": {
       "bytes": 7224,
@@ -7933,7 +7953,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-15T15:34:47+00:00",
+  "updatedAt": "2026-09-17T02:42:26+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
