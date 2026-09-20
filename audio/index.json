@@ -691,6 +691,16 @@
       ],
       "seconds": 1.265
     },
+    "13d1075cd0712b3a4eaaa65b9c1b639de10e1128d638ff6bce76c8829105ba8c": {
+      "bytes": 12120,
+      "createdAt": "2026-09-20T23:37:46+00:00",
+      "en": "They had updated the roadmap before the quarter.",
+      "path": "audio/13/13d1075cd0712b3a4eaaa65b9c1b639de10e1128d638ff6bce76c8829105ba8c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.44
+    },
     "13dd7413f003c0b6873cf7b30677a6ec884955747b3ddce87a97d2b4e14e8f54": {
       "bytes": 8424,
       "createdAt": "2026-08-14T12:07:01+00:00",
@@ -830,6 +840,16 @@
         "speak"
       ],
       "seconds": 1.803
+    },
+    "19a2d82b7cfdec1139b50d21daa75905057dfd327164b747403086437330be8a": {
+      "bytes": 7272,
+      "createdAt": "2026-09-20T23:37:44+00:00",
+      "en": "We have paid for the plugin.",
+      "path": "audio/19/19a2d82b7cfdec1139b50d21daa75905057dfd327164b747403086437330be8a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.43
     },
     "19c9a362d0ce74e87df5b62ece4e480c3711bfad5bcc94377c46594e30605c30": {
       "bytes": 15048,
@@ -2921,6 +2941,16 @@
       ],
       "seconds": 1.043
     },
+    "5deb2ce287a93928f696e4b4df5aa61d35a787eb826e6fb57796444d6369da15": {
+      "bytes": 7464,
+      "createdAt": "2026-09-20T23:37:43+00:00",
+      "en": "Have you booked the tickets?",
+      "path": "audio/5d/5deb2ce287a93928f696e4b4df5aa61d35a787eb826e6fb57796444d6369da15.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.42
+    },
     "5e6f119bceffcbc54b7103f24bfb481150dcac2d340fc7415a0d1b73c98a85c7": {
       "bytes": 8304,
       "createdAt": "2026-08-14T12:04:17+00:00",
@@ -4220,6 +4250,16 @@
         "chat"
       ],
       "seconds": 2.496
+    },
+    "86b9c3da37b4974d45d60cb2b982e7961e98c978649d653ae8ff726b2e8039dc": {
+      "bytes": 6216,
+      "createdAt": "2026-09-20T23:37:42+00:00",
+      "en": "I have bought some milk.",
+      "path": "audio/86/86b9c3da37b4974d45d60cb2b982e7961e98c978649d653ae8ff726b2e8039dc.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.302
     },
     "86c9c09a9314437cacd0e1be2da06687e983640e2422bf7386d8a551295723cd": {
       "bytes": 8376,
@@ -6471,6 +6511,16 @@
       ],
       "seconds": 1.798
     },
+    "ca9b79208fcc96ab82d57271f7b30c677cd9d488dc2910240230f2be15724a45": {
+      "bytes": 9480,
+      "createdAt": "2026-09-20T23:37:43+00:00",
+      "en": "I left my bag at the front desk",
+      "path": "audio/ca/ca9b79208fcc96ab82d57271f7b30c677cd9d488dc2910240230f2be15724a45.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.802
+    },
     "cac25edf4d8821c8273288ab9572457d000006e313f00264722fb757134361c7": {
       "bytes": 8400,
       "createdAt": "2026-08-14T12:03:32+00:00",
@@ -7281,6 +7331,16 @@
       ],
       "seconds": 1.407
     },
+    "e92ed634c91cd656f9df6c262c0903f4cd5b9ed672d70896be214f8572cdd1f9": {
+      "bytes": 10296,
+      "createdAt": "2026-09-20T23:37:45+00:00",
+      "en": "She had cooked dinner before we arrived.",
+      "path": "audio/e9/e92ed634c91cd656f9df6c262c0903f4cd5b9ed672d70896be214f8572cdd1f9.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.047
+    },
     "e97c506f89507415e572ae45d8c6005c87e7b608ce2464c50aab24e127263009": {
       "bytes": 8088,
       "createdAt": "2026-08-14T12:01:25+00:00",
@@ -8003,7 +8063,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-20T13:46:37+00:00",
+  "updatedAt": "2026-09-20T23:37:46+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
