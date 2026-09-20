@@ -521,6 +521,16 @@
       ],
       "seconds": 2.574
     },
+    "0e3abb4078b690c9cff46607144ab07c00f248d3ca5a9adf69f704738f99cacd": {
+      "bytes": 10560,
+      "createdAt": "2026-09-20T13:46:36+00:00",
+      "en": "We have removed the unnecessary step.",
+      "path": "audio/0e/0e3abb4078b690c9cff46607144ab07c00f248d3ca5a9adf69f704738f99cacd.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.028
+    },
     "0ebf25bc12b1d326ee0c25cb82d7eb589e73ae7487fb5cdb36d6d6368c146e8e": {
       "bytes": 7992,
       "createdAt": "2026-08-14T12:00:50+00:00",
@@ -2180,6 +2190,16 @@
         "speak"
       ],
       "seconds": 1.519
+    },
+    "45330b3f00ed0e3bd0e146dd0e8ce0819decdf1d2e6928c5bf9a6661b63b2cac": {
+      "bytes": 11544,
+      "createdAt": "2026-09-20T13:46:34+00:00",
+      "en": "I had charged my phone before I departed.",
+      "path": "audio/45/45330b3f00ed0e3bd0e146dd0e8ce0819decdf1d2e6928c5bf9a6661b63b2cac.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.374
     },
     "456ae3249f1223fd6b5ce33ee7e06c066fb72fbac6ddc24e73a1bbae33aca975": {
       "bytes": 4512,
@@ -4371,6 +4391,16 @@
       ],
       "seconds": 1.828
     },
+    "8a8a9b57784cad7b002f26587fe050e07d4605ee31c023f9f9c0cda99de47e59": {
+      "bytes": 6576,
+      "createdAt": "2026-09-20T13:46:36+00:00",
+      "en": "She has set the deadline.",
+      "path": "audio/8a/8a8a9b57784cad7b002f26587fe050e07d4605ee31c023f9f9c0cda99de47e59.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.364
+    },
     "8ba0b70429111456f0eafedb9eb7ea573b8bd27a37dc550e63510808b3ea19a0": {
       "bytes": 7392,
       "createdAt": "2026-09-14T06:03:04+00:00",
@@ -5000,6 +5030,16 @@
         "chat"
       ],
       "seconds": 2.409
+    },
+    "9f7987c0765d27c4889fefae95e57c708f4add3d4a8ffbebb33068a8ee65b461": {
+      "bytes": 5616,
+      "createdAt": "2026-09-20T13:46:37+00:00",
+      "en": "Have you had lunch?",
+      "path": "audio/9f/9f7987c0765d27c4889fefae95e57c708f4add3d4a8ffbebb33068a8ee65b461.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.082
     },
     "9f8ea2a92ff988f1756b5128c7bba7cb905431c502b0eb1008a6215ce36943db": {
       "bytes": 7800,
@@ -6691,6 +6731,16 @@
       ],
       "seconds": 1.796
     },
+    "d4ad9569a7500df44fbf24cd6a2994b438acd0d2a8172671a94025fb9921db2a": {
+      "bytes": 10416,
+      "createdAt": "2026-09-20T13:46:35+00:00",
+      "en": "I have gone all the way around the old town.",
+      "path": "audio/d4/d4ad9569a7500df44fbf24cd6a2994b438acd0d2a8172671a94025fb9921db2a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.17
+    },
     "d520b13dd03ae4db3f471ce7c37167f43fc141cdf38938261f31335d28597098": {
       "bytes": 6288,
       "createdAt": "2026-08-14T12:03:08+00:00",
@@ -7953,7 +8003,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-17T02:42:26+00:00",
+  "updatedAt": "2026-09-20T13:46:37+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
