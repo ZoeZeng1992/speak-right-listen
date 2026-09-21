@@ -1751,6 +1751,16 @@
       ],
       "seconds": 1.339
     },
+    "383cafa6bff917c85b8eef75ba6302edc8bae89882930a84f3a1fa10dc59016b": {
+      "bytes": 14184,
+      "createdAt": "2026-09-21T02:21:58+00:00",
+      "en": "Are you really into a specific TV show right now?",
+      "path": "audio/38/383cafa6bff917c85b8eef75ba6302edc8bae89882930a84f3a1fa10dc59016b.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 2.785
+    },
     "38526140bb40cb52a23cd99f569645ae4fdf3e903f6da62693583a9ea8f8852f": {
       "bytes": 20856,
       "createdAt": "2026-08-14T14:35:56+00:00",
@@ -8063,7 +8073,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-20T23:37:46+00:00",
+  "updatedAt": "2026-09-21T02:21:58+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
