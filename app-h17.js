@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260914-order2";
+const APP_BUILD="20260921-tvshow";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -260,7 +260,9 @@ const PACK_SENTENCE_FIXES = {
   "They had found a restaurant before we asked.": { cn:"我们问之前，他们就找到一家餐厅了。" },
   "We had agreed on the layout before the call.": { cn:"开会之前，我们就对布局达成一致了。" },
   "He had grown vegetables before he had a garden.": { en:"He had grown some vegetables before he moved.", cn:"他搬家之前，种过一些菜。" },
-  "He had grown some vegetables before he moved.": { cn:"他搬家之前，种过一些菜。" }
+  "He had grown some vegetables before he moved.": { cn:"他搬家之前，种过一些菜。" },
+  "Is there a specific TV show you are really into right now?": { en:"Are you really into a specific TV show right now?", cn:"您现在有特别喜欢的电视节目吗？" },
+  "Are you really into a specific TV show right now?": { cn:"您现在有特别喜欢的电视节目吗？" },
 };
 function fixPackItem(x){
   if(!x||!x.en) return x;
