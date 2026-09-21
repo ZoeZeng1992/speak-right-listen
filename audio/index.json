@@ -401,6 +401,16 @@
       ],
       "seconds": 1.928
     },
+    "0b616e389df0aecd002985d112c742de447b961e5dbfba619802a2dce0ac69d5": {
+      "bytes": 8760,
+      "createdAt": "2026-09-21T23:32:33+00:00",
+      "en": "I'm supposed to call my mom.",
+      "path": "audio/0b/0b616e389df0aecd002985d112c742de447b961e5dbfba619802a2dce0ac69d5.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.652
+    },
     "0bb46cc42309e35c17a261f99bd7023546237667ee64c2f67eb9be026d214746": {
       "bytes": 6768,
       "createdAt": "2026-08-14T12:01:54+00:00",
@@ -800,6 +810,16 @@
         "chat"
       ],
       "seconds": 1.636
+    },
+    "18dd7f76e835337171f7f1367837a50cc6028961982c8563eedebfc308f9d855": {
+      "bytes": 7344,
+      "createdAt": "2026-09-21T23:32:20+00:00",
+      "en": "It doesn't matter who pays.",
+      "path": "audio/18/18dd7f76e835337171f7f1367837a50cc6028961982c8563eedebfc308f9d855.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.472
     },
     "1936e70db8cc96b054a1ba119f5746bb09675fec21ef749a78dca64e6476787a": {
       "bytes": 12600,
@@ -1230,6 +1250,16 @@
         "speak"
       ],
       "seconds": 1.694
+    },
+    "2626e81ff56956fd9b48083270b8c20cd5faa9c27f7e623d8ee1078a7ea149c2": {
+      "bytes": 9504,
+      "createdAt": "2026-09-21T23:32:28+00:00",
+      "en": "There's something wrong with the export.",
+      "path": "audio/26/2626e81ff56956fd9b48083270b8c20cd5faa9c27f7e623d8ee1078a7ea149c2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.831
     },
     "26c1b1abf3ac32e9913e9acb1e992efa429153a9e4b7cb7cca8b6815968b11be": {
       "bytes": 5544,
@@ -2100,6 +2130,16 @@
         "speak"
       ],
       "seconds": 1.445
+    },
+    "41ec28981e6b02182828eb0a2df7b771cfe87857b7ca200e386c946a40a8b975": {
+      "bytes": 9576,
+      "createdAt": "2026-09-21T23:32:32+00:00",
+      "en": "What if we stay at home this weekend?",
+      "path": "audio/41/41ec28981e6b02182828eb0a2df7b771cfe87857b7ca200e386c946a40a8b975.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.822
     },
     "41fa9a76fb321df1760987e59c15d3902a05baa8215d02932989c4b17b67a585": {
       "bytes": 9192,
@@ -3761,6 +3801,16 @@
       ],
       "seconds": 1.102
     },
+    "75775c315581a4208acfadfc7704ed806dbd93528ded4870731e977e8af68373": {
+      "bytes": 7032,
+      "createdAt": "2026-09-21T23:32:24+00:00",
+      "en": "Could you pass me the salt?",
+      "path": "audio/75/75775c315581a4208acfadfc7704ed806dbd93528ded4870731e977e8af68373.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.34
+    },
     "7636342831a62eef0100f0592ad9dd946291913a0ae56f08627ad01125ddd728": {
       "bytes": 12384,
       "createdAt": "2026-08-14T12:14:59+00:00",
@@ -3790,6 +3840,16 @@
         "speak"
       ],
       "seconds": 1.527
+    },
+    "76d2d73d0f9c100399cc4a36e6158eb0a2044d2518df58a8c70c45e8e2af0324": {
+      "bytes": 7848,
+      "createdAt": "2026-09-21T23:32:21+00:00",
+      "en": "What if we remove this step?",
+      "path": "audio/76/76d2d73d0f9c100399cc4a36e6158eb0a2044d2518df58a8c70c45e8e2af0324.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.481
     },
     "76db69a879a25aed739548114790224cc81d1d0ee80f562803a09c90004d0680": {
       "bytes": 8112,
@@ -3890,6 +3950,16 @@
         "speak"
       ],
       "seconds": 1.583
+    },
+    "7984fe7537fbd264debd33c9f25dbfaf8f020c62f01dfdb752e4637ccb0fcff2": {
+      "bytes": 10992,
+      "createdAt": "2026-09-21T23:32:30+00:00",
+      "en": "As soon as we get feedback, we'll fix it.",
+      "path": "audio/79/7984fe7537fbd264debd33c9f25dbfaf8f020c62f01dfdb752e4637ccb0fcff2.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.206
     },
     "798958f8bb9a8f5682d691166920f35844e1e7e54f5fc3f2d8650d422d271423": {
       "bytes": 7128,
@@ -4100,6 +4170,16 @@
         "chat"
       ],
       "seconds": 1.063
+    },
+    "821267953c1ff84d2c3cf1300b64d28e54d3b9ecd6e91dd2244b7289f0111b29": {
+      "bytes": 8304,
+      "createdAt": "2026-09-21T23:32:22+00:00",
+      "en": "Could you send me the Figma link?",
+      "path": "audio/82/821267953c1ff84d2c3cf1300b64d28e54d3b9ecd6e91dd2244b7289f0111b29.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.65
     },
     "82197fa35b808ff221f99e6d7427d63a308f66521ab7f8f0b243e7a57fc44ab1": {
       "bytes": 6504,
@@ -4810,6 +4890,16 @@
         "chat"
       ],
       "seconds": 1.241
+    },
+    "96646e916e06eabf61583069c1de4fc98e00936e0d4e91c70aea775d8866127c": {
+      "bytes": 9984,
+      "createdAt": "2026-09-21T23:32:29+00:00",
+      "en": "I have no idea which bus to take.",
+      "path": "audio/96/96646e916e06eabf61583069c1de4fc98e00936e0d4e91c70aea775d8866127c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.023
     },
     "9695c32928683ec3770c53f524c3d785f848d3ae0a9caba9ad5da51520f7a4a3": {
       "bytes": 7176,
@@ -5781,6 +5871,16 @@
       ],
       "seconds": 2.244
     },
+    "b5e4a02491132b465546eef85c3e55cbd004c83cfb63962bd7f98b10e3fba10e": {
+      "bytes": 6624,
+      "createdAt": "2026-09-21T23:32:24+00:00",
+      "en": "Let me check the map.",
+      "path": "audio/b5/b5e4a02491132b465546eef85c3e55cbd004c83cfb63962bd7f98b10e3fba10e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.24
+    },
     "b617d6a83ff175561f7aaab4b93ad2fe9f254fc25f9a6f525a819a0f2aa7d995": {
       "bytes": 5136,
       "createdAt": "2026-08-14T12:08:14+00:00",
@@ -5980,6 +6080,16 @@
         "speak"
       ],
       "seconds": 1.324
+    },
+    "bb25d40a29e6705bfb039262bfc633a2b2ddd0754a624a797cf6ebd39c03c455": {
+      "bytes": 9744,
+      "createdAt": "2026-09-21T23:32:21+00:00",
+      "en": "Even if it's late, send it today.",
+      "path": "audio/bb/bb25d40a29e6705bfb039262bfc633a2b2ddd0754a624a797cf6ebd39c03c455.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.978
     },
     "bb7143dd879975ca93d66f2991ff7215bb82cfb064c40b18722b3d620a0d0452": {
       "bytes": 7416,
@@ -6451,6 +6561,16 @@
       ],
       "seconds": 2.648
     },
+    "c75ad778e50ee0d964b092d45b9605f8289db2f7e46afab768a9cb8985ccfc1c": {
+      "bytes": 10128,
+      "createdAt": "2026-09-21T23:32:23+00:00",
+      "en": "Just to confirm, you're picking me up.",
+      "path": "audio/c7/c75ad778e50ee0d964b092d45b9605f8289db2f7e46afab768a9cb8985ccfc1c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.069
+    },
     "c766e0ef856bcf28a369bdf830c60ef7079cef19acc9699056db95199e5883cb": {
       "bytes": 8280,
       "createdAt": "2026-08-14T12:02:22+00:00",
@@ -6540,6 +6660,16 @@
         "speak"
       ],
       "seconds": 1.677
+    },
+    "cb327e8b10071911ce7759b5bee686c3bc22f043705ff86346d37c7ad7b3341c": {
+      "bytes": 8016,
+      "createdAt": "2026-09-21T23:32:27+00:00",
+      "en": "I'm about to send the draft.",
+      "path": "audio/cb/cb327e8b10071911ce7759b5bee686c3bc22f043705ff86346d37c7ad7b3341c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.51
     },
     "cb41f10dd15f7f58c9f0aa3490042da2b8492017c03547484a7943eee8932e3f": {
       "bytes": 9816,
@@ -6671,6 +6801,16 @@
       ],
       "seconds": 2.022
     },
+    "d09c8ac01f661d4771acb84f249c883f91db7c9b17f399360715e00efac9ada4": {
+      "bytes": 9888,
+      "createdAt": "2026-09-21T23:32:35+00:00",
+      "en": "I can't help laughing at that photo.",
+      "path": "audio/d0/d09c8ac01f661d4771acb84f249c883f91db7c9b17f399360715e00efac9ada4.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.867
+    },
     "d0a10dc0a243af360564e840f5df9191985e73a1461d49a0ab1e7c8078d5920b": {
       "bytes": 9216,
       "createdAt": "2026-08-14T12:01:43+00:00",
@@ -6771,6 +6911,16 @@
       ],
       "seconds": 1.726
     },
+    "d32312bc4fe06d13907febcf89abe0a7e34b920ae361792a69a163d4c94149ef": {
+      "bytes": 9672,
+      "createdAt": "2026-09-21T23:32:25+00:00",
+      "en": "There's no need to rush the review.",
+      "path": "audio/d3/d32312bc4fe06d13907febcf89abe0a7e34b920ae361792a69a163d4c94149ef.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.899
+    },
     "d485f062ea6f38529fbd51ea5488670dbfe35d0451660dd4dcab6664beccfe0c": {
       "bytes": 19080,
       "createdAt": "2026-08-22T10:57:37+00:00",
@@ -6840,6 +6990,16 @@
         "speak"
       ],
       "seconds": 1.42
+    },
+    "d5c3b42acb65e7ae5d3dab7dc74a06a7e28fef442db9504bec9a6c5fdc6bc136": {
+      "bytes": 8856,
+      "createdAt": "2026-09-21T23:32:26+00:00",
+      "en": "It's worth asking the engineer.",
+      "path": "audio/d5/d5c3b42acb65e7ae5d3dab7dc74a06a7e28fef442db9504bec9a6c5fdc6bc136.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.707
     },
     "d65b2f7521435007e85d404561d75745ee35326ae73d6247ad724b706e665939": {
       "bytes": 4992,
@@ -7241,6 +7401,16 @@
       ],
       "seconds": 1.351
     },
+    "e3f3d45849a014fdb28d6e08f3cdf849c1d99564d639911b4a095b536072f78a": {
+      "bytes": 11160,
+      "createdAt": "2026-09-21T23:32:31+00:00",
+      "en": "I think we should talk to the PM first.",
+      "path": "audio/e3/e3f3d45849a014fdb28d6e08f3cdf849c1d99564d639911b4a095b536072f78a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.088
+    },
     "e45a00b27fc83bea0a69efd58cd2251c9ba271a95983b377467ba1bc3f07e8bf": {
       "bytes": 16368,
       "createdAt": "2026-09-08T23:22:20+00:00",
@@ -7420,6 +7590,16 @@
         "speak"
       ],
       "seconds": 1.384
+    },
+    "eb78b6999c5c0d5f348fa458de382774fdb0729392f9731a5e351bdcd5fd3ce5": {
+      "bytes": 9768,
+      "createdAt": "2026-09-21T23:32:36+00:00",
+      "en": "Could I have edit access to the file?",
+      "path": "audio/eb/eb78b6999c5c0d5f348fa458de382774fdb0729392f9731a5e351bdcd5fd3ce5.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.912
     },
     "ec0c3914c53aa945057a7fedc12211ba73955fe5bc9e86a043ece108b9f76a81": {
       "bytes": 9552,
@@ -7831,6 +8011,16 @@
       ],
       "seconds": 1.481
     },
+    "f9808170f1735057bed17d8c7a72d74c8342a353e70ffbd43a45b2c90ee787b5": {
+      "bytes": 10848,
+      "createdAt": "2026-09-21T23:32:34+00:00",
+      "en": "I'm having trouble finding my keys.",
+      "path": "audio/f9/f9808170f1735057bed17d8c7a72d74c8342a353e70ffbd43a45b2c90ee787b5.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.152
+    },
     "f9b084ed701e91f644a1d4b0c513b496119c5a01b01bf62006abcac89735fa0d": {
       "bytes": 11760,
       "createdAt": "2026-09-14T23:54:09+00:00",
@@ -7991,6 +8181,16 @@
       ],
       "seconds": 1.4
     },
+    "fda1ebaacb882ff9cb2cfa9594405ada3ab8df6fbca3037d2fdb04eb04b17546": {
+      "bytes": 6504,
+      "createdAt": "2026-09-21T23:32:36+00:00",
+      "en": "Why don't we rent a car?",
+      "path": "audio/fd/fda1ebaacb882ff9cb2cfa9594405ada3ab8df6fbca3037d2fdb04eb04b17546.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.306
+    },
     "fdcac2790395de76f4b49819adcebd997b90fa01a9a2e30227774f14a0650933": {
       "bytes": 10896,
       "createdAt": "2026-08-22T10:57:29+00:00",
@@ -8073,7 +8273,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-21T02:21:58+00:00",
+  "updatedAt": "2026-09-21T23:32:36+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
