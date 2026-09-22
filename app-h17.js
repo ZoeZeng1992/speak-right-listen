@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260921-tvshow";
+const APP_BUILD="20260922-pattern";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -448,6 +448,7 @@ function itemFrom(x, other){
     en:x.en,
     cn: forcedCn || x.cn || o.cn || "",
     note:x.note||o.note||"",
+    pat:x.pat||o.pat||"",
     mode:x.mode||o.mode||"",
     fails:Math.max(+(x.fails||0)||0, +(o.fails||0)||0),
     gots:Math.max(+(x.gots||0)||0, +(o.gots||0)||0),
@@ -654,7 +655,7 @@ function buildLocalPack(){
     v:4,
     updatedAt:Date.now(),
     items: state.items.map(x=>({
-      en:x.en, cn:x.cn||"", note:x.note||"", mode:x.mode||"",
+      en:x.en, cn:x.cn||"", note:x.note||"", pat:x.pat||"", mode:x.mode||"",
       fails:+(x.fails||0)||0, gots:+(x.gots||0)||0, addedAt:+(x.addedAt||0)||0
     }))
   };
@@ -1607,6 +1608,11 @@ function render(){
   }
   $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
   $("cnPanel").classList.toggle("show", state.showCn);
+  const pat=(s.pat||"").trim();
+  if($("patLine")){
+    $("patLine").textContent = pat;
+    $("patLine").classList.toggle("show", !!pat);
+  }
   const note=(s.note||"").trim();
   $("notePanel").innerHTML = note ? esc(note) : "这句还没有备注";
   $("notePanel").classList.toggle("show", state.showNote);

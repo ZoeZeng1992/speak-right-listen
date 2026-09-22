@@ -163,6 +163,14 @@
     font-size:12px;font-weight:600;color:var(--muted);
     letter-spacing:.04em;margin-bottom:14px;
   }
+  .pat{
+    display:none;
+    margin:-2px 0 10px;
+    font-size:14px;
+    line-height:1.45;
+    color:var(--muted, #8a8f98);
+  }
+  .pat.show{ display:block }
   .en{
     font-family:var(--font-en);
     font-size:clamp(28px, 7.2vw, 36px);
@@ -389,6 +397,7 @@
       <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
       <div class="meta" id="counter">0 / 0</div>
       <p class="en" id="en"></p>
+      <p class="pat" id="patLine"></p>
       <div class="toggles">
         <button type="button" class="tog" id="showCnBtn">中文</button>
         <button type="button" class="tog" id="showNoteBtn">备注</button>
