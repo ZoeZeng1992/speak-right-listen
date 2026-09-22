@@ -1311,6 +1311,16 @@
       ],
       "seconds": 1.293
     },
+    "293838deae5da4724819917a367dd7dc6742f50be2974d188d67c49d719d66aa": {
+      "bytes": 11208,
+      "createdAt": "2026-09-22T23:35:32+00:00",
+      "en": "I was wondering if you could help me move.",
+      "path": "audio/29/293838deae5da4724819917a367dd7dc6742f50be2974d188d67c49d719d66aa.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.247
+    },
     "2956439070a76d487b8a7eb809c2895bf5012a95f15a2527b9926fbef4458702": {
       "bytes": 6192,
       "createdAt": "2026-08-20T00:06:49+00:00",
@@ -2160,6 +2170,16 @@
         "chat"
       ],
       "seconds": 1.604
+    },
+    "4208e98c09219431a0a72b86825d43a42df21962370c8fde2ef27159f85130b3": {
+      "bytes": 7224,
+      "createdAt": "2026-09-22T23:35:33+00:00",
+      "en": "I'd prefer to sleep early.",
+      "path": "audio/42/4208e98c09219431a0a72b86825d43a42df21962370c8fde2ef27159f85130b3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.428
     },
     "4238079f75639e2910334794f41d5482a7c4395a9087519e971609620711750b": {
       "bytes": 6144,
@@ -3250,6 +3270,16 @@
         "speak"
       ],
       "seconds": 1.385
+    },
+    "64cdb1253e934093c2c5fb5007ad91f71ddf6287d4abe31da540ed4111a9e95a": {
+      "bytes": 12720,
+      "createdAt": "2026-09-22T23:35:35+00:00",
+      "en": "The earlier we test, the fewer bugs we get.",
+      "path": "audio/64/64cdb1253e934093c2c5fb5007ad91f71ddf6287d4abe31da540ed4111a9e95a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.585
     },
     "64f7f98f1a5298b13afde4a7395798d1c6165c680d6ba31f209e608ec70cd8e0": {
       "bytes": 6888,
@@ -5391,6 +5421,16 @@
       ],
       "seconds": 1.121
     },
+    "a63c35d4fbc567696e279d5d3debfad4be9acc1b4b1c7cbb5790385406f36934": {
+      "bytes": 9144,
+      "createdAt": "2026-09-22T23:35:34+00:00",
+      "en": "Could you tell me how much it costs?",
+      "path": "audio/a6/a63c35d4fbc567696e279d5d3debfad4be9acc1b4b1c7cbb5790385406f36934.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.758
+    },
     "a640c076972606197f8ce4687d7f5837f6b185b4f77f6ec7af47ad697c6f4cc5": {
       "bytes": 15648,
       "createdAt": "2026-08-25T00:06:48+00:00",
@@ -7391,6 +7431,16 @@
       ],
       "seconds": 1.431
     },
+    "e3bb596fe6bb5b8a4643fe536d231a4e0086ab100f0e69bc3e16f9ad41b7965a": {
+      "bytes": 8376,
+      "createdAt": "2026-09-22T23:35:36+00:00",
+      "en": "The simpler the flow, the better.",
+      "path": "audio/e3/e3bb596fe6bb5b8a4643fe536d231a4e0086ab100f0e69bc3e16f9ad41b7965a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.738
+    },
     "e3d09425e6e69602c44afbaad7b0a2e706c3c78fa57408d2934359fa4ef0b25c": {
       "bytes": 7632,
       "createdAt": "2026-08-14T12:01:55+00:00",
@@ -7520,6 +7570,16 @@
         "speak"
       ],
       "seconds": 2.047
+    },
+    "e9683a0e847297244569728e2543d4383d18928f13963de5eec5cef029f60a10": {
+      "bytes": 11640,
+      "createdAt": "2026-09-22T23:35:37+00:00",
+      "en": "As soon as the file is ready, I'll send it.",
+      "path": "audio/e9/e9683a0e847297244569728e2543d4383d18928f13963de5eec5cef029f60a10.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.248
     },
     "e97c506f89507415e572ae45d8c6005c87e7b608ce2464c50aab24e127263009": {
       "bytes": 8088,
@@ -7710,6 +7770,16 @@
         "chat"
       ],
       "seconds": 3.032
+    },
+    "ef4347c151d3193ac9aa52626d8098c6606068543b78a07ad94150ba118abf8e": {
+      "bytes": 9360,
+      "createdAt": "2026-09-22T23:35:38+00:00",
+      "en": "Do you mind if I open the window?",
+      "path": "audio/ef/ef4347c151d3193ac9aa52626d8098c6606068543b78a07ad94150ba118abf8e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.824
     },
     "ef957cb6fa5f24215e480f9332a00d9bda8ccc35c88a664e97b3982317f49639": {
       "bytes": 5904,
@@ -8273,7 +8343,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-21T23:32:36+00:00",
+  "updatedAt": "2026-09-22T23:35:38+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
