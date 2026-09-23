@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20260922-pattern";
+const APP_BUILD="20260923-pattern2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -436,6 +436,28 @@ function sortItems(keepCurrent){
     const i=state.playOrder.indexOf(cur);
     state.idx=i>=0 ? i : 0;
   }
+}
+/**
+ * 句型行由 JS 自己建，不能只写在 index.html 里。
+ * iOS 主屏幕图标会长期缓存 index.html，只有 app-h17.js 每次带时间戳重新下载；
+ * 2026-09-22 把这行写进 HTML，手机上就一直没出现 —— 新 UI 元素必须能从脚本自建。
+ */
+function ensurePatLine(){
+  let el=document.getElementById("patLine");
+  if(el) return el;
+  const en=document.getElementById("en");
+  if(!en||!en.parentNode) return null;
+  if(!document.getElementById("patLineStyle")){
+    const st=document.createElement("style");
+    st.id="patLineStyle";
+    st.textContent="#patLine{display:none;margin:-2px 0 10px;font-size:14px;line-height:1.45;color:var(--muted,#8a8f98)}#patLine.show{display:block}";
+    document.head.appendChild(st);
+  }
+  el=document.createElement("p");
+  el.id="patLine";
+  el.className="pat";
+  en.parentNode.insertBefore(el, en.nextSibling);
+  return el;
 }
 function itemFrom(x, other){
   const o=other||{};
@@ -1609,9 +1631,10 @@ function render(){
   $("cnPanel").innerHTML = esc(s.cn||"（暂无中文）");
   $("cnPanel").classList.toggle("show", state.showCn);
   const pat=(s.pat||"").trim();
-  if($("patLine")){
-    $("patLine").textContent = pat;
-    $("patLine").classList.toggle("show", !!pat);
+  const patEl=ensurePatLine();
+  if(patEl){
+    patEl.textContent = pat;
+    patEl.classList.toggle("show", !!pat);
   }
   const note=(s.note||"").trim();
   $("notePanel").innerHTML = note ? esc(note) : "这句还没有备注";
