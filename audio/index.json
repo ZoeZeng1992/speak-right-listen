@@ -2441,6 +2441,16 @@
       ],
       "seconds": 2.366
     },
+    "4abe01f46c43e718cfd3a9862841ff45cdf6393350f3806320c8f16becb2846f": {
+      "bytes": 9936,
+      "createdAt": "2026-09-23T15:11:58+00:00",
+      "en": "Unless it rains, we'll go hiking.",
+      "path": "audio/4a/4abe01f46c43e718cfd3a9862841ff45cdf6393350f3806320c8f16becb2846f.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.017
+    },
     "4acec68bd336fa92588ee7cefaa6bfc457c3b33f86509fe365aa8b53ccf2ccfd": {
       "bytes": 9552,
       "createdAt": "2026-08-14T12:01:03+00:00",
@@ -2570,6 +2580,16 @@
         "chat"
       ],
       "seconds": 2.3
+    },
+    "5182d7d9bc461a3087b611f755b5517fd04202dfd4f8fc42ae2d86ec2b98dad7": {
+      "bytes": 7536,
+      "createdAt": "2026-09-23T15:11:57+00:00",
+      "en": "Could I have a window seat?",
+      "path": "audio/51/5182d7d9bc461a3087b611f755b5517fd04202dfd4f8fc42ae2d86ec2b98dad7.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.439
     },
     "51d30bb93b6b8f41ca28280a2e28474d7ba9986b860ebcfc324bde2b0cfced49": {
       "bytes": 7464,
@@ -3670,6 +3690,16 @@
         "speak"
       ],
       "seconds": 2.368
+    },
+    "704abdb63d2525c335503afa73fa9cbc0e94ae7914608d8c6ac1c9e719b2bd03": {
+      "bytes": 8856,
+      "createdAt": "2026-09-23T15:12:00+00:00",
+      "en": "It looks like the shop is closed.",
+      "path": "audio/70/704abdb63d2525c335503afa73fa9cbc0e94ae7914608d8c6ac1c9e719b2bd03.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.683
     },
     "70f9982a7dadd2bee7c2fe8561b0786b53228425662b9be0eec1f90930197d18": {
       "bytes": 12336,
@@ -5351,6 +5381,16 @@
       ],
       "seconds": 1.848
     },
+    "a4abd5495d7f9f2664670b84be3694d02f8b6a88050e808cf8e8700c88eb6a3a": {
+      "bytes": 9408,
+      "createdAt": "2026-09-23T15:11:59+00:00",
+      "en": "There's something wrong with the alignment.",
+      "path": "audio/a4/a4abd5495d7f9f2664670b84be3694d02f8b6a88050e808cf8e8700c88eb6a3a.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.896
+    },
     "a4c170c53e7900038b6c676f403b9cab1dabe4d8b0838b604305e6b048ee26e8": {
       "bytes": 12120,
       "createdAt": "2026-08-31T15:10:19+00:00",
@@ -6811,6 +6851,16 @@
       ],
       "seconds": 1.488
     },
+    "ceb63fe0b674cad0501a2c5312cb33b4bc4516e858b9cc7e6ac7cdc710f77980": {
+      "bytes": 7488,
+      "createdAt": "2026-09-23T15:12:00+00:00",
+      "en": "I think we should leave now.",
+      "path": "audio/ce/ceb63fe0b674cad0501a2c5312cb33b4bc4516e858b9cc7e6ac7cdc710f77980.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.417
+    },
     "cf5484a322cd55032c4cc691ed682b3f94e6ecf217e7d5953a2c290220a8204e": {
       "bytes": 7008,
       "createdAt": "2026-08-14T12:03:53+00:00",
@@ -7200,6 +7250,16 @@
         "speak"
       ],
       "seconds": 1.647
+    },
+    "db6956290b97acb688c5c5c56e19d8ba3a9e34786e7455ad5382f07c82bb47b3": {
+      "bytes": 8496,
+      "createdAt": "2026-09-23T15:11:55+00:00",
+      "en": "Could you tell me which gate it is?",
+      "path": "audio/db/db6956290b97acb688c5c5c56e19d8ba3a9e34786e7455ad5382f07c82bb47b3.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.575
     },
     "dbb6e18568a737147dc9767a75981f90b36adb05dbd6b8d4b7a417bd3739a1d4": {
       "bytes": 7368,
@@ -8061,6 +8121,16 @@
       ],
       "seconds": 1.806
     },
+    "f8e567630f40571c401c6b72cc13ce98eb5eb0a92b7d1e99c392947f9bb13969": {
+      "bytes": 8976,
+      "createdAt": "2026-09-23T15:12:01+00:00",
+      "en": "It doesn't matter if it's a day late.",
+      "path": "audio/f8/f8e567630f40571c401c6b72cc13ce98eb5eb0a92b7d1e99c392947f9bb13969.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.735
+    },
     "f8e7159bd243dcd76404e71f58711c4522271f03e3abf3a77ba6c9527ae1fb18": {
       "bytes": 8952,
       "createdAt": "2026-08-28T15:42:57+00:00",
@@ -8171,6 +8241,16 @@
       ],
       "seconds": 2.056
     },
+    "fb7837c3a5eab43254623c78baec0a5494156336be7f90cd6d2055c3b3c11c33": {
+      "bytes": 11064,
+      "createdAt": "2026-09-23T15:11:56+00:00",
+      "en": "Would you mind taking a photo of us?",
+      "path": "audio/fb/fb7837c3a5eab43254623c78baec0a5494156336be7f90cd6d2055c3b3c11c33.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 2.056
+    },
     "fb82e16b380c10d3452b4e0ef1db5e3342a47af4f636e2978b8c436ab4c25e75": {
       "bytes": 7608,
       "createdAt": "2026-08-17T14:13:09+00:00",
@@ -8271,6 +8351,16 @@
       ],
       "seconds": 2.101
     },
+    "fe00b315b68248a17079b24ce9a04a5383121461fc8f5295215aa553f7bba3a7": {
+      "bytes": 9264,
+      "createdAt": "2026-09-23T15:11:54+00:00",
+      "en": "It's worth visiting the old town.",
+      "path": "audio/fe/fe00b315b68248a17079b24ce9a04a5383121461fc8f5295215aa553f7bba3a7.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.829
+    },
     "fe3b4e2c86a0841bd2c9a0a4d3cd62557e3d7434f992bfe717e4b8bab7c7ecd3": {
       "bytes": 4032,
       "createdAt": "2026-08-25T00:06:43+00:00",
@@ -8343,7 +8433,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-22T23:35:38+00:00",
+  "updatedAt": "2026-09-23T15:12:01+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
