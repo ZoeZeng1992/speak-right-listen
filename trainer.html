@@ -5977,7 +5977,7 @@ function toggleChatSpeak(idx, text, btn){
    - IS_TOUCH：手指操作的设备。iPad Safari 其实有 webkitSpeechRecognition，
      但 continuous 不稳、每次还要授权麦克风，用户明确说 iPad 不要录音，只要朗读
    ============================================================ */
-const TRAINER_BUILD = "20261008-ipad2";
+const TRAINER_BUILD = "20261008-ipad3";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -5990,6 +5990,9 @@ if(!SR && !NO_MIC){ document.getElementById("micWarn").classList.add("show"); }
 if(NO_MIC){
   // iPad：去掉麦克风按钮和识别结果区，保留 Play / Slow / Reveal
   ["micBtn","transcript"].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display="none"; });
+  // 那条"去 macOS 系统设置下载 Ava/Zoe"的提示在 iPad 上没有意义，别让人白跑一趟
+  const vw=document.getElementById("voiceWarn");
+  if(vw){ vw.style.display="none"; vw.classList.remove("show"); }
 }
 
 function clearRecogTimers(){
