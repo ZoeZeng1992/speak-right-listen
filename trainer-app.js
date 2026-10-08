@@ -5127,10 +5127,6 @@ function loadVoices(){
   voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
   buildVoiceSelect();
 }
-if(window.speechSynthesis){
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
 /* Curated female voices, best-first. Robotic novelty voices are excluded. */
 const FEMALE_VOICES = ["ava","allison","samantha","susan","zoe","nicky","joelle","serena",
   "stephanie","catherine","kate","martha","fiona","karen","moira","tessa","sandy","shelley",
@@ -5158,6 +5154,7 @@ function candidateVoices(){
 function cleanName(n){ return n.replace(/\s*\(.*\)\s*/g,"").trim(); }
 function buildVoiceSelect(){
   const sel = document.getElementById("voiceSel");
+  if(!sel) return;              // 元素不在就安静退出，别让它掀翻整个脚本
   const list = candidateVoices();
   sel.innerHTML = list.length
     ? list.map(v=>`<option value="${v.voiceURI}">${cleanName(v.name)} · ${v.lang}</option>`).join("")
@@ -5183,6 +5180,14 @@ function pickVoice(){
       || candidateVoices()[0]
       || voices.find(v=>v.lang===state.settings.accent)
       || voices.find(v=>v.lang && v.lang.startsWith("en"));
+}
+/* ⚠️ 这个调用必须留在这里 —— 它下面依赖的 FEMALE_VOICES 等等是 const，
+   放到声明之前就会撞上暂时性死区（TDZ）。Chrome 第一次 getVoices() 返回空数组，
+   碰不到那些常量所以看不出问题；iOS Safari 刷新时语音列表已经就绪、立刻返回完整列表，
+   于是 ReferenceError 让整个脚本评估中断，页面只剩静态骨架（2026-10-08 查了很久）。 */
+if(window.speechSynthesis){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
 }
 /* ============================================================
    声音 A（Kokoro af_heart）—— 和手机听练同一套音频，电脑/iPad 共用
@@ -5431,7 +5436,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261008-diag";
+const TRAINER_BUILD = "20261008-tdz";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
