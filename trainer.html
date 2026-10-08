@@ -409,11 +409,14 @@
           <input type="password" id="jsonbinKey" placeholder="粘贴 jsonbin.io 的 Master Key" style="flex:1;height:38px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:14px;color:var(--ink)" />
           <button class="btn mini ghost" type="button" id="jsonbinKeyShowBtn" title="显示 / 隐藏">显示</button>
           <button class="btn mini ghost" type="button" id="jsonbinKeyCopyBtn" title="复制 Key 到剪贴板">复制 Key</button>
+          <span id="jsonbinKeyHint" style="font-size:12px;color:var(--muted);white-space:nowrap">（空）</span>
         </div>
         <label style="display:block;margin-top:12px;font-size:12px;color:var(--muted)">GitHub Token（填了就用它传大包，不再受 Jsonbin 100KB 限制）</label>
         <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
           <input type="password" id="ghToken" placeholder="github_pat_… 细粒度 token，只勾这一个仓库的 Contents 读写" style="flex:1;height:38px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:14px;color:var(--ink)" />
           <button class="btn mini ghost" type="button" id="ghTokenShowBtn" title="显示 / 隐藏">显示</button>
+          <span id="ghTokenHint" style="font-size:12px;color:var(--muted);white-space:nowrap">（空）</span>
+          <button class="btn mini ghost" type="button" id="ghTokenClearBtn" title="清空：平板/手机上不该存仓库写权限">清空</button>
         </div>
         <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
           <input type="text" id="ghRepo" placeholder="用户名/仓库名" style="flex:1;height:34px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:13px;color:var(--ink)" />
@@ -6056,7 +6059,7 @@ function toggleChatSpeak(idx, text, btn){
    - IS_TOUCH：手指操作的设备。iPad Safari 其实有 webkitSpeechRecognition，
      但 continuous 不稳、每次还要授权麦克风，用户明确说 iPad 不要录音，只要朗读
    ============================================================ */
-const TRAINER_BUILD = "20261008-voiceA";
+const TRAINER_BUILD = "20261008-keyfix";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -7259,13 +7262,27 @@ if($("favAudioCleanupBtn")) $("favAudioCleanupBtn").onclick=()=>previewAndCleanF
 if($("jsonbinKey")) $("jsonbinKey").onchange=e=>{ state.settings.jsonbinKey=e.target.value.trim(); saveProgress(); };
 if($("ghToken")) $("ghToken").oninput=$("ghToken").onchange=e=>{ state.settings.ghToken=e.target.value.trim(); saveProgress(); };
 if($("ghRepo")) $("ghRepo").oninput=$("ghRepo").onchange=e=>{ state.settings.ghRepo=e.target.value.trim(); saveProgress(); };
-if($("ghTokenShowBtn")) $("ghTokenShowBtn").onclick=()=>{
-  const inp=$("ghToken");
-  if(!inp) return;
+/* Safari 对"自动填充过的密码框"会一直打码，光把 type 改成 text 看不见内容，
+   用户会以为按钮坏了。重新赋一次 value 可以切断 Safari 的自动填充关联。
+   同时在旁边标出"里面到底有没有东西、多少位" —— 不然空框和被打码的框长得一样。 */
+function toggleSecretField(inputId, btnId, hintId){
+  const inp=$(inputId), btn=$(btnId);
+  if(!inp||!btn) return;
   const show=inp.type==="password";
+  const v=inp.value;
   inp.type=show?"text":"password";
-  $("ghTokenShowBtn").textContent=show?"隐藏":"显示";
-};
+  try{ inp.value=v; }catch(e){}
+  btn.textContent=show?"隐藏":"显示";
+  updateSecretHint(inputId, hintId);
+}
+function updateSecretHint(inputId, hintId){
+  const inp=$(inputId), el=$(hintId);
+  if(!inp||!el) return;
+  const n=(inp.value||"").trim().length;
+  el.textContent = n ? ("已填 "+n+" 位") : "（空）";
+  el.style.color = n ? "var(--muted)" : "var(--bad)";
+}
+if($("ghTokenShowBtn")) $("ghTokenShowBtn").onclick=()=>toggleSecretField("ghToken","ghTokenShowBtn","ghTokenHint");
 if($("syncAlertClose")) $("syncAlertClose").onclick=()=>{
   _syncAlertMuted=true;
   const bar=$("syncAlert"); if(bar) bar.classList.remove("show");
@@ -7295,13 +7312,15 @@ if($("ghTestBtn")) $("ghTestBtn").onclick=async ()=>{
     updateFavSyncUI("GitHub 连接失败："+((e&&e.message)||e)+"。检查 token 是否过期、仓库名是否正确、是否勾了该仓库的 Contents 读写。", true);
   }
 };
-if($("jsonbinKeyShowBtn")) $("jsonbinKeyShowBtn").onclick=()=>{
-  const inp=$("jsonbinKey");
-  if(!inp) return;
-  const show=inp.type==="password";
-  inp.type=show?"text":"password";
-  $("jsonbinKeyShowBtn").textContent=show?"隐藏":"显示";
+if($("ghTokenClearBtn")) $("ghTokenClearBtn").onclick=()=>{
+  if($("ghToken")) $("ghToken").value="";
+  state.settings.ghToken=""; saveProgress();
+  updateSecretHint("ghToken","ghTokenHint");
+  updateStateSyncUI("已清空 GitHub Token（平板/手机上不该存仓库写权限）");
 };
+if($("jsonbinKeyShowBtn")) $("jsonbinKeyShowBtn").onclick=()=>toggleSecretField("jsonbinKey","jsonbinKeyShowBtn","jsonbinKeyHint");
+if($("jsonbinKey")) $("jsonbinKey").addEventListener("input", ()=>updateSecretHint("jsonbinKey","jsonbinKeyHint"));
+if($("ghToken")) $("ghToken").addEventListener("input", ()=>updateSecretHint("ghToken","ghTokenHint"));
 if($("jsonbinKeyCopyBtn")) $("jsonbinKeyCopyBtn").onclick=async ()=>{
   const key=((state.settings&&state.settings.jsonbinKey)||($("jsonbinKey")&&$("jsonbinKey").value)||"").trim();
   if(!key){ updateFavSyncUI("还没有保存 Master Key", true); return; }
@@ -7899,6 +7918,12 @@ function renderChat(){
 
 /* init */
 applySettingsUI();
+try{
+  updateSecretHint("jsonbinKey","jsonbinKeyHint");
+  updateSecretHint("ghToken","ghTokenHint");
+  // Safari 可能把同一条钥匙串自动填进两个框，晚一点再量一次
+  setTimeout(()=>{ updateSecretHint("jsonbinKey","jsonbinKeyHint"); updateSecretHint("ghToken","ghTokenHint"); }, 1200);
+}catch(e){}
 /* 线上版是单文件，整页都会被缓存。和手机听练一样用版本号兜底：
    发现线上版本号和自己不一样就亮横幅，点一下带时间戳重载。 */
 if($("stateSyncBtn")) $("stateSyncBtn").onclick=()=>{
