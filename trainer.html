@@ -308,6 +308,31 @@
     .card-foot .nav-btns .btn{min-width:44%;justify-content:center}
   }
 </style>
+<script>
+/* 启动错误显示器：必须是页面上第一段脚本。
+   主脚本是一整块内联 script，任何一处解析/早期运行出错整页就只剩静态骨架，
+   在手机上完全看不出发生了什么（2026-10-08 就这样卡住过）。把错误直接糊在屏幕顶上。 */
+(function(){
+  function show(msg){
+    var d=document.getElementById("bootErr");
+    if(!d){
+      d=document.createElement("div");
+      d.id="bootErr";
+      d.style.cssText="position:fixed;left:0;right:0;top:0;z-index:99999;background:#b00020;color:#fff;"+
+        "font:13px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word";
+      (document.body||document.documentElement).appendChild(d);
+    }
+    d.textContent="页面脚本出错（请截图）：\n"+msg;
+  }
+  window.addEventListener("error", function(e){
+    show((e.message||"未知错误")+"\n行 "+(e.lineno||"?")+" · 列 "+(e.colno||"?"));
+  });
+  window.addEventListener("unhandledrejection", function(e){
+    var r=e&&e.reason;
+    show("异步错误："+((r&&(r.message||r))||r));
+  });
+})();
+</script>
 </head>
 <body>
 <div class="app">
@@ -6059,7 +6084,7 @@ function toggleChatSpeak(idx, text, btn){
    - IS_TOUCH：手指操作的设备。iPad Safari 其实有 webkitSpeechRecognition，
      但 continuous 不稳、每次还要授权麦克风，用户明确说 iPad 不要录音，只要朗读
    ============================================================ */
-const TRAINER_BUILD = "20261008-keyfix";
+const TRAINER_BUILD = "20261008-boot";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
