@@ -339,7 +339,16 @@
           location.replace(location.pathname+"?reload="+Date.now());
           return;
         }
-        show("主脚本两次都没跑起来。\n多半是手机存储空间不足，Safari 存不下这个页面。\n请清理一些空间，或在 Safari 设置里清除本站数据后重试。");
+        var t=window.__srTag||{};
+        var net="(拿不到)";
+        try{
+          var es=performance.getEntriesByType("resource").filter(function(e){ return e.name.indexOf("trainer-app.js")>=0; });
+          net = es.length ? es.map(function(e){
+            return "下载 "+(e.decodedBodySize||0)+"B / 传输 "+(e.transferSize||0)+"B / 用时 "+Math.round(e.duration)+"ms";
+          }).join(" ; ") : "没有这个请求的记录";
+        }catch(e){ net="(读取失败 "+e+")"; }
+        show("主脚本两次都没跑起来。\n标签已插入:"+(!!t.added)+" onload:"+(!!t.onload)+" onerror:"+(!!t.onerror)+
+             "\n"+net+"\n应为 499284B。请把这条截图给我。");
       }else if(!window.__srInitDone){
         show("脚本跑了但没初始化完 —— 中途停在某处。");
       }
@@ -676,10 +685,14 @@
    外挂脚本每次带时间戳取新的，拿不到就直接告诉用户，不再静默死掉。
    和手机听练页的 app-h17.js 是同一个做法。 */
 (function(){
+  window.__srTag={added:false,onload:false,onerror:false};
   var s=document.createElement("script");
   s.src="trainer-app.js?t="+Date.now();
   s.async=false;
+  s.onload=function(){ window.__srTag.onload=true; };
+  s.addEventListener("error",function(){ window.__srTag.onerror=true; });
   s.onerror=function(){
+    window.__srTag.onerror=true;
     var d=document.createElement("div");
     d.style.cssText="position:fixed;left:0;right:0;top:0;z-index:99999;background:#b00020;color:#fff;"+
       "font:13px/1.5 -apple-system,sans-serif;padding:10px 12px";
@@ -687,6 +700,7 @@
     (document.body||document.documentElement).appendChild(d);
   };
   document.body.appendChild(s);
+  window.__srTag.added=true;
 })();
 </script>
 </body>

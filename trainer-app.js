@@ -5431,7 +5431,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261008-split";
+const TRAINER_BUILD = "20261008-diag";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
