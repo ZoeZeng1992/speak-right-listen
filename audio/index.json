@@ -331,6 +331,16 @@
       ],
       "seconds": 1.956
     },
+    "076d4b48d7c6e5892c63bb81a0d36d7847528d29bad4c4fd98d562ca2e097c12": {
+      "bytes": 10080,
+      "createdAt": "2026-10-08T02:06:02+00:00",
+      "en": "I'd prefer to present on Friday.",
+      "path": "audio/07/076d4b48d7c6e5892c63bb81a0d36d7847528d29bad4c4fd98d562ca2e097c12.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.861
+    },
     "07d207ca1737d69d94fb268edcf8839a83542127df324377dc2ca6e71b7ed058": {
       "bytes": 13008,
       "createdAt": "2026-08-14T12:14:45+00:00",
@@ -960,6 +970,16 @@
         "speak"
       ],
       "seconds": 2.071
+    },
+    "1c64960f9e2c5ca256f80e6d9faebfc8aa006333a784936cb133c926a036c91e": {
+      "bytes": 8856,
+      "createdAt": "2026-10-08T02:05:59+00:00",
+      "en": "It might be better to hide this button.",
+      "path": "audio/1c/1c64960f9e2c5ca256f80e6d9faebfc8aa006333a784936cb133c926a036c91e.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.816
     },
     "1c90a9500cba4444da90a4f105f939b36da5a1cb5d2ee7cf9460b0ac25e0c563": {
       "bytes": 9360,
@@ -1970,6 +1990,16 @@
         "chat"
       ],
       "seconds": 1.827
+    },
+    "3d55c5b553a089e509db39f02b1a04256d6ae0934d8b5c719c31eaeab30675fa": {
+      "bytes": 9000,
+      "createdAt": "2026-10-08T02:06:04+00:00",
+      "en": "It looks like the button is too small.",
+      "path": "audio/3d/3d55c5b553a089e509db39f02b1a04256d6ae0934d8b5c719c31eaeab30675fa.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.758
     },
     "3d9cdceacea4a14cee790d9b10453dca1bcc88bb0f63e57b065e5487a8ff7f8e": {
       "bytes": 10248,
@@ -4691,6 +4721,16 @@
       ],
       "seconds": 2.239
     },
+    "8d90aa32473493e46f617c63955e6f2128ef753791e0d1e46e4a3cb51f343d0b": {
+      "bytes": 8280,
+      "createdAt": "2026-10-08T02:06:03+00:00",
+      "en": "What do you mean by too busy?",
+      "path": "audio/8d/8d90aa32473493e46f617c63955e6f2128ef753791e0d1e46e4a3cb51f343d0b.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.546
+    },
     "8e10c2ac753f7d9905110bda2bd5735129e46fbf9023eee99428efbbc12885af": {
       "bytes": 8616,
       "createdAt": "2026-08-14T12:01:10+00:00",
@@ -5831,6 +5871,16 @@
       ],
       "seconds": 1.447
     },
+    "b1c60260e31e7eff93cb195c912542a1ff0dd67d90494c1adb5d764d26b1b77c": {
+      "bytes": 8352,
+      "createdAt": "2026-10-08T02:06:05+00:00",
+      "en": "Even if I'm tired, I'll go.",
+      "path": "audio/b1/b1c60260e31e7eff93cb195c912542a1ff0dd67d90494c1adb5d764d26b1b77c.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.737
+    },
     "b1cef180906eef49cd51645215cc8d883f4aa51ffed4f7b2337503a4066bdacf": {
       "bytes": 20952,
       "createdAt": "2026-08-14T12:06:57+00:00",
@@ -5950,6 +6000,16 @@
         "chat"
       ],
       "seconds": 2.244
+    },
+    "b520332a1e85b990699abe5ad1d2923264de8150fdc226ccfa2896962969d275": {
+      "bytes": 7800,
+      "createdAt": "2026-10-08T02:06:00+00:00",
+      "en": "Let me walk you through the flow.",
+      "path": "audio/b5/b520332a1e85b990699abe5ad1d2923264de8150fdc226ccfa2896962969d275.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.491
     },
     "b5e4a02491132b465546eef85c3e55cbd004c83cfb63962bd7f98b10e3fba10e": {
       "bytes": 6624,
@@ -6710,6 +6770,16 @@
         "chat"
       ],
       "seconds": 3.52
+    },
+    "c9f28bd1ec876e6443412cdf2dba3f551f896852d9c424ddfd0c73b234e93bf5": {
+      "bytes": 9912,
+      "createdAt": "2026-10-08T02:06:01+00:00",
+      "en": "Would you mind waiting a few minutes?",
+      "path": "audio/c9/c9f28bd1ec876e6443412cdf2dba3f551f896852d9c424ddfd0c73b234e93bf5.mp3",
+      "refs": [
+        "speak"
+      ],
+      "seconds": 1.943
     },
     "ca7d08e576e9c667b9c25cff41610298aa412550535c71d141723fa064ad6bee": {
       "bytes": 9192,
@@ -8433,7 +8503,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-09-23T15:12:01+00:00",
+  "updatedAt": "2026-10-08T02:06:05+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
