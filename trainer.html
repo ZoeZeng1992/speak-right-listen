@@ -327,6 +327,15 @@
   window.addEventListener("error", function(e){
     show((e.message||"未知错误")+"\n行 "+(e.lineno||"?")+" · 列 "+(e.colno||"?"));
   });
+  window.addEventListener("load", function(){
+    setTimeout(function(){
+      if(!window.__srScriptStarted){
+        show("主脚本没有执行（不是报错，是根本没跑）。\n多半是 Safari 缓存了坏副本或内存不足。");
+      }else if(!window.__srInitDone){
+        show("脚本跑了但没初始化完 —— 中途停在某处。");
+      }
+    }, 2500);
+  });
   window.addEventListener("unhandledrejection", function(e){
     var r=e&&e.reason;
     show("异步错误："+((r&&(r.message||r))||r));
@@ -6084,6 +6093,7 @@ function toggleChatSpeak(idx, text, btn){
    - IS_TOUCH：手指操作的设备。iPad Safari 其实有 webkitSpeechRecognition，
      但 continuous 不稳、每次还要授权麦克风，用户明确说 iPad 不要录音，只要朗读
    ============================================================ */
+window.__srScriptStarted=true;
 const TRAINER_BUILD = "20261008-boot";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
@@ -7987,6 +7997,7 @@ recallPos();
 clampIdx();
 if(state.mode==="chat") loadChatForUnit(UNITS[state.unit].id);
 renderAll();
+window.__srInitDone=true;
 renderStats();
 </script>
 </body>
