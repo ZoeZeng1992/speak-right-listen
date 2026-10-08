@@ -5811,9 +5811,88 @@ function pickVoice(){
       || voices.find(v=>v.lang===state.settings.accent)
       || voices.find(v=>v.lang && v.lang.startsWith("en"));
 }
+/* ============================================================
+   声音 A（Kokoro af_heart）—— 和手机听练同一套音频，电脑/iPad 共用
+   规则必须和 audio-tools/generate_audio.py 与 app-h17.js 三处完全一致：
+   文件名 = SHA-256("声音配置\n规范化英文")，同形异音词再多拼一段 "pron"。
+   取不到就退回系统语音，绝不让朗读卡死。
+   iOS 只允许在用户手势里开始播放，所以 URL 和音频元素在句子渲染时就准备好，
+   speak() 本身保持同步。
+   ============================================================ */
+const VOICE_A_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
+const VOICE_A_OVERRIDES=new Set(["wind down"]);
+const _voiceACache=new Map();     // canonical -> {url, el, ready}
+let _voiceAEl=null;
+function voiceABase(){ return favListenPublicBase().replace(/\/$/,""); }
+function canonicalAudioText(text){
+  let v=String(text||"");
+  try{ v=v.normalize("NFC"); }catch(e){}
+  v=v.replace(/\*/g,"").replace(/`/g,"");
+  const han=/[㐀-䶿一-鿿豈-﫿]/;
+  if(han.test(v)){
+    v=v.replace(/[㐀-䶿一-鿿豈-﫿]/g," ");
+    v=v.replace(/[，。！？：；、“”《》【】（）…·\/\\|]+/g," ");
+  }
+  return v.trim().replace(/\s+/g," ");
+}
+async function _sha256Hex(text){
+  if(!(window.crypto&&crypto.subtle&&window.TextEncoder)) throw new Error("no subtle");
+  const d=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(d),b=>b.toString(16).padStart(2,"0")).join("");
+}
+/** 预加载这句的声音 A；拿不到就算了，speak() 会退回系统语音 */
+async function prefetchVoiceA(en){
+  const canonical=canonicalAudioText(en);
+  if(!canonical || _voiceACache.has(canonical)) return;
+  _voiceACache.set(canonical, {url:"", el:null, ready:false});
+  try{
+    let raw=VOICE_A_PROFILE+"\n"+canonical;
+    if(VOICE_A_OVERRIDES.has(canonical)) raw+="\npron";
+    const h=await _sha256Hex(raw);
+    const url=voiceABase()+"/audio/"+h.slice(0,2)+"/"+h+".mp3";
+    const el=new Audio();
+    el.preload="auto";
+    el.src=url;
+    const rec={url, el, ready:false};
+    el.addEventListener("canplaythrough", ()=>{ rec.ready=true; }, {once:true});
+    el.addEventListener("error", ()=>{ rec.ready=false; rec.el=null; }, {once:true});
+    _voiceACache.set(canonical, rec);
+    // 缓存别无限涨
+    if(_voiceACache.size>60){
+      const first=_voiceACache.keys().next().value;
+      if(first!==canonical) _voiceACache.delete(first);
+    }
+  }catch(e){ _voiceACache.set(canonical,{url:"",el:null,ready:false}); }
+}
+function stopVoiceA(){
+  if(_voiceAEl){ try{ _voiceAEl.pause(); _voiceAEl.currentTime=0; }catch(e){} _voiceAEl=null; }
+}
+/** 能用声音 A 就播并返回 true；否则返回 false 交给系统语音 */
+function playVoiceA(text, rate){
+  const canonical=canonicalAudioText(text);
+  const rec=_voiceACache.get(canonical);
+  if(!rec || !rec.el || !rec.ready) return false;
+  try{
+    stopVoiceA();
+    const el=rec.el;
+    el.playbackRate=Math.max(0.5, Math.min(2, rate ?? state.settings.rate ?? 1));
+    el.currentTime=0;
+    const p=el.play();
+    if(p && p.catch) p.catch(()=>{ _voiceAEl=null; speakSystem(text, rate); });
+    _voiceAEl=el;
+    return true;
+  }catch(e){ return false; }
+}
+
 function speak(text, rate){
-  if(!window.speechSynthesis) return;
   stopFavLoop(false);
+  stopVoiceA();
+  try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+  if(playVoiceA(text, rate)) return;      // 先用声音 A，没有才退回系统语音
+  speakSystem(text, rate);
+}
+function speakSystem(text, rate){
+  if(!window.speechSynthesis) return;
   _chatSpeakIdx=null;
   document.querySelectorAll(".msg-speak.playing").forEach(el=>el.classList.remove("playing"));
   try{ speechSynthesis.resume(); }catch(e){}   // TTS can get stuck "paused" after a tab switch (e.g. joining a meeting)
@@ -5977,7 +6056,7 @@ function toggleChatSpeak(idx, text, btn){
    - IS_TOUCH：手指操作的设备。iPad Safari 其实有 webkitSpeechRecognition，
      但 continuous 不稳、每次还要授权麦克风，用户明确说 iPad 不要录音，只要朗读
    ============================================================ */
-const TRAINER_BUILD = "20261008-ipad3";
+const TRAINER_BUILD = "20261008-voiceA";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -6807,6 +6886,14 @@ function renderCard(){
   updateFavBtn();
   updateFavNoteUI();
   updateFavAudioUI();
+  // 提前把当前句和下一句的声音 A 拉好：iOS 只允许在点击手势里开始播放，
+  // 等到按了 Play 再去算哈希、下文件就来不及了
+  try{
+    prefetchVoiceA(s.en);
+    const nxt=state.order&&state.order[state.idx+1];
+    const nse=nxt&&(nxt.en||(typeof nxt==="string"?nxt:""));
+    if(nse) prefetchVoiceA(nse);
+  }catch(e){}
 
   if(isFavAudioMode()){
     // 听练：换句后自动继续循环（∞ 或设定次数）
