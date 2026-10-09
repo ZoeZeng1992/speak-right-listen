@@ -4209,6 +4209,14 @@ function ghConf(){
   const repo=((state.settings.ghRepo||"").trim() || el("ghRepo").trim())
     .replace(/^https?:\/\/github\.com\//i,"").replace(/\.git$/,"").replace(/^\/|\/$/g,"");
   const path=(state.settings.ghPath||"fav-listen-data.json").trim().replace(/^\//,"");
+  // Safari 自动填充只是把字画进输入框，不触发 change —— 值永远进不了存档，
+  // 于是同站点的听练页读不到，用户看到「填了却说没填」（2026-10-09）。
+  // 这里只要从输入框兜底拿到了值，就顺手落盘。
+  if(token && (state.settings.ghToken||"").trim()!==token){
+    state.settings.ghToken=token;
+    if(repo) state.settings.ghRepo=repo;
+    try{ saveProgress(); }catch(e){}
+  }
   return { token, repo, path, ok:!!(token&&repo&&path) };
 }
 function _utf8ToB64(str){
@@ -5446,7 +5454,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261009-imgfix";
+const TRAINER_BUILD = "20261009-tokensave";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别

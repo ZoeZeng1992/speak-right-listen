@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-imgfix";
+const APP_BUILD="20261009-tokensave";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -896,7 +896,7 @@ function compressImageFile(file){
 }
 async function uploadNoteImagePhone(file){
   const c=ghFromTrainer();
-  if(!c.ok) throw new Error("这台手机还没存 GitHub Token：先用同一个浏览器打开 trainer 页，在 Settings 里填一次");
+  if(!c.ok) throw new Error("这台手机还没存 GitHub Token：用这台手机的 Safari 打开 trainer 页，在 Settings 里填一次（密钥不跟着同步走，每台设备各填一次）");
   const blob=await compressImageFile(file);
   const buf=await blob.arrayBuffer();
   const dg=await crypto.subtle.digest("SHA-256", buf);
@@ -1999,7 +1999,7 @@ function openNoteEditor(){
   try{
     const c=ghFromTrainer();
     const btn=$("noteImgBtn"); if(btn) btn.disabled=!c.ok;
-    noteImgMsgPhone(c.ok ? "可以插入截图" : "这台手机还没存 GitHub Token：用同一个浏览器打开 trainer 页，在 Settings 里填一次", !c.ok);
+    noteImgMsgPhone(c.ok ? "可以插入截图" : "这台手机还没存 GitHub Token。密钥不会跟着同步走（故意的），每台设备各填一次：用这台手机的 Safari 打开 trainer 页 → Settings → GitHub Token 粘贴 → 点「测试连接」", !c.ok);
   }catch(e){}
   const mask=$("noteMask"); if(mask) mask.classList.add("show");
   if(box) setTimeout(()=>box.focus(), 60);
