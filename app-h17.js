@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-phoneimg";
+const APP_BUILD="20261009-imgfix";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -904,7 +904,7 @@ async function uploadNoteImagePhone(file){
   const path="notes/"+hex.slice(0,2)+"/"+hex+".jpg";
   const hdr={ "Authorization":"Bearer "+c.token, "Accept":"application/vnd.github+json", "X-GitHub-Api-Version":"2022-11-28" };
   const head=await fetch(`${GH_API_PHONE}/repos/${c.repo}/contents/${encodeURIComponent(path)}?ref=main&t=${Date.now()}`,{headers:hdr});
-  if(head.ok) return { path, kb:Math.round(blob.size/1024), reused:true };
+  if(head.ok){ _noteImgBlobs.set(path, URL.createObjectURL(blob)); return { path, kb:Math.round(blob.size/1024), reused:true }; }
   if(head.status!==404){
     let tip="读取仓库失败 "+head.status;
     try{ const j=await head.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
@@ -919,6 +919,7 @@ async function uploadNoteImagePhone(file){
     try{ const j=await res.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
     throw new Error(tip);
   }
+  _noteImgBlobs.set(path, URL.createObjectURL(blob));
   return { path, kb:Math.round(blob.size/1024), reused:false };
 }
 function noteImgMsgPhone(msg, bad){
@@ -953,6 +954,21 @@ async function handleNoteImagesPhone(files){
 }
 
 const NOTE_IMG_RE=/\[img:([A-Za-z0-9_\-./]+)\]/g;
+const _noteImgBlobs=new Map();
+/* 线上构建要几十秒，期间 404；别停在破图标上 */
+function attachNoteImgRetry(root){
+  if(!root) return;
+  root.querySelectorAll("img.note-img").forEach(img=>{
+    if(img.dataset.retryBound) return;
+    img.dataset.retryBound="1";
+    img.addEventListener("error", ()=>{
+      const n=+(img.dataset.tries||0);
+      if(n>=3){ img.alt="图片还没发布好，稍后刷新再看"; return; }
+      img.dataset.tries=String(n+1);
+      setTimeout(()=>{ img.src=img.src.split("?")[0]+"?r="+Date.now(); }, 4000*Math.pow(2,n));
+    });
+  });
+}
 function renderNoteHtml(note){
   const raw=String(note||"");
   if(!raw.trim()) return "";
@@ -960,7 +976,8 @@ function renderNoteHtml(note){
   NOTE_IMG_RE.lastIndex=0;
   while((m=NOTE_IMG_RE.exec(raw))){
     out+=esc(raw.slice(last,m.index));
-    const u=String(m[1]).replace(/^\//,"");     // 手机就在站点根目录下，相对路径即可
+    const rel=String(m[1]).replace(/^\//,"");   // 手机就在站点根目录下，相对路径即可
+    const u=_noteImgBlobs.get(rel)||rel;        // 刚传的先用本机 blob，不等 Pages 构建
     out+='<a href="'+u+'" target="_blank" rel="noopener"><img class="note-img" src="'+u+'" alt="备注图片" loading="lazy"></a>';
     last=m.index+m[0].length;
   }
@@ -1749,6 +1766,7 @@ function render(){
   }
   const note=(s.note||"").trim();
   $("notePanel").innerHTML = note ? renderNoteHtml(note) : "这句还没有备注";
+  try{ attachNoteImgRetry($("notePanel")); }catch(e){}
   $("notePanel").classList.toggle("show", state.showNote);
   if(state.updatedAt){
     $("updated").textContent = "已同步 · "+new Date(state.updatedAt).toLocaleString();

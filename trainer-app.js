@@ -5446,7 +5446,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261009-tokencopy";
+const TRAINER_BUILD = "20261009-imgfix";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -6382,9 +6382,35 @@ const NOTE_IMG_MAX_PX=1400;     // 长边上限
 const NOTE_IMG_QUALITY=0.75;    // JPEG 质量：AI 讲解的小字能看清，又比原图省一半
 const NOTE_IMG_RE=/\[img:([A-Za-z0-9_\-./]+)\]/g;
 
-function noteImgUrl(path){
+/* 刚上传的图先用本机 blob 显示：GitHub Pages 构建要几十秒，
+   这期间线上地址是 404，浏览器画个破图标就不再重试了（2026-10-09 踩到）。 */
+const _noteImgBlobs=new Map();
+function noteImgRemoteUrl(path){
   if(/^https?:\/\//.test(path)) return path;
   return favListenPublicBase().replace(/\/$/,"")+"/"+String(path).replace(/^\//,"");
+}
+function noteImgUrl(path){
+  return _noteImgBlobs.get(path) || noteImgRemoteUrl(path);
+}
+/* 线上还没构建好就按 4s / 8s / 16s 重试，别停在破图标上 */
+function attachNoteImgRetry(root){
+  if(!root) return;
+  root.querySelectorAll("img.note-img").forEach(img=>{
+    if(img.dataset.retryBound) return;
+    img.dataset.retryBound="1";
+    img.addEventListener("error", ()=>{
+      const n=+(img.dataset.tries||0);
+      if(n>=3){
+        img.alt="图片还没发布好，稍后刷新再看";
+        return;
+      }
+      img.dataset.tries=String(n+1);
+      setTimeout(()=>{
+        const base=img.src.split("?")[0];
+        img.src=base+"?r="+Date.now();
+      }, 4000*Math.pow(2,n));
+    });
+  });
 }
 /** 备注正文 → HTML：先整体转义，再把图片标记换成 <img> */
 function renderNoteHtml(note){
@@ -6437,7 +6463,7 @@ async function uploadNoteImage(file){
   const hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join("");
   const path="notes/"+hex.slice(0,2)+"/"+hex+".jpg";
   const head=await ghRequest(`${GH_API}/repos/${c.repo}/contents/${encodeURIComponent(path)}?ref=main&t=${Date.now()}`,{method:"GET"});
-  if(head.ok) return { path, kb:Math.round(blob.size/1024), reused:true };   // 同一张图早传过了
+  if(head.ok){ _noteImgBlobs.set(path, URL.createObjectURL(blob)); return { path, kb:Math.round(blob.size/1024), reused:true }; }
   if(head.status!==404){
     let tip="读取仓库失败 "+head.status;
     try{ const j=await head.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
@@ -6452,6 +6478,7 @@ async function uploadNoteImage(file){
     try{ const j=await res.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
     throw new Error(tip);
   }
+  _noteImgBlobs.set(path, URL.createObjectURL(blob));
   return { path, kb:Math.round(blob.size/1024), reused:false };
 }
 function insertAtCursor(ta, text){
@@ -6479,8 +6506,9 @@ function renderNoteImgStrip(){
   if(!paths.length){ strip.style.display="none"; strip.innerHTML=""; return; }
   strip.style.display="flex";
   strip.innerHTML=paths.map((p,i)=>
-    `<span class="note-thumb"><img src="${noteImgUrl(p)}" alt="图 ${i+1}" loading="lazy">`+
-    `<button type="button" data-p="${p}" title="从备注里移除">×</button></span>`).join("");
+    `<span class="note-thumb"><img class="note-img" src="${noteImgUrl(p)}" alt="图 ${i+1}" loading="lazy">`+
+    `<button type="button" data-p="${p}" title="从备注里移除">移除这张</button></span>`).join("");
+  try{ attachNoteImgRetry(strip); }catch(e){}
   strip.querySelectorAll("button[data-p]").forEach(b=>{
     b.onclick=()=>{
       const p=b.getAttribute("data-p");
@@ -6527,6 +6555,7 @@ function updateFavNoteUI(){
     wrap.style.display="block";
     panel.style.display="none";
     text.innerHTML=renderNoteHtml(note);
+    try{ attachNoteImgRetry(text); }catch(e){}
     toggle.textContent=note?"📝 查看备注":"📝 添加备注";
   }
 }
