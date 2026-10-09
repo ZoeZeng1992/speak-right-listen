@@ -74,6 +74,8 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
+  .note-img-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .note-img-row span{font-size:12.5px;color:var(--muted,#8a8f98);line-height:1.5}
   .note-img{max-width:100%;border-radius:12px;border:1px solid var(--line);margin:8px 0;display:block}
   .note-edit{width:100%;min-height:clamp(220px,45vh,560px);box-sizing:border-box;border:1px solid var(--line);
     border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.6;font-family:inherit;
@@ -388,6 +390,11 @@
       <h3 id="noteTitle">备注</h3>
       <p class="confirm-en" id="noteEditEn"></p>
       <textarea id="noteEditInput" class="note-edit" placeholder="例：把 are 说成了 is；忘了第三人称加 -s"></textarea>
+      <div class="note-img-row">
+        <button class="tog" type="button" id="noteImgBtn">📎 插入图片</button>
+        <input type="file" id="noteImgFile" accept="image/*" multiple hidden />
+        <span id="noteImgMsg"></span>
+      </div>
       <p class="confirm-tip">保存后会同步回电脑；电脑上的旧备注会被这条覆盖。</p>
       <div class="confirm-actions">
         <button class="btn" type="button" id="noteCancel">取消</button>

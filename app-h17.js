@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-noteimg";
+const APP_BUILD="20261009-phoneimg";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -859,6 +859,99 @@ async function fetchLocalFile(){
 /* 备注里的图片：正文只存纯文本标记 [img:notes/ab/xxxx.jpg]，
    图片本体和音频一样按内容哈希放在同一个站点里。手机只负责显示，
    上传要 GitHub token，只有电脑和 iPad 的 trainer 能加（2026-10-09）。 */
+/* ---- 备注加图片（手机听练页，2026-10-09）----
+   听练页和 trainer 是同一个站点，localStorage 互通，
+   所以 token 直接读 trainer 存的 sr_state，不用在这里再贴一次。
+   压缩/哈希/路径规则必须和 trainer-app.js 完全一致，否则同一张图会存两份。 */
+const NOTE_IMG_MAX_PX=1400, NOTE_IMG_QUALITY=0.75;
+const GH_API_PHONE="https://api.github.com";
+function ghFromTrainer(){
+  try{
+    const d=JSON.parse(localStorage.getItem("sr_state")||"null");
+    const st=(d&&d.settings)||{};
+    const token=String(st.ghToken||"").trim();
+    const repo=String(st.ghRepo||"ZoeZeng1992/speak-right-listen").trim()
+      .replace(/^https?:\/\/github\.com\//i,"").replace(/\.git$/,"").replace(/^\/|\/$/g,"");
+    return { token, repo, ok:!!(token&&repo) };
+  }catch(e){ return { token:"", repo:"", ok:false }; }
+}
+function compressImageFile(file){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const scale=Math.min(1, NOTE_IMG_MAX_PX/Math.max(img.width,img.height));
+        const w=Math.max(1,Math.round(img.width*scale)), h=Math.max(1,Math.round(img.height*scale));
+        const c=document.createElement("canvas"); c.width=w; c.height=h;
+        const ctx=c.getContext("2d");
+        ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h);     // 透明 PNG 转 JPEG 会变黑底
+        ctx.drawImage(img,0,0,w,h);
+        c.toBlob(b=>{ URL.revokeObjectURL(url); b?resolve(b):reject(new Error("压缩失败")); },"image/jpeg",NOTE_IMG_QUALITY);
+      }catch(e){ URL.revokeObjectURL(url); reject(e); }
+    };
+    img.onerror=()=>{ URL.revokeObjectURL(url); reject(new Error("这个文件不是图片，或者读不出来")); };
+    img.src=url;
+  });
+}
+async function uploadNoteImagePhone(file){
+  const c=ghFromTrainer();
+  if(!c.ok) throw new Error("这台手机还没存 GitHub Token：先用同一个浏览器打开 trainer 页，在 Settings 里填一次");
+  const blob=await compressImageFile(file);
+  const buf=await blob.arrayBuffer();
+  const dg=await crypto.subtle.digest("SHA-256", buf);
+  const hex=Array.from(new Uint8Array(dg),b=>b.toString(16).padStart(2,"0")).join("");
+  const path="notes/"+hex.slice(0,2)+"/"+hex+".jpg";
+  const hdr={ "Authorization":"Bearer "+c.token, "Accept":"application/vnd.github+json", "X-GitHub-Api-Version":"2022-11-28" };
+  const head=await fetch(`${GH_API_PHONE}/repos/${c.repo}/contents/${encodeURIComponent(path)}?ref=main&t=${Date.now()}`,{headers:hdr});
+  if(head.ok) return { path, kb:Math.round(blob.size/1024), reused:true };
+  if(head.status!==404){
+    let tip="读取仓库失败 "+head.status;
+    try{ const j=await head.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
+    throw new Error(tip);
+  }
+  const res=await fetch(`${GH_API_PHONE}/repos/${c.repo}/contents/${encodeURIComponent(path)}`,{
+    method:"PUT", headers:Object.assign({"Content-Type":"application/json"},hdr),
+    body:JSON.stringify({ message:"Add note image", content:_u8ToB64(new Uint8Array(buf)), branch:"main" })
+  });
+  if(!res.ok){
+    let tip="图片上传失败 "+res.status;
+    try{ const j=await res.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
+    throw new Error(tip);
+  }
+  return { path, kb:Math.round(blob.size/1024), reused:false };
+}
+function noteImgMsgPhone(msg, bad){
+  const el=$("noteImgMsg"); if(!el) return;
+  el.textContent=msg||"";
+  el.style.color = bad ? "#b3261e" : "var(--muted,#8a8f98)";
+}
+function insertAtCursorPhone(ta, text){
+  if(!ta) return;
+  const a=ta.selectionStart??ta.value.length, b=ta.selectionEnd??ta.value.length;
+  const before=ta.value.slice(0,a), after=ta.value.slice(b);
+  const pad=(before && !/\n$/.test(before)) ? "\n" : "";
+  ta.value=before+pad+text+"\n"+after;
+  const pos=(before+pad+text+"\n").length;
+  ta.setSelectionRange(pos,pos); ta.focus();
+}
+async function handleNoteImagesPhone(files){
+  const list=[...(files||[])].filter(f=>f && /^image\//.test(f.type));
+  if(!list.length) return;
+  const ta=$("noteEditInput");
+  for(let i=0;i<list.length;i++){
+    noteImgMsgPhone(`正在处理第 ${i+1}/${list.length} 张…`);
+    try{
+      const r=await uploadNoteImagePhone(list[i]);
+      insertAtCursorPhone(ta, "[img:"+r.path+"]");
+      noteImgMsgPhone(r.reused ? `这张图之前传过，直接引用（${r.kb}KB）` : `已上传 ${r.kb}KB`);
+    }catch(e){
+      noteImgMsgPhone("加图片失败："+((e&&e.message)||e), true);
+      return;
+    }
+  }
+}
+
 const NOTE_IMG_RE=/\[img:([A-Za-z0-9_\-./]+)\]/g;
 function renderNoteHtml(note){
   const raw=String(note||"");
@@ -1885,6 +1978,11 @@ function openNoteEditor(){
   _noteEditEn=cur.en;
   const enBox=$("noteEditEn"); if(enBox) enBox.textContent=cur.en;
   const box=$("noteEditInput"); if(box) box.value=(cur.note||"");
+  try{
+    const c=ghFromTrainer();
+    const btn=$("noteImgBtn"); if(btn) btn.disabled=!c.ok;
+    noteImgMsgPhone(c.ok ? "可以插入截图" : "这台手机还没存 GitHub Token：用同一个浏览器打开 trainer 页，在 Settings 里填一次", !c.ok);
+  }catch(e){}
   const mask=$("noteMask"); if(mask) mask.classList.add("show");
   if(box) setTimeout(()=>box.focus(), 60);
 }
@@ -1912,6 +2010,15 @@ function saveNoteEditor(){
   toast(text?"备注已保存":"备注已清空", false);
 }
 if($("editNoteBtn")) $("editNoteBtn").onclick=openNoteEditor;
+if($("noteImgBtn")) $("noteImgBtn").onclick=()=>{ const f=$("noteImgFile"); if(f) f.click(); };
+if($("noteImgFile")) $("noteImgFile").onchange=async e=>{ await handleNoteImagesPhone(e.target.files); e.target.value=""; };
+if($("noteEditInput")) $("noteEditInput").addEventListener("paste", e=>{
+  const fs=(e.clipboardData&&e.clipboardData.files)||[];
+  const imgs=[...fs].filter(f=>/^image\//.test(f.type));
+  if(!imgs.length) return;              // 普通文字粘贴照旧
+  e.preventDefault();
+  handleNoteImagesPhone(imgs);
+});
 if($("noteCancel"))  $("noteCancel").onclick=closeNoteEditor;
 if($("noteSave"))    $("noteSave").onclick=saveNoteEditor;
 if($("noteMask"))    $("noteMask").onclick=e=>{ if(e.target===$("noteMask")) closeNoteEditor(); };
