@@ -5446,7 +5446,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261009-noteimg";
+const TRAINER_BUILD = "20261009-tokencopy";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -6864,6 +6864,20 @@ if($("ghTestBtn")) $("ghTestBtn").onclick=async ()=>{
     updateFavSyncUI("GitHub 连接正常："+c.repo+" / "+c.path+(sha?"（文件已存在，将覆盖更新）":"（文件尚未创建，首次会新建）")+"。现在可以点「生成 / 更新云同步」。");
   }catch(e){
     updateFavSyncUI("GitHub 连接失败："+((e&&e.message)||e)+"。检查 token 是否过期、仓库名是否正确、是否勾了该仓库的 Contents 读写。", true);
+  }
+};
+if($("ghTokenCopyBtn")) $("ghTokenCopyBtn").onclick=async ()=>{
+  const v=((state.settings&&state.settings.ghToken)||($("ghToken")&&$("ghToken").value)||"").trim();
+  if(!v){ updateStateSyncUI("这台设备还没有 token"); return; }
+  try{
+    await navigator.clipboard.writeText(v);
+    updateStateSyncUI("token 已复制 —— 到 iPad 的 Settings 里粘贴即可（同一个可以多台共用）");
+  }catch(e){
+    // 剪贴板被挡时改为显示出来，方便手动选中
+    if($("ghToken")){ $("ghToken").type="text"; $("ghToken").select(); }
+    if($("ghTokenShowBtn")) $("ghTokenShowBtn").textContent="隐藏";
+    updateSecretHint("ghToken","ghTokenHint");
+    updateStateSyncUI("请手动选中上方 token 复制");
   }
 };
 if($("ghTokenClearBtn")) $("ghTokenClearBtn").onclick=()=>{
