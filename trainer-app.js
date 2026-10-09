@@ -4507,9 +4507,10 @@ function buildTrainerState(opts){
   };
 }
 /** 合并云端状态进本机：并集 / 取 max，不做覆盖 */
-function applyTrainerState(pack){
+function applyTrainerState(pack, out){
   if(!pack || pack.kind!=="trainer-state") return false;
   let changed=false;
+  const mark=()=>{ changed=true; if(out) out.favs=true; };
   // 练过的句子：并集（保留本机在前，沿用句库 500 条上限）
   if(pack.used && typeof pack.used==="object"){
     if(!state.usedEn) state.usedEn={};
@@ -4534,7 +4535,7 @@ function applyTrainerState(pack){
   // 对方取消的收藏
   if(Array.isArray(pack.removed)){
     pack.removed.forEach(en=>{
-      if(en && state.favs.has(en)){ removeFav(en); if(state.customFavs) delete state.customFavs[en]; changed=true; }
+      if(en && state.favs.has(en)){ removeFav(en); if(state.customFavs) delete state.customFavs[en]; mark(); }
     });
   }
   // 收藏：没有的补进来，已有的次数取 max
@@ -4548,16 +4549,16 @@ function applyTrainerState(pack){
         if(f.mode) (state.favModes=state.favModes||{})[en]=f.mode;
         if(f.addedAt) (state.favAddedAt=state.favAddedAt||{})[en]=f.addedAt;
         appendFavOrder(f.mode||"speak", en);
-        changed=true;
+        mark();
       }
       if(f.cn && !state.customFavs[en]){
         state.customFavs[en]={ en, cn:f.cn, focus:f.focus||[], scene:f.scene||"", note:f.note||"", cnPracticeOk:!!f.cnOk };
-        changed=true;
+        mark();
       }
       const cf=+(f.fails||0)||0, cg=+(f.gots||0)||0;
-      if(cf>favFailCount(en)){ (state.favFails=state.favFails||{})[en]=cf; changed=true; }
-      if(cg>favGotCount(en)){ (state.favGots=state.favGots||{})[en]=cg; changed=true; }
-      if(f.note && !getFavNote(en)){ setFavNote(en, f.note); changed=true; }
+      if(cf>favFailCount(en)){ (state.favFails=state.favFails||{})[en]=cf; mark(); }
+      if(cg>favGotCount(en)){ (state.favGots=state.favGots||{})[en]=cg; mark(); }
+      if(f.note && !getFavNote(en)){ setFavNote(en, f.note); mark(); }
     });
   }
   if(pack.userEnFixes && typeof pack.userEnFixes==="object"){
@@ -4648,18 +4649,19 @@ async function syncTrainerState(opts){
   const quiet=!!(opts&&opts.quiet);
   try{
     let changed=false;
+    const applied={favs:false};      // 合并进来的东西里有没有收藏
     const got=await fetchCloudState();
     const cloud=got.pack;
     // 拉不到就不要推。否则一台"空"设备（新浏览器/清过数据）会把云端整个盖掉 ——
     // 2026-08 清 usedEn 那次就是这类错误，这里绝不能重演。
     if(!got.ok) throw new Error("云端进度拉取失败，本次不上传（避免把云端盖成空的）");
-    if(cloud && applyTrainerState(cloud)) changed=true;
+    if(cloud && applyTrainerState(cloud, applied)) changed=true;
     const binId=(state.settings.progressBinId||(cloud&&cloud.progressBinId)||"").trim();
     if(binId){
       state.settings.progressBinId=binId;
       const delta=await decodeFavPack(await jsonbinGetRaw(binId));
       // 电脑不要把自己刚推上去的增量再吃回来
-      if(delta && delta.deviceId!==deviceId() && applyTrainerState(delta)) changed=true;
+      if(delta && delta.deviceId!==deviceId() && applyTrainerState(delta, applied)) changed=true;
     }
     const gh=ghConf();
     if(gh.ok){
@@ -4674,6 +4676,7 @@ async function syncTrainerState(opts){
       if(cloud && stateFingerprint(full)===stateFingerprint(cloud) && cloud.progressBinId===full.progressBinId){
         saveSyncSeen();
         if(changed) saveProgress();
+        if(applied.favs) scheduleFavListenSync();
         showSyncAlert("");
         if(!quiet) updateStateSyncUI("已经是最新的，无需上传");
         return changed;
@@ -4697,8 +4700,12 @@ async function syncTrainerState(opts){
     }
     saveSyncSeen();
     if(changed) saveProgress();
+    // iPad 上收的错题合并进来之后，必须重新生成手机听练包 ——
+    // 否则电脑这边看得到新句子，手机听练页永远停在旧包（2026-10-09 就是这么漏的）。
+    // 只有持有 GitHub token 的那台（电脑）负责推这个大包。
+    if(applied.favs && ghConf().ok) scheduleFavListenSync();
     showSyncAlert("");
-    if(!quiet) updateStateSyncUI("进度已同步 · "+new Date().toLocaleTimeString());
+    if(!quiet) updateStateSyncUI("进度已同步 · "+new Date().toLocaleTimeString()+(applied.favs?"（错题有更新，正在重新生成手机听练包）":""));
     return changed;
   }catch(e){
     const msg="进度同步失败："+((e&&e.message)||e);
@@ -4898,7 +4905,10 @@ async function pullAndMergeFavStats(opts){
   }
 }
 function scheduleFavListenSync(){
-  if(!(state.settings&&state.settings.favSyncId)) return;
+  // 走 GitHub 大包通道时不产生「同步码」，这里原来只认 favSyncId，
+  // 导致收藏变了也不会自动上传，手机只能靠手动点「生成 / 更新云同步」才更新（2026-10-09）
+  const hasTarget = !!(state.settings&&state.settings.favSyncId) || ghConf().ok;
+  if(!hasTarget) return;
   if(state.settings.favSyncAuto===false) return;
   clearTimeout(_favSyncTimer);
   _favSyncTimer=setTimeout(()=>{ pushFavListenSync({ quiet:true }); }, 2500);
@@ -5436,7 +5446,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261008-tdz";
+const TRAINER_BUILD = "20261009-favpush";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
