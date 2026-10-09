@@ -74,7 +74,7 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
-  .note-edit{width:100%;min-height:110px;box-sizing:border-box;border:1px solid var(--line);
+  .note-edit{width:100%;min-height:clamp(220px,45vh,560px);box-sizing:border-box;border:1px solid var(--line);
     border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.6;font-family:inherit;
     color:var(--ink);background:#fff;resize:vertical;margin:0 0 10px}
   .note-edit:focus{outline:2px solid rgba(15,118,110,.35);outline-offset:1px}
@@ -85,6 +85,8 @@
   .confirm-box{background:var(--surface,#fff);border-radius:20px;padding:20px 18px 16px;max-width:340px;width:100%;
     box-shadow:0 18px 50px rgba(0,0,0,.25)}
   .confirm-box h3{margin:0 0 10px;font-size:17px}
+  /* 备注弹窗要装一整段 AI 讲解，放宽放高；取消收藏那种小确认框不受影响 */
+  #noteMask .confirm-box{max-width:min(640px,96vw);max-height:92vh;overflow:auto}
   .confirm-en{margin:0 0 10px;font-family:var(--font-en);font-size:17px;line-height:1.35;word-break:break-word}
   .confirm-tip{margin:0 0 16px;font-size:12.5px;line-height:1.6;color:var(--muted)}
   .confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}

@@ -169,14 +169,18 @@
   .fav-note-panel{margin-top:10px;background:#fffaf0;border:1px solid #f0d488;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.55;color:#5c4a12;white-space:pre-wrap}
   .fav-note-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:12px;font-weight:800;color:#c98a00;text-transform:uppercase;letter-spacing:.3px}
   .fav-note-modal{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
-  .fav-note-dialog{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);width:min(480px,100%);padding:20px 22px}
+  .fav-note-dialog{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);width:min(760px,100%);max-height:90vh;overflow:auto;padding:20px 22px}
   .fav-note-dialog h3{margin:0 0 6px;font-size:18px}
   .fav-note-dialog p{margin:0 0 12px;font-size:13px;color:var(--muted)}
-  .fav-note-dialog textarea{width:100%;min-height:88px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;resize:vertical;font-family:inherit}
+  .fav-note-dialog textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.6;resize:vertical;font-family:inherit}
+  /* 备注常常是一整段 AI 讲解，给足高度：按视口算，手机上也不会顶出屏幕 */
+  .fav-note-dialog #favNoteInput{min-height:clamp(200px,38vh,440px)}
+  .fav-note-dialog #favEnInput,.fav-note-dialog #favCnInput{min-height:72px}
   .fav-note-dialog textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
   .fav-note-dialog label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin:10px 0 6px}
   .fav-note-dialog .fav-cn-row{display:flex;gap:8px;align-items:flex-start}
   .fav-note-dialog .fav-cn-row textarea{flex:1;min-height:72px}
+  .fav-note-panel{max-height:60vh;overflow:auto}
   .fav-note-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
   .fav-note-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
 
