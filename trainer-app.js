@@ -5446,7 +5446,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261009-bignote";
+const TRAINER_BUILD = "20261009-noteimg";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
@@ -6351,6 +6351,12 @@ function openFavNoteModal(en){
   _favNoteModalEn=en;
   const enBox=$("favEnInput"); if(enBox) enBox.value=en||"";
   const noteBox=$("favNoteInput"); if(noteBox) noteBox.value=getFavNote(en);
+  try{
+    renderNoteImgStrip();
+    const canImg=ghConf().ok;
+    const btn=$("favNoteImgBtn"); if(btn) btn.disabled=!canImg;
+    noteImgStatus(canImg ? "可直接粘贴截图（⌘V / Ctrl+V）" : "这台设备没填 GitHub Token，加不了图片（Settings 里填）", !canImg);
+  }catch(e){}
   const cnBox=$("favCnInput");
   if(cnBox){
     const snap=state.customFavs&&state.customFavs[en];
@@ -6364,6 +6370,143 @@ function closeFavNoteModal(){
   const modal=$("favNoteModal"); if(modal) modal.style.display="none";
   _favNoteModalEn=null;
 }
+/* ============================================================
+   备注里的图片（2026-10-09）
+   存法和音频一样：按内容哈希存进同一个仓库 notes/<前两位>/<hash>.jpg，
+   备注正文里只留一个纯文本标记 [img:notes/ab/xxxx.jpg]。
+   为什么不直接把图片 base64 塞进备注：备注要经过 Jsonbin（单条 100KB）、
+   localStorage（约 5MB）和手机听练包，塞进去三处全会爆。
+   上传需要 GitHub token，所以电脑和 iPad 能加，手机听练页只负责看。
+   ============================================================ */
+const NOTE_IMG_MAX_PX=1400;     // 长边上限
+const NOTE_IMG_QUALITY=0.75;    // JPEG 质量：AI 讲解的小字能看清，又比原图省一半
+const NOTE_IMG_RE=/\[img:([A-Za-z0-9_\-./]+)\]/g;
+
+function noteImgUrl(path){
+  if(/^https?:\/\//.test(path)) return path;
+  return favListenPublicBase().replace(/\/$/,"")+"/"+String(path).replace(/^\//,"");
+}
+/** 备注正文 → HTML：先整体转义，再把图片标记换成 <img> */
+function renderNoteHtml(note){
+  const raw=String(note||"");
+  if(!raw.trim()) return "";
+  const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  let out="", last=0, m;
+  NOTE_IMG_RE.lastIndex=0;
+  while((m=NOTE_IMG_RE.exec(raw))){
+    out+=esc(raw.slice(last,m.index));
+    const u=noteImgUrl(m[1]);
+    out+=`<a href="${u}" target="_blank" rel="noopener"><img class="note-img" src="${u}" alt="备注图片" loading="lazy"></a>`;
+    last=m.index+m[0].length;
+  }
+  out+=esc(raw.slice(last));
+  return out;
+}
+/** 压缩成 JPEG：长边不超过 NOTE_IMG_MAX_PX */
+function compressImageFile(file){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const scale=Math.min(1, NOTE_IMG_MAX_PX/Math.max(img.width,img.height));
+        const w=Math.max(1,Math.round(img.width*scale)), h=Math.max(1,Math.round(img.height*scale));
+        const c=document.createElement("canvas");
+        c.width=w; c.height=h;
+        const ctx=c.getContext("2d");
+        ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h);   // 透明 PNG 转 JPEG 会变黑底
+        ctx.drawImage(img,0,0,w,h);
+        c.toBlob(b=>{ URL.revokeObjectURL(url); b?resolve(b):reject(new Error("压缩失败")); },"image/jpeg",NOTE_IMG_QUALITY);
+      }catch(e){ URL.revokeObjectURL(url); reject(e); }
+    };
+    img.onerror=()=>{ URL.revokeObjectURL(url); reject(new Error("这个文件不是图片，或者读不出来")); };
+    img.src=url;
+  });
+}
+async function blobToB64(blob){
+  const buf=new Uint8Array(await blob.arrayBuffer());
+  return _u8ToB64(buf);
+}
+/** 传到仓库，返回 notes/xx/<hash>.jpg；内容一样就不重复上传 */
+async function uploadNoteImage(file){
+  const c=ghConf();
+  if(!c.ok) throw new Error("这台设备没填 GitHub Token，加不了图片（Settings 里填）");
+  const blob=await compressImageFile(file);
+  const buf=await blob.arrayBuffer();
+  const digest=await crypto.subtle.digest("SHA-256", buf);
+  const hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join("");
+  const path="notes/"+hex.slice(0,2)+"/"+hex+".jpg";
+  const head=await ghRequest(`${GH_API}/repos/${c.repo}/contents/${encodeURIComponent(path)}?ref=main&t=${Date.now()}`,{method:"GET"});
+  if(head.ok) return { path, kb:Math.round(blob.size/1024), reused:true };   // 同一张图早传过了
+  if(head.status!==404){
+    let tip="读取仓库失败 "+head.status;
+    try{ const j=await head.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
+    throw new Error(tip);
+  }
+  const res=await ghRequest(`${GH_API}/repos/${c.repo}/contents/${encodeURIComponent(path)}`,{
+    method:"PUT", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ message:"Add note image", content:await blobToB64(blob), branch:"main" })
+  });
+  if(!res.ok){
+    let tip="图片上传失败 "+res.status;
+    try{ const j=await res.clone().json(); if(j&&j.message) tip=j.message; }catch(e){}
+    throw new Error(tip);
+  }
+  return { path, kb:Math.round(blob.size/1024), reused:false };
+}
+function insertAtCursor(ta, text){
+  if(!ta) return;
+  const a=ta.selectionStart??ta.value.length, b=ta.selectionEnd??ta.value.length;
+  const before=ta.value.slice(0,a), after=ta.value.slice(b);
+  const pad=(before && !/\n$/.test(before)) ? "\n" : "";
+  ta.value=before+pad+text+"\n"+after;
+  const pos=(before+pad+text+"\n").length;
+  ta.setSelectionRange(pos,pos);
+  ta.focus();
+}
+function noteImgStatus(msg, bad){
+  const el=$("favNoteImgMsg"); if(!el) return;
+  el.textContent=msg||"";
+  el.style.color = bad ? "var(--bad)" : "var(--muted)";
+}
+/** 预览条：把正文里的图片标记渲染成缩略图，可逐张删除 */
+function renderNoteImgStrip(){
+  const strip=$("favNoteImgStrip"), ta=$("favNoteInput");
+  if(!strip||!ta) return;
+  const paths=[]; let m;
+  NOTE_IMG_RE.lastIndex=0;
+  while((m=NOTE_IMG_RE.exec(ta.value))) paths.push(m[1]);
+  if(!paths.length){ strip.style.display="none"; strip.innerHTML=""; return; }
+  strip.style.display="flex";
+  strip.innerHTML=paths.map((p,i)=>
+    `<span class="note-thumb"><img src="${noteImgUrl(p)}" alt="图 ${i+1}" loading="lazy">`+
+    `<button type="button" data-p="${p}" title="从备注里移除">×</button></span>`).join("");
+  strip.querySelectorAll("button[data-p]").forEach(b=>{
+    b.onclick=()=>{
+      const p=b.getAttribute("data-p");
+      ta.value=ta.value.split("[img:"+p+"]").join("").replace(/\n{3,}/g,"\n\n").trim();
+      renderNoteImgStrip();
+    };
+  });
+}
+async function handleNoteImageFiles(files){
+  const list=[...(files||[])].filter(f=>f && /^image\//.test(f.type));
+  if(!list.length) return;
+  const ta=$("favNoteInput");
+  for(let i=0;i<list.length;i++){
+    noteImgStatus(`正在处理第 ${i+1}/${list.length} 张…`);
+    try{
+      const r=await uploadNoteImage(list[i]);
+      insertAtCursor(ta, "[img:"+r.path+"]");
+      renderNoteImgStrip();
+      noteImgStatus(r.reused ? `这张图之前传过，直接引用（${r.kb}KB）` : `已上传 ${r.kb}KB`);
+    }catch(e){
+      noteImgStatus("加图片失败："+((e&&e.message)||e), true);
+      return;
+    }
+  }
+}
+
 function updateFavNoteUI(){
   const wrap=$("favNoteWrap"), panel=$("favNotePanel"), toggle=$("favNoteToggle"), text=$("favNoteText");
   const noteBtn=$("favNoteBtn"), noteBtnLabel=$("favNoteBtnLabel");
@@ -6383,7 +6526,7 @@ function updateFavNoteUI(){
   if(wrap&&toggle&&panel&&text){
     wrap.style.display="block";
     panel.style.display="none";
-    text.textContent=note;
+    text.innerHTML=renderNoteHtml(note);
     toggle.textContent=note?"📝 查看备注":"📝 添加备注";
   }
 }
@@ -6527,6 +6670,30 @@ $("favBtn").onclick=()=>{
   }
 };
 if($("favNoteBtn")) $("favNoteBtn").onclick=()=>{ const s=current(); if(s&&state.favs.has(s.en)) openFavNoteModal(s.en); };
+if($("favNoteImgBtn")) $("favNoteImgBtn").onclick=()=>{ const f=$("favNoteImgFile"); if(f) f.click(); };
+if($("favNoteImgFile")) $("favNoteImgFile").onchange=async e=>{
+  await handleNoteImageFiles(e.target.files);
+  e.target.value="";                     // 同一张图再选一次也要能触发
+};
+if($("favNoteInput")){
+  // 截图直接粘贴：这是用户最常用的路径（问完 AI 截图 → ⌘V）
+  $("favNoteInput").addEventListener("paste", e=>{
+    const items=(e.clipboardData&&e.clipboardData.files)||[];
+    const imgs=[...items].filter(f=>/^image\//.test(f.type));
+    if(!imgs.length) return;             // 普通文字粘贴照旧
+    e.preventDefault();
+    handleNoteImageFiles(imgs);
+  });
+  $("favNoteInput").addEventListener("dragover", e=>{ if(e.dataTransfer&&e.dataTransfer.types.includes("Files")) e.preventDefault(); });
+  $("favNoteInput").addEventListener("drop", e=>{
+    const fs=(e.dataTransfer&&e.dataTransfer.files)||[];
+    const imgs=[...fs].filter(f=>/^image\//.test(f.type));
+    if(!imgs.length) return;
+    e.preventDefault();
+    handleNoteImageFiles(imgs);
+  });
+  $("favNoteInput").addEventListener("input", ()=>{ try{ renderNoteImgStrip(); }catch(e){} });
+}
 if($("favNoteToggle")) $("favNoteToggle").onclick=()=>{
   const s=current(); if(!s||!state.favs.has(s.en)) return;
   const note=getFavNote(s.en);
@@ -6703,7 +6870,7 @@ if($("ghTokenClearBtn")) $("ghTokenClearBtn").onclick=()=>{
   if($("ghToken")) $("ghToken").value="";
   state.settings.ghToken=""; saveProgress();
   updateSecretHint("ghToken","ghTokenHint");
-  updateStateSyncUI("已清空 GitHub Token（平板/手机上不该存仓库写权限）");
+  updateStateSyncUI("已清空这台设备上的 GitHub Token（清空后这台就不能加备注图片了）");
 };
 if($("jsonbinKeyShowBtn")) $("jsonbinKeyShowBtn").onclick=()=>toggleSecretField("jsonbinKey","jsonbinKeyShowBtn","jsonbinKeyHint");
 if($("jsonbinKey")) $("jsonbinKey").addEventListener("input", ()=>updateSecretHint("jsonbinKey","jsonbinKeyHint"));

@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-bignote";
+const APP_BUILD="20261009-noteimg";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -856,6 +856,24 @@ async function fetchLocalFile(){
 /* ---- 声音 A 的四句滑动窗口：上一句 + 当前句 + 后两句 ----
    fetch(cache:no-store) 后只把压缩 MP3 Blob 留在内存；不写 Cache Storage，
    也不为预加载句创建解码播放器。真正播放始终复用一个 Audio 元素。 */
+/* 备注里的图片：正文只存纯文本标记 [img:notes/ab/xxxx.jpg]，
+   图片本体和音频一样按内容哈希放在同一个站点里。手机只负责显示，
+   上传要 GitHub token，只有电脑和 iPad 的 trainer 能加（2026-10-09）。 */
+const NOTE_IMG_RE=/\[img:([A-Za-z0-9_\-./]+)\]/g;
+function renderNoteHtml(note){
+  const raw=String(note||"");
+  if(!raw.trim()) return "";
+  let out="", last=0, m;
+  NOTE_IMG_RE.lastIndex=0;
+  while((m=NOTE_IMG_RE.exec(raw))){
+    out+=esc(raw.slice(last,m.index));
+    const u=String(m[1]).replace(/^\//,"");     // 手机就在站点根目录下，相对路径即可
+    out+='<a href="'+u+'" target="_blank" rel="noopener"><img class="note-img" src="'+u+'" alt="备注图片" loading="lazy"></a>';
+    last=m.index+m[0].length;
+  }
+  out+=esc(raw.slice(last));
+  return out;
+}
 function canonicalAudioText(text){
   let value=String(text||"");
   try{ value=value.normalize("NFC"); }catch(e){}
@@ -1637,7 +1655,7 @@ function render(){
     patEl.classList.toggle("show", !!pat);
   }
   const note=(s.note||"").trim();
-  $("notePanel").innerHTML = note ? esc(note) : "这句还没有备注";
+  $("notePanel").innerHTML = note ? renderNoteHtml(note) : "这句还没有备注";
   $("notePanel").classList.toggle("show", state.showNote);
   if(state.updatedAt){
     $("updated").textContent = "已同步 · "+new Date(state.updatedAt).toLocaleString();
