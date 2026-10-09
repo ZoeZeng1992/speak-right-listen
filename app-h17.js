@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-tokensave";
+const APP_BUILD="20261009-phonetoken";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -865,11 +865,17 @@ async function fetchLocalFile(){
    压缩/哈希/路径规则必须和 trainer-app.js 完全一致，否则同一张图会存两份。 */
 const NOTE_IMG_MAX_PX=1400, NOTE_IMG_QUALITY=0.75;
 const GH_API_PHONE="https://api.github.com";
+const GH_TOKEN_KEY="sr_gh_token";
+function savePhoneGhToken(v){
+  try{ v ? localStorage.setItem(GH_TOKEN_KEY, String(v).trim()) : localStorage.removeItem(GH_TOKEN_KEY); }catch(e){}
+}
 function ghFromTrainer(){
   try{
+    // 先看这个页面自己存的；没有再回落到同站点 trainer 存的那份
+    let own=""; try{ own=(localStorage.getItem(GH_TOKEN_KEY)||"").trim(); }catch(e){}
     const d=JSON.parse(localStorage.getItem("sr_state")||"null");
     const st=(d&&d.settings)||{};
-    const token=String(st.ghToken||"").trim();
+    const token=own || String(st.ghToken||"").trim();
     const repo=String(st.ghRepo||"ZoeZeng1992/speak-right-listen").trim()
       .replace(/^https?:\/\/github\.com\//i,"").replace(/\.git$/,"").replace(/^\/|\/$/g,"");
     return { token, repo, ok:!!(token&&repo) };
@@ -2028,6 +2034,41 @@ function saveNoteEditor(){
   toast(text?"备注已保存":"备注已清空", false);
 }
 if($("editNoteBtn")) $("editNoteBtn").onclick=openNoteEditor;
+function updateGhHintPhone(){
+  const el=$("ghTokenHintPhone"); if(!el) return;
+  const n=((($("ghTokenInput")&&$("ghTokenInput").value)||"").trim()).length;
+  el.textContent = n ? ("已填 "+n+" 位") : "（空）";
+  el.style.color = n ? "var(--muted,#8a8f98)" : "#b3261e";
+}
+if($("ghTokenInput")){
+  try{ $("ghTokenInput").value=(localStorage.getItem(GH_TOKEN_KEY)||""); }catch(e){}
+  updateGhHintPhone();
+  const sync=()=>{ savePhoneGhToken($("ghTokenInput").value); updateGhHintPhone(); };
+  $("ghTokenInput").addEventListener("input", sync);
+  $("ghTokenInput").addEventListener("change", sync);
+  // Safari 自动填充不触发事件，离开设置区时再兜一次
+  $("ghTokenInput").addEventListener("blur", sync);
+}
+if($("ghTokenTest")) $("ghTokenTest").onclick=async ()=>{
+  const btn=$("ghTokenTest");
+  savePhoneGhToken(($("ghTokenInput")&&$("ghTokenInput").value)||"");   // 自动填充兜底
+  updateGhHintPhone();
+  const c=ghFromTrainer();
+  if(!c.ok){ toast("还没填 token", true); return; }
+  btn.disabled=true; const old=btn.textContent; btn.textContent="测试中…";
+  try{
+    const res=await fetch(`${GH_API_PHONE}/repos/${c.repo}`,{headers:{
+      "Authorization":"Bearer "+c.token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"}});
+    if(res.ok) toast("连接正常，可以插图片了");
+    else{
+      let tip="失败 "+res.status;
+      if(res.status===401) tip="token 无效或已过期";
+      if(res.status===403 || res.status===404) tip="token 没有这个仓库的权限";
+      toast(tip, true);
+    }
+  }catch(e){ toast("连不上："+((e&&e.message)||e), true); }
+  finally{ btn.disabled=false; btn.textContent=old; }
+};
 if($("noteImgBtn")) $("noteImgBtn").onclick=()=>{ const f=$("noteImgFile"); if(f) f.click(); };
 if($("noteImgFile")) $("noteImgFile").onchange=async e=>{ await handleNoteImagesPhone(e.target.files); e.target.value=""; };
 if($("noteEditInput")) $("noteEditInput").addEventListener("paste", e=>{

@@ -74,6 +74,8 @@
   .brand span, .sub{
     font-size:12px;color:var(--muted);font-weight:500;
   }
+  .gh-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .gh-row span{font-size:12.5px;color:var(--muted,#8a8f98)}
   .note-img-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
   .note-img-row span{font-size:12.5px;color:var(--muted,#8a8f98);line-height:1.5}
   .note-img{max-width:100%;border-radius:12px;border:1px solid var(--line);margin:8px 0;display:block}
@@ -360,6 +362,13 @@
     </p>
     <label for="jsonbinKeyInput">Jsonbin Master Key（回写错误次数）</label>
     <input id="jsonbinKeyInput" type="password" autocomplete="off" placeholder="与电脑设置里同一把 Key" />
+    <label for="ghTokenInput">GitHub Token（只用于备注里插图片）</label>
+    <input id="ghTokenInput" type="password" autocomplete="off" placeholder="和电脑 Settings 里同一个 token" />
+    <div class="gh-row">
+      <button class="tog" type="button" id="ghTokenTest">测试连接</button>
+      <span id="ghTokenHintPhone">（空）</span>
+    </div>
+    <p class="hint">密钥不跟着同步走，每台设备各填一次。不插图片的话这里可以留空，其它功能照常。</p>
     <details>
       <summary>备用导入</summary>
       <label>听练包文件</label>
