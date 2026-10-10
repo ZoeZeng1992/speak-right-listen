@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-reshuffle3";
+const APP_BUILD="20261010-takeup";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -183,6 +183,8 @@ function esc(s){
 }
 /** 电脑句库改正后，云端/本地缓存可能仍是旧句——听练端兜底改写 */
 const PACK_SENTENCE_FIXES = {
+  "That takes more of my time": { en:"That takes up more of my time.", cn:"这件事更占我的时间。" },
+  "That takes up more of my time.": { cn:"这件事更占我的时间。" },
   "The assets are exported.": { en:"The assets are ready to export.", cn:"这些素材可以导出了。" },
   "The assets are ready to export.": { cn:"这些素材可以导出了。" },
   "I'm just going to **scroll on my phone** to unwind": { cn:"我就刷刷手机放松一下。" },

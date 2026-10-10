@@ -912,6 +912,8 @@ const BANK_EN_FIXES = {
   "He had grown vegetables before he had a garden.": "He had grown some vegetables before he moved.",
   "We had collected the feedback before Monday.": "We had collected the feedback by Monday.",
   "She had checked all the screens before Friday.": "She had checked all the screens by Friday.",
+  // take up 才是「占用时间」的固定搭配；原句 more 还悬空，读着像半句（2026-10-10）
+  "That takes more of my time": "That takes up more of my time.",
   // Kokoro 在 "specific TV | show" 之间硬停 0.3s，换语序绕开（2026-09-21）
   "Is there a specific TV show you are really into right now?": "Are you really into a specific TV show right now?",
   "I'd rather walk.": "I'd rather walk than wait for the bus.",
@@ -5454,7 +5456,7 @@ function toggleChatSpeak(idx, text, btn){
    ============================================================ */
 window.__srScriptStarted=true;
 try{ sessionStorage.removeItem("srBootRetry"); }catch(e){}   // 跑起来了，清掉重试标记
-const TRAINER_BUILD = "20261009-tokensave";
+const TRAINER_BUILD = "20261010-takeup";
 const IS_LOCAL = location.protocol==="file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const IS_TOUCH = (window.matchMedia && matchMedia("(pointer:coarse)").matches) || false;
 const NO_MIC   = IS_TOUCH;   // 朗读照常，只去掉录音识别
