@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-reshuffle2";
+const APP_BUILD="20261010-reshuffle3";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1778,7 +1778,12 @@ function render(){
   if(state.idx<0) state.idx=0;
   const s=current();
   const rs=ensureReshuffleBtn();
-  if(rs) rs.classList.toggle("show", state.sort==="random");
+  if(rs){
+    // 直接设行内 display，不靠 class —— 老 HTML 里这个按钮带着
+    // style="display:none"，行内样式会压过样式表，class 永远生效不了（2026-10-10）
+    rs.hidden = state.sort!=="random";
+    rs.style.display = state.sort==="random" ? "inline-flex" : "none";
+  }
   const sortLabel=state.sort==="recent"?"最新收藏":state.sort==="random"?"随机":"易错优先";
   $("counter").textContent = `${state.idx+1} / ${len}` + (s&&s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
   if(state.sort==="recent" && state._sortHasTime===false){
@@ -1990,13 +1995,18 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
    手机上永远不出现（2026-09-22 的句型行栽过一次，2026-10-10 又栽一次）。 */
 function ensureReshuffleBtn(){
   let b=document.getElementById("reshuffleBtn");
-  if(b) return b;
+  if(b){
+    b.hidden=false;                      // 老 HTML 里带 hidden / display:none，清掉
+    if(b.style.display==="none") b.style.display="";
+    if(!b.onclick) b.onclick=doReshuffle;
+    return b;
+  }
   const seg=document.getElementById("sortSeg");
   if(!seg||!seg.parentNode) return null;
   if(!document.getElementById("reshuffleBtnStyle")){
     const st=document.createElement("style");
     st.id="reshuffleBtnStyle";
-    st.textContent="#reshuffleBtn{display:none;margin-top:8px}#reshuffleBtn.show{display:inline-flex}";
+    st.textContent="#reshuffleBtn{margin-top:8px}";
     document.head.appendChild(st);
   }
   b=document.createElement("button");
