@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-randomround";
+const APP_BUILD="20261010-randomall";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -418,20 +418,16 @@ function shuffleItems(arr){
  *  返回 true 表示已用存档顺序，调用方就不要再 sortItems 了。 */
 function restoreSavedOrder(){
   if(state.sort!=="random") return false;
-  const saved=state._savedPlayOrder;
-  if(!Array.isArray(saved)||!saved.length) return false;
-  const have=new Map(state.items.map(x=>[x.en,x]));
-  const kept=saved.filter(en=>have.has(en));
-  if(kept.length < Math.max(10, state.items.length*0.5)) return false;   // 存档和当前句子对不上，放弃
-  const inKept=new Set(kept);
-  const extra=shuffleItems(state.items.map(x=>x.en).filter(en=>!inKept.has(en)));  // 新收藏的随机插到末尾
-  state.playOrder=kept.concat(extra);
-  state.items=state.playOrder.map(en=>have.get(en));
-  return true;
+  // 存档顺序可能来自上次会话（_savedPlayOrder）或本次会话记下的轮次（_randomOrder），
+  // 两者走同一套恢复逻辑 —— 以前是两份几乎一样的代码，改一份漏一份。
+  if(!state._randomOrder && Array.isArray(state._savedPlayOrder) && state._savedPlayOrder.length){
+    state._randomOrder=state._savedPlayOrder.slice();
+  }
+  return restoreRandomRound({ keepIdx:false });
 }
 /** 切回随机时恢复"上一轮"：顺序和位置都接着来。
  *  返回 false 表示没有可用的存档（或对不上），调用方再去重洗。 */
-function restoreRandomRound(){
+function restoreRandomRound(opts){
   const saved=state._randomOrder;
   if(!Array.isArray(saved)||!saved.length) return false;
   const have=new Map(state.items.map(x=>[x.en,x]));
@@ -441,7 +437,9 @@ function restoreRandomRound(){
   const extra=shuffleItems(state.items.map(x=>x.en).filter(en=>!inKept.has(en)));
   state.playOrder=kept.concat(extra);
   state.items=state.playOrder.map(en=>have.get(en));
-  state.idx=Math.min(Math.max(0, state._randomIdx||0), state.playOrder.length-1);
+  if(!opts || opts.keepIdx!==false){
+    state.idx=Math.min(Math.max(0, state._randomIdx||0), state.playOrder.length-1);
+  }
   return true;
 }
 function sortItems(keepCurrent){
@@ -579,7 +577,10 @@ function applyPack(pack, source, opts){
     state.playOrder=kept;
   }else{
     state.items=mergeKeepingOrder(pack.items, prevItems);
-    sortItems(prevEn && !resetIdx ? prevEn : false); // sortItems 会重建 playOrder
+    // 首次载入 / 缓存读不到时也别急着重洗：存档里可能还留着没听完的那一轮
+    if(!(state.sort==="random" && restoreSavedOrder())){
+      sortItems(prevEn && !resetIdx ? prevEn : false); // sortItems 会重建 playOrder
+    }
   }
   state.updatedAt=pack.updatedAt||Date.now();
   if(resetIdx){
@@ -1234,16 +1235,9 @@ function onRemotePauseOrToggle(){
   if(isSoftPaused()) resumeFromRemote();
   else pausePlayback(true);
 }
-function rebuildPlayOrder(keepEn){
-  const en = keepEn || (currentSafeEn()) || state.currentEn || "";
-  state.playOrder = state.items.map(x=>x&&x.en).filter(Boolean);
-  if(en){
-    const i=state.playOrder.indexOf(en);
-    state.idx = i>=0 ? i : 0;
-  }else{
-    state.idx=Math.min(Math.max(0,state.idx), Math.max(0,state.playOrder.length-1));
-  }
-}
+/* rebuildPlayOrder() 已删除（2026-10-10）：它按 items 顺序重建 playOrder，
+   会把随机的那一轮整个毁掉。当时已经没有任何调用者，留着就是地雷。
+   需要重建顺序请走 restoreRandomRound() / sortItems()。 */
 function currentSafeEn(){
   if(state.playOrder && state.playOrder.length){
     return state.playOrder[state.idx] || "";
