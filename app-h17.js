@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261009-phonetoken";
+const APP_BUILD="20261010-randomround";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -105,20 +105,38 @@ function loadPrefs(){
     if(typeof p.currentEn==="string") state.currentEn=p.currentEn;
     if(p.sort==="recent" || p.sort==="fails" || p.sort==="random") state.sort=p.sort;
     if(typeof p.voiceURI==="string") state.voiceURI=p.voiceURI;
-    if(Array.isArray(p.playOrder)) state._savedPlayOrder=p.playOrder.filter(Boolean);
+    // 随机"这一轮"独立保存：切到别的排序再切回来要接着听，不能重洗归零。
+    // randomOrder 是新字段；playOrder 是旧字段，留着兼容老存档。
+    const ro = Array.isArray(p.randomOrder) ? p.randomOrder : (Array.isArray(p.playOrder) ? p.playOrder : null);
+    if(ro) state._savedPlayOrder=ro.filter(Boolean);
+    state._randomIdx = (typeof p.randomIdx==="number") ? p.randomIdx
+                     : (p.sort==="random" && typeof p.idx==="number" ? p.idx : 0);
   }catch(e){}
   try{ state.jsonbinKey=(localStorage.getItem(JSONBIN_KEY)||"").trim(); }catch(e){}
+}
+/** 把当前的随机顺序和位置记成"这一轮"，供切走再切回时接着听 */
+function rememberRandomRound(){
+  if(state.sort!=="random") return;
+  if(state.playOrder&&state.playOrder.length){
+    state._randomOrder=state.playOrder.slice();
+    state._randomIdx=state.idx;
+  }
 }
 function savePrefs(){
   const cur=current();
   if(cur&&cur.en) state.currentEn=cur.en;
+  rememberRandomRound();
   localStorage.setItem(PREF_KEY, JSON.stringify({
     loop: state.loop, showCn: state.showCn, showNote: state.showNote,
     idx: state.idx, currentEn: state.currentEn||"",
     sort: state.sort, voiceURI: state.voiceURI,
     // 随机顺序必须存下来。以前没存，每次打开 app 都整副重洗，用户永远只听到
     // "新牌最上面几张"：710 句听了 1000 多遍仍有 150 句一次没遇到、140 句遇到 3 次以上。
-    playOrder: state.sort==="random" ? (state.playOrder||[]) : undefined
+    // 2026-10-10 再修一次：以前只在"当前是随机模式"时才存，于是切到别的排序
+    // 这一轮就丢了，切回来又重洗归零 —— 模拟 3 周：152 句一次没遇到、138 句听了 3 次以上。
+    // 现在随机轮次无条件存着，和当前排序无关。
+    randomOrder: state._randomOrder || [],
+    randomIdx: state._randomIdx || 0
   }));
 }
 function saveJsonbinKey(key){
@@ -409,6 +427,21 @@ function restoreSavedOrder(){
   const extra=shuffleItems(state.items.map(x=>x.en).filter(en=>!inKept.has(en)));  // 新收藏的随机插到末尾
   state.playOrder=kept.concat(extra);
   state.items=state.playOrder.map(en=>have.get(en));
+  return true;
+}
+/** 切回随机时恢复"上一轮"：顺序和位置都接着来。
+ *  返回 false 表示没有可用的存档（或对不上），调用方再去重洗。 */
+function restoreRandomRound(){
+  const saved=state._randomOrder;
+  if(!Array.isArray(saved)||!saved.length) return false;
+  const have=new Map(state.items.map(x=>[x.en,x]));
+  const kept=saved.filter(en=>have.has(en));
+  if(kept.length < Math.max(10, state.items.length*0.5)) return false;   // 对不上就别勉强
+  const inKept=new Set(kept);
+  const extra=shuffleItems(state.items.map(x=>x.en).filter(en=>!inKept.has(en)));
+  state.playOrder=kept.concat(extra);
+  state.items=state.playOrder.map(en=>have.get(en));
+  state.idx=Math.min(Math.max(0, state._randomIdx||0), state.playOrder.length-1);
   return true;
 }
 function sortItems(keepCurrent){
@@ -1385,6 +1418,8 @@ function goNext(fromRemote){
     // 随机模式重新洗一次牌，否则第二轮和第一轮顺序完全一样。
     if(state.sort==="random"){
       state.playOrder=shuffleItems(state.playOrder.slice());
+      state._randomOrder=state.playOrder.slice();     // 新一轮，存档同步换掉
+      state._randomIdx=0;
       toast("已过完一轮 · 重新打乱，从头开始", false);
     }else{
       toast("已过完一轮 · 回到第一句", false);
@@ -1938,10 +1973,16 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
     if(next==="random") toast("已是随机模式 · 过完一轮会自动重新打乱", false);
     return;
   }
+  rememberRandomRound();          // 离开随机前先把这一轮记下来
   state.sort=next;
-  // 切换排序时回到第 1 句，才能明显看到新顺序
-  sortItems(false);
-  state.idx=0;
+  if(next==="random" && restoreRandomRound()){
+    // 接着上次那一轮听，不重洗、不归零
+    toast("回到随机 · 接着上次的顺序（第 "+(state.idx+1)+" 句）", false);
+  }else{
+    // 其它排序：回到第 1 句，才能明显看到新顺序
+    sortItems(false);
+    state.idx=0;
+  }
   savePrefs();
   render();
   if(wasPlaying) startLoop(rate);
