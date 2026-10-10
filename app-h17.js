@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-reshuffle";
+const APP_BUILD="20261010-reshuffle2";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1777,8 +1777,8 @@ function render(){
   if(state.idx>=len) state.idx=Math.max(0, len-1);
   if(state.idx<0) state.idx=0;
   const s=current();
-  const rs=$("reshuffleBtn");
-  if(rs) rs.style.display = state.sort==="random" ? "inline-flex" : "none";
+  const rs=ensureReshuffleBtn();
+  if(rs) rs.classList.toggle("show", state.sort==="random");
   const sortLabel=state.sort==="recent"?"最新收藏":state.sort==="random"?"随机":"易错优先";
   $("counter").textContent = `${state.idx+1} / ${len}` + (s&&s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
   if(state.sort==="recent" && state._sortHasTime===false){
@@ -1985,8 +1985,27 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
 };
 /* 「重新洗牌」：唯一一个让用户主动换一副牌的入口。
    默认不换是为了让 849 句都能轮到（见 tests/random-order.test.js），
-   但用户想换新鲜感时得有地方点 —— 会丢掉这一轮进度，所以先确认。 */
-if($("reshuffleBtn")) $("reshuffleBtn").onclick=()=>{
+   但用户想换新鲜感时得有地方点 —— 会丢掉这一轮进度，所以先确认。
+   ⚠️ 按钮必须由 JS 自建：index.html 会被 iOS 长期缓存，只写进 HTML 的话
+   手机上永远不出现（2026-09-22 的句型行栽过一次，2026-10-10 又栽一次）。 */
+function ensureReshuffleBtn(){
+  let b=document.getElementById("reshuffleBtn");
+  if(b) return b;
+  const seg=document.getElementById("sortSeg");
+  if(!seg||!seg.parentNode) return null;
+  if(!document.getElementById("reshuffleBtnStyle")){
+    const st=document.createElement("style");
+    st.id="reshuffleBtnStyle";
+    st.textContent="#reshuffleBtn{display:none;margin-top:8px}#reshuffleBtn.show{display:inline-flex}";
+    document.head.appendChild(st);
+  }
+  b=document.createElement("button");
+  b.type="button"; b.id="reshuffleBtn"; b.className="tog"; b.textContent="重新洗牌";
+  seg.parentNode.insertBefore(b, seg.nextSibling);
+  b.onclick=doReshuffle;
+  return b;
+}
+function doReshuffle(){
   if(state.sort!=="random") return;
   const done=state.idx;
   const total=(state.playOrder||[]).length;
@@ -2000,7 +2019,7 @@ if($("reshuffleBtn")) $("reshuffleBtn").onclick=()=>{
   savePrefs();
   render();
   toast("已重新洗牌 · 从第 1 句开始", false);
-};
+}
 if($("playBtn")) $("playBtn").onclick=window.srPlay;
 if($("slowBtn")) $("slowBtn").onclick=window.srSlow;
 if($("prevBtn")) $("prevBtn").onclick=()=>goPrev(false);
