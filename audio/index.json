@@ -1701,6 +1701,16 @@
       ],
       "seconds": 1.979
     },
+    "1e8939e02aa37cfdc55fa9b737743a6c78058fd44bc073672bc4a192f7375b3a": {
+      "bytes": 8064,
+      "createdAt": "2026-10-10T05:46:57+00:00",
+      "en": "That takes up more of my time.",
+      "path": "audio/1e/1e8939e02aa37cfdc55fa9b737743a6c78058fd44bc073672bc4a192f7375b3a.mp3",
+      "refs": [
+        "chat"
+      ],
+      "seconds": 1.653
+    },
     "1eae8dd39f919ece1fda509ad2a45d37c58290053eb8bb6f256889796f2e8fc6": {
       "bytes": 11760,
       "createdAt": "2026-10-08T02:16:27+00:00",
@@ -14453,7 +14463,7 @@
     }
   },
   "profile": "kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00",
-  "updatedAt": "2026-10-08T02:19:31+00:00",
+  "updatedAt": "2026-10-10T05:46:57+00:00",
   "version": 1,
   "voice": "A / af_heart / American female"
 }
