@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-randomall";
+const APP_BUILD="20261010-reshuffle";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1777,6 +1777,8 @@ function render(){
   if(state.idx>=len) state.idx=Math.max(0, len-1);
   if(state.idx<0) state.idx=0;
   const s=current();
+  const rs=$("reshuffleBtn");
+  if(rs) rs.style.display = state.sort==="random" ? "inline-flex" : "none";
   const sortLabel=state.sort==="recent"?"最新收藏":state.sort==="random"?"随机":"易错优先";
   $("counter").textContent = `${state.idx+1} / ${len}` + (s&&s.mode?` · ${String(s.mode).toUpperCase()}`:"") + ` · ${sortLabel}`;
   if(state.sort==="recent" && state._sortHasTime===false){
@@ -1980,6 +1982,24 @@ if($("sortSeg")) $("sortSeg").onclick=e=>{
   savePrefs();
   render();
   if(wasPlaying) startLoop(rate);
+};
+/* 「重新洗牌」：唯一一个让用户主动换一副牌的入口。
+   默认不换是为了让 849 句都能轮到（见 tests/random-order.test.js），
+   但用户想换新鲜感时得有地方点 —— 会丢掉这一轮进度，所以先确认。 */
+if($("reshuffleBtn")) $("reshuffleBtn").onclick=()=>{
+  if(state.sort!=="random") return;
+  const done=state.idx;
+  const total=(state.playOrder||[]).length;
+  if(done>0 && !confirm(`这一轮还剩 ${Math.max(0,total-done)} 句没听。重新洗牌会从头开始，确定吗？`)) return;
+  stopLoop();
+  state.playOrder=shuffleItems((state.playOrder||[]).slice());
+  state._randomOrder=state.playOrder.slice();
+  state._randomIdx=0;
+  state.idx=0;
+  state.items=state.playOrder.map(en=>state.items.find(x=>x&&x.en===en)).filter(Boolean);
+  savePrefs();
+  render();
+  toast("已重新洗牌 · 从第 1 句开始", false);
 };
 if($("playBtn")) $("playBtn").onclick=window.srPlay;
 if($("slowBtn")) $("slowBtn").onclick=window.srSlow;
