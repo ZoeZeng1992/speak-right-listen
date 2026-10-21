@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="收藏听" />
+<meta name="application-name" content="收藏听" />
+<meta name="theme-color" content="#f6f4ef" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" href="apple-touch-icon.png" />
+<title>收藏听</title>
+<!-- 这个文件会被 iOS 主屏幕图标长期缓存：界面和样式全部由 app.js 生成，
+     这里只放一个加载器。以后改界面只改 app.js，不要往这里加元素。 -->
+<style>
+  body{margin:0;background:#f6f4ef;color:#1c1917;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif}
+  @media (prefers-color-scheme:dark){body{background:#151413;color:#ece8e1}}
+  #boot{padding:40vh 24px 0;text-align:center;font-size:15px;opacity:.6}
+</style>
+</head>
+<body>
+<div id="app"><div id="boot">加载中…</div></div>
+<script>
+(function(){
+  var s=document.createElement("script");
+  s.src="app.js?t="+Date.now();
+  s.onerror=function(){ var b=document.getElementById("boot"); if(b) b.textContent="脚本没加载出来，检查网络后刷新一下"; };
+  document.body.appendChild(s);
+  setTimeout(function(){
+    if(window.__appBooted) return;
+    var b=document.getElementById("boot");
+    if(b) b.textContent="还在加载…网络慢的话再等等，或者关掉重开";
+  },8000);
+})();
+</script>
+</body>
+</html>
