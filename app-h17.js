@@ -5,7 +5,7 @@ const SYNC_KEY="sr_fav_sync_id";
 const JSONBIN_KEY="sr_jsonbin_key";
 const REMOVED_KEY="sr_removed_ens";
 const NOTE_EDIT_KEY="sr_note_edits";
-const APP_BUILD="20261010-takeup";
+const APP_BUILD="20261021-resume";
 window.APP_BUILD=APP_BUILD;
 const JSONBIN_API="https://api.jsonbin.io/v3/b";
 const JSONBLOB_API="https://jsonblob.com/api/jsonBlob";
@@ -1197,6 +1197,8 @@ function stopLoop(opts){
   updateMediaSession();
 }
 function pausePlayback(fromRemote){
+  _resumeOnReturn=false;
+  _voiceStalled=false;
   loopToken++;
   clearLoopRecovery(true);
   loopPlaying=false;
@@ -1220,6 +1222,46 @@ function isSoftPaused(){
   return !!(_mediaHold && !loopPlaying && !userWantsPlay);
 }
 let _remoteToggleAt=0;
+let _voiceStalled=false;     // 声音被系统停了、正在重试：这时按钮不能显示「暂停」
+let _resumeOnReturn=false;   // 在后台被别的应用打断，回到前台要自动接着播
+let _resumeCheckPending=false;
+let _runningLoop=1;          // 正在播的这一句按几遍播（播放中途改循环次数，下一句才生效）
+/* 在后台被别的应用（抖音 / TikTok / 电话）打断：不跟它抢声音，停干净，回到前台再接着播。
+   以前这里会在后台无限重试（每 8 秒一次）还换系统朗读，按钮一直显示「暂停」。
+   做法和「收藏听」（english/ENGLISH04/app.js）一致，2026-10-21 用户在那边报的问题。 */
+function interruptForReturn(){
+  pausePlayback(false);
+  _resumeOnReturn=true;
+  updatePlayUI();
+}
+/* 回到前台：用户没按过暂停、但现在没在出声，就从当前这一句接着播。
+   连看 1 秒，currentTime 动过就说明在正常播，不打断。 */
+function resumeIfSilent(){
+  if(!(_resumeOnReturn||userWantsPlay) || _resumeCheckPending) return;
+  _resumeCheckPending=true;
+  // 连看 1 秒（每 0.1 秒一次）：两遍之间有 0.4 秒空档，只看一眼会把正常播放误判成没声音
+  let heard=false, last=_voiceAudio ? _voiceAudio.currentTime : -1, ticks=0;
+  const timer=setInterval(()=>{
+    const a=_voiceAudio;
+    if(a && !a.paused && a.currentTime!==last) heard=true;
+    if(window.speechSynthesis && speechSynthesis.speaking) heard=true;
+    last=a ? a.currentTime : -1;
+    if(++ticks<10 && !heard) return;
+    clearInterval(timer);
+    _resumeCheckPending=false;
+    if(heard || document.visibilityState!=="visible") return;
+    if(!(_resumeOnReturn||userWantsPlay)) return;   // 这期间用户点了暂停
+    _resumeOnReturn=false;
+    acquireWakeLock();
+    toast("接着播", false);
+    startLoop(playRateNow||1);
+  }, 100);
+}
+/* 真的在出声（或者两遍之间那 0.4 秒空档）才算「在播」。
+   声音被系统停了还在重试时按钮显示「播放」：点一下就是用户手势，iOS 一定放行。 */
+function isAudible(){
+  return userWantsPlay && !_voiceStalled && !_loopRecoveryTimer;
+}
 function resumeFromRemote(){
   toast("耳机 · 播放", false);
   _mediaHold=true;
@@ -1459,12 +1501,14 @@ function setupMediaSession(force){
   });
 }
 function updatePlayUI(){
-  const lim=state.loop;
-  const active=loopPlaying||userWantsPlay;
+  const active=isAudible();
+  const lim=active ? _runningLoop : state.loop;
   if($("status")){
-    $("status").textContent = loopPlaying
+    $("status").textContent = active
       ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
-      : (userWantsPlay ? "音频被系统中断，正在自动恢复…" : "");
+      : _resumeOnReturn ? "被别的应用打断了 · 回到这里会接着播"
+      : userWantsPlay ? "声音被打断了，正在恢复… 等不及就点「播放」"
+      : "";
   }
   if($("playBtn")){
     $("playBtn").textContent = active ? "暂停" : "播放";
@@ -1493,6 +1537,8 @@ function unlockSpeech(){
 }
 function startLoop(rate, opts){
   const recovering=!!(opts&&opts.recovering);
+  _resumeOnReturn=false;
+  _voiceStalled=false;
   clearLoopRecovery(!recovering);
   const s0=current();
   if(!s0||!s0.en){
@@ -1522,6 +1568,7 @@ function startLoop(rate, opts){
   loopPlaying=true;
   loopCount=0;
   const lim=state.loop;
+  _runningLoop=lim;
   const playRate = rate ?? playRateNow ?? 1;
   playRateNow=playRate;
   acquireWakeLock();
@@ -1558,6 +1605,7 @@ function startLoop(rate, opts){
   const failPlayback=message=>{
     if(token!==loopToken) return;
     loopPlaying=false;
+    if(userWantsPlay && document.hidden){ interruptForReturn(); return; }
     updatePlayUI();
     if(userWantsPlay){
       clearLoopRecovery(false);
@@ -1569,6 +1617,7 @@ function startLoop(rate, opts){
         if(token!==loopToken||!userWantsPlay||loopPlaying) return;
         startLoop(playRate,{recovering:true});
       },delay);
+      updatePlayUI();   // 等计时器设上再刷新，按钮才会如实显示「播放」
       return;
     }
     toast(message||"朗读失败，请重试",true);
@@ -1629,6 +1678,8 @@ function startLoop(rate, opts){
       failed=true;
       detach();
       clearVoiceRecovery(true);
+      // 在后台重试不回来，多半是别的应用占了声音：不换系统朗读跟它抢，回到前台再接着播
+      if(document.hidden){ interruptForReturn(); return; }
       useFixedAudio=false;
       stopVoiceAudio(true);
       notifySystemFallback(text,reason||"播放失败");
@@ -1663,6 +1714,7 @@ function startLoop(rate, opts){
       if(a.ended||nearEnd()){ complete(); return; }
       if(resumeTries>=VOICE_MAX_RESUME_TRIES){ fallback(reason); return; }
       resumePending=true;
+      if(!_voiceStalled){ _voiceStalled=true; updatePlayUI(); }
       if(a.paused) nudgeMediaAudio();
       if(_voiceWatchdogTimer){ clearTimeout(_voiceWatchdogTimer); _voiceWatchdogTimer=null; }
       const delay=Math.min(VOICE_RETRY_MAX_MS,VOICE_RETRY_BASE_MS*Math.pow(2,Math.min(resumeTries,4)));
@@ -1684,6 +1736,7 @@ function startLoop(rate, opts){
           const onStarted=()=>{
             if(!isActive()) return;
             resumePending=false;
+            if(_voiceStalled){ _voiceStalled=false; updatePlayUI(); }
             lastTime=a.currentTime||0;
             lastProgressAt=Date.now();
             nudgeMediaAudio();
@@ -1722,6 +1775,7 @@ function startLoop(rate, opts){
       a.onplaying=()=>{
         if(!isActive()) return;
         resumePending=false;
+        if(_voiceStalled){ _voiceStalled=false; updatePlayUI(); }
         lastTime=a.currentTime||0;
         lastProgressAt=Date.now();
         markPlaybackHealthy();
@@ -1758,7 +1812,7 @@ function startLoop(rate, opts){
 }
 window.srPlay = function srPlay(ev){
   if(ev&&ev.preventDefault) ev.preventDefault();
-  if(loopPlaying||userWantsPlay) stopLoop({ soft:true });
+  if(isAudible()) stopLoop({ soft:true });
   else startLoop();
   return false;
 };
@@ -2187,14 +2241,13 @@ if($("voiceSel")) $("voiceSel").onchange=e=>{
 document.addEventListener("visibilitychange", async ()=>{
   if(document.visibilityState!=="visible") return;
   savePrefs();
-  const wasWant=userWantsPlay;
+  // 以前：等联网刷新完，无条件从头重播（声音本来还在放也会被打断）。
+  // 现在：马上查一次没声音就接着播；刷新完再查一次（刷新可能换掉当前这一句）。
+  resumeIfSilent();
   if(navigator.onLine){
     try{ await refreshAll({ quiet:true }); }catch(e){}
   }
-  if(wasWant && document.visibilityState==="visible"){
-    acquireWakeLock();
-    startLoop(playRateNow||1);
-  }
+  if(document.visibilityState==="visible") resumeIfSilent();
 });
 window.addEventListener("online", ()=>refreshAll({ quiet:true }));
 window.addEventListener("pagehide", ()=>{ savePrefs(); releaseAllAudioSlots(); });
