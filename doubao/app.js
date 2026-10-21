@@ -9,7 +9,7 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261021-2";
+const APP_BUILD="20261021-3";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
@@ -46,6 +46,9 @@ let _loopRecoveryTimer=null, _loopRecoveryCount=0;
 let _fallbackNoticeEn="";
 let _mediaAudio=null, _mediaSessionBound=false;
 let _remoteToggleAt=0;
+let _voiceStalled=false;     // 声音被系统停了、正在重试：这时按钮不能显示「暂停」
+let _resumeOnReturn=false;   // 在后台被别的应用打断，回到前台要自动接着播
+let _runningLoop=1;          // 正在播的这一条按几遍播（播放中途改「每条重复」，下一条才生效）
 let _revealCnId="";
 const _audioSlots=new Map();
 
@@ -677,7 +680,32 @@ function stopLoop(opts){
   updatePlayUI();
   updateMediaSession();
 }
+/* 在后台被别的应用（TikTok / 抖音 / 电话）打断：不跟它抢声音，停干净，回到前台再接着播。
+   以前这里会在后台无限重试（每 8 秒一次），按钮一直显示「暂停」，回来也不出声。 */
+function interruptForReturn(){
+  pausePlayback(false);
+  _resumeOnReturn=true;
+  updatePlayUI();
+}
+/* 回到前台：用户没按过暂停、但现在没在出声，就从当前这一条接着播。
+   等 0.8 秒再看，避开两遍之间的空档；currentTime 动了就说明在正常播，不打断。 */
+function resumeIfSilent(){
+  if(!(_resumeOnReturn||userWantsPlay)) return;
+  const a=_voiceAudio, t0=a ? a.currentTime : 0;
+  setTimeout(()=>{
+    if(document.visibilityState!=="visible") return;
+    if(!(_resumeOnReturn||userWantsPlay)) return;   // 这期间用户点了暂停
+    const moving=a && !a.paused && Math.abs(a.currentTime-t0)>0.05;
+    const speaking=window.speechSynthesis && speechSynthesis.speaking;
+    if(moving||speaking) return;
+    _resumeOnReturn=false;
+    toast("接着播");
+    startLoop(playRateNow||1);
+  }, 800);
+}
 function pausePlayback(fromRemote){
+  _resumeOnReturn=false;
+  _voiceStalled=false;
   loopToken++;
   clearLoopRecovery(true);
   loopPlaying=false;
@@ -759,6 +787,8 @@ function goTo(id){
 
 function startLoop(rate, opts){
   const recovering=!!(opts&&opts.recovering);
+  _resumeOnReturn=false;
+  _voiceStalled=false;
   clearLoopRecovery(!recovering);
   const s0=current();
   if(!s0||!s0.en){ toast("没有可以播放的内容", true); return; }
@@ -785,6 +815,7 @@ function startLoop(rate, opts){
   loopPlaying=true;
   loopCount=0;
   const lim=state.loop;
+  _runningLoop=lim;
   const playRate=rate ?? playRateNow ?? 1;
   playRateNow=playRate;
   acquireWakeLock();
@@ -829,6 +860,7 @@ function startLoop(rate, opts){
   const failPlayback=message=>{
     if(token!==loopToken) return;
     loopPlaying=false;
+    if(userWantsPlay && document.hidden){ interruptForReturn(); return; }
     updatePlayUI();
     if(userWantsPlay){
       clearLoopRecovery(false);
@@ -840,6 +872,7 @@ function startLoop(rate, opts){
         if(token!==loopToken||!userWantsPlay||loopPlaying) return;
         startLoop(playRate,{recovering:true});
       },delay);
+      updatePlayUI();   // 等计时器设上再刷新，按钮才会如实显示「播放」
       return;
     }
     toast(message||"朗读失败，请重试",true);
@@ -895,6 +928,8 @@ function startLoop(rate, opts){
       failed=true;
       detach();
       clearVoiceRecovery(true);
+      // 在后台重试不回来，多半是别的应用占了声音：不换系统朗读跟它抢，回到前台再接着播
+      if(document.hidden){ interruptForReturn(); return; }
       useFixedAudio=false;
       stopVoiceAudio(true);
       notifySystemFallback(text,reason||"播放失败");
@@ -929,6 +964,7 @@ function startLoop(rate, opts){
       if(a.ended||nearEnd()){ complete(); return; }
       if(resumeTries>=VOICE_MAX_RESUME_TRIES){ fallback(reason); return; }
       resumePending=true;
+      if(!_voiceStalled){ _voiceStalled=true; updatePlayUI(); }
       if(a.paused) nudgeMediaAudio();
       if(_voiceWatchdogTimer){ clearTimeout(_voiceWatchdogTimer); _voiceWatchdogTimer=null; }
       const delay=Math.min(VOICE_RETRY_MAX_MS,VOICE_RETRY_BASE_MS*Math.pow(2,Math.min(resumeTries,4)));
@@ -950,6 +986,7 @@ function startLoop(rate, opts){
           const onStarted=()=>{
             if(!isActive()) return;
             resumePending=false;
+            if(_voiceStalled){ _voiceStalled=false; updatePlayUI(); }
             lastTime=a.currentTime||0;
             lastProgressAt=Date.now();
             nudgeMediaAudio();
@@ -988,6 +1025,7 @@ function startLoop(rate, opts){
       a.onplaying=()=>{
         if(!isActive()) return;
         resumePending=false;
+        if(_voiceStalled){ _voiceStalled=false; updatePlayUI(); }
         lastTime=a.currentTime||0;
         lastProgressAt=Date.now();
         markPlaybackHealthy();
@@ -1030,12 +1068,20 @@ function toast(msg, warn){
   clearTimeout(_toastTimer);
   _toastTimer=setTimeout(()=>t.classList.remove("show"), warn?3200:1800);
 }
+/* 真的在出声（或者在两遍之间那 0.4 秒空档）才算「在播」。
+   声音被系统停了还在重试时，按钮显示「播放」：点一下就是用户手势，iOS 一定放行。 */
+function isAudible(){
+  // 两条之间那 0.35 秒 loopPlaying 是 false，但用户要播、也没在重试，照样算在播
+  return userWantsPlay && !_voiceStalled && !_loopRecoveryTimer;
+}
 function updatePlayUI(){
-  const lim=state.loop;
-  const active=loopPlaying||userWantsPlay;
-  $("status").textContent = loopPlaying
+  const active=isAudible();
+  const lim=active ? _runningLoop : state.loop;
+  $("status").textContent = active
     ? (lim>0 ? `第 ${loopCount}/${lim} 遍` : `第 ${loopCount} 遍 · ∞`)
-    : (userWantsPlay ? "音频被系统打断，正在自动恢复…" : "");
+    : _resumeOnReturn ? "被别的应用打断了 · 回到这里会接着播"
+    : userWantsPlay ? "声音被打断了，正在恢复… 等不及就点「播放」"
+    : "";
   $("playBtn").textContent = active ? "暂停" : "播放";
   $("playBtn").classList.toggle("is-playing", !!active);
   document.querySelectorAll("#loopSeg button").forEach(b=>b.classList.toggle("on", +b.dataset.loop===state.loop));
@@ -1158,7 +1204,7 @@ function bindUi(){
   // iOS 只认点击调用栈里同步开始的播放：播放键必须同步调 startLoop。
   $("playBtn").addEventListener("click", ev=>{
     ev.preventDefault();
-    if(loopPlaying||userWantsPlay) stopLoop({soft:true});
+    if(isAudible()) stopLoop({soft:true});
     else startLoop(1);
   });
   $("slowBtn").addEventListener("click", ev=>{
@@ -1223,7 +1269,9 @@ function bindUi(){
     try{ speechSynthesis.onvoiceschanged=loadVoices; }catch(e){}
   }
   document.addEventListener("visibilitychange", ()=>{
-    if(document.visibilityState==="visible") refreshAudioWindow({retryErrors:true});
+    if(document.visibilityState!=="visible") return;
+    refreshAudioWindow({retryErrors:true});
+    resumeIfSilent();
   });
 }
 
