@@ -9,7 +9,7 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261021-3";
+const APP_BUILD="20261021-4";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
@@ -688,20 +688,24 @@ function interruptForReturn(){
   updatePlayUI();
 }
 /* 回到前台：用户没按过暂停、但现在没在出声，就从当前这一条接着播。
-   等 0.8 秒再看，避开两遍之间的空档；currentTime 动了就说明在正常播，不打断。 */
+   连看 1 秒，currentTime 动过就说明在正常播，不打断。 */
 function resumeIfSilent(){
   if(!(_resumeOnReturn||userWantsPlay)) return;
-  const a=_voiceAudio, t0=a ? a.currentTime : 0;
-  setTimeout(()=>{
-    if(document.visibilityState!=="visible") return;
+  // 连看 1 秒（每 0.1 秒一次）：两遍之间有 0.4 秒空档，只看一眼会把正常播放误判成没声音
+  let heard=false, last=_voiceAudio ? _voiceAudio.currentTime : -1, ticks=0;
+  const timer=setInterval(()=>{
+    const a=_voiceAudio;
+    if(a && !a.paused && a.currentTime!==last) heard=true;
+    if(window.speechSynthesis && speechSynthesis.speaking) heard=true;
+    last=a ? a.currentTime : -1;
+    if(++ticks<10 && !heard) return;
+    clearInterval(timer);
+    if(heard || document.visibilityState!=="visible") return;
     if(!(_resumeOnReturn||userWantsPlay)) return;   // 这期间用户点了暂停
-    const moving=a && !a.paused && Math.abs(a.currentTime-t0)>0.05;
-    const speaking=window.speechSynthesis && speechSynthesis.speaking;
-    if(moving||speaking) return;
     _resumeOnReturn=false;
     toast("接着播");
     startLoop(playRateNow||1);
-  }, 800);
+  }, 100);
 }
 function pausePlayback(fromRemote){
   _resumeOnReturn=false;
