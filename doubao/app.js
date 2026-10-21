@@ -9,7 +9,7 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261021-1";
+const APP_BUILD="20261021-2";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
@@ -31,7 +31,7 @@ const state={
   filter:"all",          // all | word（单词+短语）| sentence
   order:"new",           // new | random
   loop:1, showCn:false,
-  randomOrder:[],        // 随机这一轮的顺序：只在过完一轮时重洗
+  round:{order:[],heard:[]},  // 随机这一轮：顺序 + 这一轮出现过谁（见 RANDOM-ROUND）
   curIds:{new:"",random:""},  // 两种顺序各记各的位置，来回切不会把随机这一轮作废
   updatedAt:"",
 };
@@ -228,7 +228,7 @@ function loadPrefs(){
     if(["new","random"].includes(p.order)) state.order=p.order;
     if(LOOP_OPTIONS.includes(p.loop)) state.loop=p.loop;
     state.showCn=!!p.showCn;
-    if(Array.isArray(p.randomOrder)) state.randomOrder=p.randomOrder;
+    if(p.round&&Array.isArray(p.round.order)) state.round={order:p.round.order, heard:Array.isArray(p.round.heard)?p.round.heard:[]};
     if(p.curIds) state.curIds={new:p.curIds.new||"",random:p.curIds.random||""};
   }catch(e){}
 }
@@ -238,7 +238,7 @@ function savePrefs(){
   try{
     localStorage.setItem(PREFS_KEY, JSON.stringify({
       filter:state.filter, order:state.order, loop:state.loop, showCn:state.showCn,
-      randomOrder:state.randomOrder, curIds:state.curIds,
+      round:state.round, curIds:state.curIds,
     }));
   }catch(e){}
 }
@@ -265,58 +265,110 @@ function applyPack(pack){
   state.items=items;
   state.byId=new Map(items.map(x=>[x.id,x]));
   state.updatedAt=pack.updatedAt||"";
-  syncRandomOrder();
+  state.round=Round.sync(state.round, items.map(x=>x.id), state.curIds.random);
 }
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
-/* 随机这一轮只在「过完一轮」时重洗（Speak Right 这个坑修过三次）。
-   新收藏插进这一轮还没听到的后半段；删掉的收藏从轮次里拿掉。 */
-function syncRandomOrder(){
-  const ids=state.items.map(x=>x.id);
-  const have=new Set(ids);
-  let order=(state.randomOrder||[]).filter(id=>have.has(id));
-  if(!order.length){
-    state.randomOrder=shuffle(ids.slice());
-    return;
-  }
-  const inOrder=new Set(order);
-  const fresh=ids.filter(id=>!inOrder.has(id));
-  if(fresh.length){
-    const from=Math.max(0, order.indexOf(state.curIds.random))+1;
-    fresh.forEach(id=>{
-      const at=from+Math.floor(Math.random()*(order.length-from+1));
-      order.splice(at,0,id);
+
+/* ===== RANDOM-ROUND BEGIN（tests/random-round.test.js 会把这一段单独抠出来跑）=====
+   随机这一轮的规矩：当前筛选下每一条都「出现」过一次，才重洗开始下一轮。
+   「出现」= 成为当前这一条（播放或者翻到都算）。
+   判断用「这一轮谁出现过」(heard)，不用「指针走到哪」：中途换筛选、切到最新再切回、
+   从列表跳、按上一个、关掉重开、同步进新收藏，都只是换个位置，漏不掉、也不作废这一轮。
+   Speak Right 同一个毛病修过三次（english02/docs/HANDOFF.md「手机听练行为约定」），
+   每次都只堵了一个入口；这里只有 step() 过完一轮时会重洗。 */
+const Round={
+  shuffle(arr, rnd){
+    rnd=rnd||Math.random;
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(rnd()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+  },
+  // 收藏增删后修正这一轮：删掉的拿掉；新来的插到当前位置后面（很快轮到），不重洗
+  sync(r, ids, curId, rnd){
+    rnd=rnd||Math.random;
+    const have=new Set(ids);
+    const order=((r&&r.order)||[]).filter(id=>have.has(id));
+    const heard=((r&&r.heard)||[]).filter(id=>have.has(id));
+    if(!order.length) return {order:Round.shuffle(ids.slice(), rnd), heard:[]};
+    const inOrder=new Set(order);
+    const from=order.indexOf(curId)+1;
+    ids.filter(id=>!inOrder.has(id)).forEach(id=>{
+      order.splice(from+Math.floor(rnd()*(order.length-from+1)), 0, id);
     });
-  }
-  state.randomOrder=order;
-}
+    return {order, heard};
+  },
+  arrive(r, id){
+    if(!id || r.heard.indexOf(id)>=0) return false;
+    r.heard.push(id);
+    return true;
+  },
+  // 下一条还没出现过的：先从当前位置往后找，到底了再从头找（补上中途被跳过的）
+  next(r, pass, curId){
+    const n=r.order.length, pos=r.order.indexOf(curId);
+    for(let k=1;k<=n;k++){
+      const id=r.order[(pos+k+n)%n];
+      if(pass(id) && r.heard.indexOf(id)<0) return id;
+    }
+    return null;
+  },
+  left(r, pass){
+    return r.order.filter(id=>pass(id) && r.heard.indexOf(id)<0).length;
+  },
+  // 「下一个」（手动）：当前筛选下全都出现过了才重洗；别的筛选里还没出现的照样留着
+  step(r, pass, curId, rnd){
+    Round.arrive(r, curId);
+    const id=Round.next(r, pass, curId);
+    if(id) return {id, renewed:false};
+    r.order=Round.shuffle(r.order.slice(), rnd);
+    r.heard=r.heard.filter(id=>!pass(id));
+    // 新一轮第一条正好是刚听完那条，就把它挪到这一轮最后，免得同一条连着出现两次
+    if(curId && Round.next(r, pass, null)===curId && Round.left(r, pass)>1){
+      r.order.splice(r.order.indexOf(curId), 1);
+      r.order.push(curId);
+    }
+    return {id:Round.next(r, pass, null), renewed:true};
+  },
+  // 换筛选：当前这条还符合就留着，不符合就去下一条没出现过的
+  keep(r, pass, curId){
+    if(curId && r.order.indexOf(curId)>=0 && pass(curId)) return curId;
+    return Round.next(r, pass, curId) || r.order.find(pass) || null;
+  },
+};
+/* ===== RANDOM-ROUND END ===== */
+
 function passFilter(it){
   if(state.filter==="word") return it.kind!=="sentence";
   if(state.filter==="sentence") return it.kind==="sentence";
   return true;
 }
+function passId(id){
+  const it=state.byId.get(id);
+  return !!it && passFilter(it);
+}
 function baseOrder(){
-  if(state.order==="random") return state.randomOrder.map(id=>state.byId.get(id)).filter(Boolean);
+  if(state.order==="random") return state.round.order.map(id=>state.byId.get(id)).filter(Boolean);
   return state.items;
 }
-/* 换筛选 / 换顺序时，尽量停在原来那条；原来那条被筛掉了，就停在它后面最近的一条。 */
-function rebuildList(keepId){
+/* 重建当前列表并停在 targetId。最新模式下 targetId 被筛掉了，就停在它后面最近的一条；
+   随机模式下由 Round.keep 决定去哪（不会跳过还没出现的）。 */
+function rebuildList(targetId){
   const src=baseOrder();
   state.list=src.filter(passFilter);
-  let i=keepId ? state.list.findIndex(x=>x.id===keepId) : -1;
-  if(i<0 && keepId){
-    const pos=src.findIndex(x=>x.id===keepId);
+  if(state.order==="random") targetId=Round.keep(state.round, passId, targetId);
+  let i=targetId ? state.list.findIndex(x=>x.id===targetId) : -1;
+  if(i<0 && targetId){
+    const pos=src.findIndex(x=>x.id===targetId);
     if(pos>=0){
       const after=src.slice(pos).find(passFilter);
       if(after) i=state.list.indexOf(after);
     }
   }
   state.idx=i>=0 ? i : 0;
+}
+function setCurrentId(id){
+  const i=state.list.findIndex(x=>x.id===id);
+  if(i>=0) state.idx=i;
 }
 function current(){ return state.list[state.idx]||null; }
 function playLen(){ return state.list.length; }
@@ -682,18 +734,17 @@ function goPrev(fromRemote){
 function goNext(fromRemote){
   const wasPlaying=loopPlaying||userWantsPlay;
   const rate=playRateNow||1;
-  if(state.idx<playLen()-1) state.idx++;
-  else if(playLen()>1){
-    // 到底了绕回开头；随机模式重洗一次，不然第二轮和第一轮一模一样。
-    if(state.order==="random"){
-      state.randomOrder=shuffle(state.items.map(x=>x.id));
-      rebuildList(null);
-      toast("已过完一轮 · 重新打乱，从头开始");
-    }else{
-      toast("已过完一轮 · 回到第一条");
-    }
-    state.idx=0;
+  if(state.order==="random"){
+    // 随机：去下一条这一轮还没出现过的；全出现过了才重洗（只有这一处会重洗）
+    const cur=current();
+    const res=Round.step(state.round, passId, cur&&cur.id);
+    if(res.renewed){
+      rebuildList(res.id);
+      toast("这一轮都听过了 · 重新打乱，开始新一轮");
+    }else setCurrentId(res.id);
   }
+  else if(state.idx<playLen()-1) state.idx++;
+  else if(playLen()>1){ state.idx=0; toast("已过完一轮 · 回到第一条"); }
   else if(fromRemote){ toast("已经是最后一条"); return; }
   if(fromRemote) toast("耳机 · 下一个");
   afterMove(wasPlaying, rate);
@@ -744,11 +795,19 @@ function startLoop(rate, opts){
   const finishOrNext=()=>{
     if(token!==loopToken) return;
     loopPlaying=false;
-    if(lim>0 && state.idx < playLen()-1){
+    // 自动播下一条：随机模式找这一轮还没出现过的；没有了就停，不自动重洗
+    let nextId=null;
+    if(lim>0){
+      if(state.order==="random"){
+        Round.arrive(state.round, s0.id);
+        nextId=Round.next(state.round, passId, s0.id);
+      }else if(state.idx < playLen()-1) nextId=state.list[state.idx+1].id;
+    }
+    if(nextId){
       updatePlayUI();
       setTimeout(()=>{
         if(token!==loopToken) return;
-        state.idx++;
+        setCurrentId(nextId);
         savePrefs();
         render();
         startLoop(playRate);
@@ -757,7 +816,9 @@ function startLoop(rate, opts){
     }
     // 播完后记住当前这条，但停掉全部音频，让出系统音频通道。
     pausePlayback(false);
-    if(lim>0 && state.idx>=playLen()-1) $("status").textContent="已过完一轮 · 点「下一个」从头再来";
+    if(lim>0) $("status").textContent = state.order==="random"
+      ? "这一轮都听过了 · 点「下一个」开始新一轮"
+      : "已过完一轮 · 点「下一个」从头再来";
   };
   const afterOne=()=>{
     if(token!==loopToken) return;
@@ -981,6 +1042,8 @@ function updatePlayUI(){
   document.querySelectorAll("#filterSeg button").forEach(b=>b.classList.toggle("on", b.dataset.f===state.filter));
   document.querySelectorAll("#orderSeg button").forEach(b=>b.classList.toggle("on", b.dataset.o===state.order));
   $("cnBtn").classList.toggle("on", state.showCn);
+  // 随机模式没有「从头」：回到这一轮开头会让前面几条反复出现、后面的一直轮不到
+  $("firstBtn").style.display = state.order==="random" ? "none" : "";
   updateMediaSession();
 }
 function render(){
@@ -998,7 +1061,13 @@ function render(){
   }
   $("noteBtn").style.visibility = s.note ? "visible" : "hidden";
   $("kind").textContent=KIND_LABEL[s.kind]||"";
-  $("pos").textContent=`${state.idx+1} / ${playLen()}`;
+  if(state.order==="random"){
+    // 成为当前这一条 = 这一轮出现过了；马上存，免得关掉重开又算没出现
+    if(Round.arrive(state.round, s.id)) savePrefs();
+    $("pos").textContent=`这一轮 ${playLen()-Round.left(state.round, passId)} / ${playLen()}`;
+  }else{
+    $("pos").textContent=`${state.idx+1} / ${playLen()}`;
+  }
   $("en").textContent=s.en;
   $("en").classList.toggle("short", s.en.length<=18);
   $("ipa").textContent = s.kind!=="sentence" && s.ipa ? s.ipa : "";
@@ -1100,6 +1169,7 @@ function bindUi(){
   $("prevBtn").addEventListener("click", ()=>goPrev(false));
   $("nextBtn").addEventListener("click", ()=>goNext(false));
   $("firstBtn").addEventListener("click", ()=>{
+    if(state.order==="random") return;   // 随机模式下按钮是藏起来的，这里再挡一道
     const wasPlaying=loopPlaying||userWantsPlay;
     state.idx=0;
     afterMove(wasPlaying, playRateNow||1);
