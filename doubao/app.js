@@ -9,7 +9,7 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261026-1";
+const APP_BUILD="20261026-2";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
@@ -17,6 +17,7 @@ const SILENCE_SRC="../silence.wav";
 const DATA_KEY="dbx_data_v1";
 const PREFS_KEY="dbx_prefs_v1";
 const DUNNO_KEY="dbx_dunno_v1";   // 每条点过几次「不会」：{收藏id: 次数}，只存在这台手机上
+const REMOVED_KEY="dbx_removed_v1"; // 在这台手机上取消收藏的：[收藏id]（data.json 里还在，只是不再出现）
 const AUDIO_WINDOW_BEHIND=1;
 const AUDIO_WINDOW_AHEAD=2;
 const VOICE_STALL_MS=1800;
@@ -32,7 +33,7 @@ const state={
   filter:"all",          // all | word（单词+短语）| sentence
   order:"new",           // new | random | dunno（只放点过「不会」的，次数多的在前）
   loop:1,
-  dunno:{},
+  dunno:{}, removed:[], pack:null,
   round:{order:[],heard:[]},  // 随机这一轮：顺序 + 这一轮出现过谁（见 RANDOM-ROUND）
   curIds:{new:"",random:"",dunno:""},  // 每种顺序各记各的位置，来回切不会把随机这一轮作废
   updatedAt:"",
@@ -98,6 +99,7 @@ button{font:inherit;color:inherit;touch-action:manipulation;cursor:pointer}
 .card-foot{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .dunno-btn{border:1px solid var(--line);background:var(--surface);color:var(--warn);border-radius:999px;padding:8px 16px;font-size:15px;font-weight:600}
 .dunno-btn.marked{background:rgba(180,83,9,.1);border-color:transparent}
+.unfav-btn{border:0;background:transparent;color:var(--faint);font-size:14px;padding:8px 4px;margin-left:auto}
 .note-btn{border:0;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:9px 16px;font-size:15px;font-weight:600}
 .transport{margin-top:18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
 .transport .side{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 0;font-size:15px}
@@ -179,7 +181,7 @@ function buildShell(){
       <div class="en" id="en"></div>
       <div class="ipa" id="ipa"></div>
       <div class="cn" id="cn"></div>
-      <div class="card-foot"><button class="dunno-btn" id="dunnoBtn">不会</button><button class="note-btn" id="noteBtn">看解析</button></div>
+      <div class="card-foot"><button class="dunno-btn" id="dunnoBtn">不会</button><button class="unfav-btn" id="unfavBtn">取消收藏</button><button class="note-btn" id="noteBtn">看解析</button></div>
     </div>
     <div class="transport">
       <button class="side" id="prevBtn">上一个</button>
@@ -238,6 +240,10 @@ function loadPrefs(){
     const d=JSON.parse(localStorage.getItem(DUNNO_KEY)||"null");
     if(d&&typeof d==="object") state.dunno=d;
   }catch(e){}
+  try{
+    const r=JSON.parse(localStorage.getItem(REMOVED_KEY)||"null");
+    if(Array.isArray(r)) state.removed=r;
+  }catch(e){}
 }
 function savePrefs(){
   const cur=current();
@@ -267,7 +273,9 @@ async function fetchPack(){
   return {pack:null, cached:false};
 }
 function applyPack(pack){
-  const items=(pack.items||[]).filter(x=>x&&x.id&&x.en);
+  state.pack=pack;
+  const removed=new Set(state.removed);
+  const items=(pack.items||[]).filter(x=>x&&x.id&&x.en&&!removed.has(x.id));
   items.sort((a,b)=>(b.at||0)-(a.at||0));
   state.items=items;
   state.byId=new Map(items.map(x=>[x.id,x]));
@@ -1115,10 +1123,12 @@ function render(){
     ["kind","pos","ipa","cn"].forEach(id=>{ $(id).textContent=""; });
     $("noteBtn").style.visibility="hidden";
     $("dunnoBtn").style.visibility="hidden";
+    $("unfavBtn").style.visibility="hidden";
     updatePlayUI();
     return;
   }
   $("noteBtn").style.visibility = s.note ? "visible" : "hidden";
+  $("unfavBtn").style.visibility="visible";
   renderDunno(s);
   $("kind").textContent=KIND_LABEL[s.kind]||"";
   if(state.order==="random"){
@@ -1177,6 +1187,23 @@ function renderNote(md){
   }
   flushTable();
   return out.join("").replace(/(<div class="gap"><\/div>)+/g,'<div class="gap"></div>');
+}
+/* 取消收藏：只在这台设备上不再出现（豆包里也取消的话，下次「同步豆包」它就从 data.json 里没了）。
+   先定好去哪一条再拿掉它：随机模式走 Round.next（不跳过还没出现的），最新 / 常不会就去后一条。 */
+function unfavCurrent(){
+  const s=current();
+  if(!s) return;
+  if(!confirm(`取消收藏「${s.en}」？\n以后这台设备上不再出现这条。`)) return;
+  const wasPlaying=loopPlaying||userWantsPlay;
+  const nextId = state.order==="random"
+    ? Round.next(state.round, id=>id!==s.id && passId(id), s.id)
+    : ((state.list[state.idx+1]||state.list[state.idx-1]||{}).id||null);
+  if(state.removed.indexOf(s.id)<0) state.removed.push(s.id);
+  try{ localStorage.setItem(REMOVED_KEY, JSON.stringify(state.removed)); }catch(e){}
+  applyPack(state.pack);
+  rebuildList(nextId);
+  afterMove(wasPlaying, playRateNow||1);
+  toast("已取消收藏");
 }
 function lockBody(on){ document.body.classList.toggle("locked", !!on); }
 function openNote(){
@@ -1245,6 +1272,7 @@ function bindUi(){
     renderDunno(s);
     toast(`记了一次不会 · 共 ${state.dunno[s.id]} 次`);
   });
+  $("unfavBtn").addEventListener("click", unfavCurrent);
   $("noteBtn").addEventListener("click", openNote);
   $("listBtn").addEventListener("click", openList);
   $("search").addEventListener("input", renderList);
