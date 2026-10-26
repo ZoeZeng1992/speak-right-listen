@@ -9,13 +9,14 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261021-4";
+const APP_BUILD="20261026-1";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
 const SILENCE_SRC="../silence.wav";
 const DATA_KEY="dbx_data_v1";
 const PREFS_KEY="dbx_prefs_v1";
+const DUNNO_KEY="dbx_dunno_v1";   // 每条点过几次「不会」：{收藏id: 次数}，只存在这台手机上
 const AUDIO_WINDOW_BEHIND=1;
 const AUDIO_WINDOW_AHEAD=2;
 const VOICE_STALL_MS=1800;
@@ -29,10 +30,11 @@ const KIND_LABEL={word:"单词",phrase:"短语",sentence:"句子"};
 const state={
   items:[], byId:new Map(), list:[], idx:0,
   filter:"all",          // all | word（单词+短语）| sentence
-  order:"new",           // new | random
-  loop:1, showCn:false,
+  order:"new",           // new | random | dunno（只放点过「不会」的，次数多的在前）
+  loop:1,
+  dunno:{},
   round:{order:[],heard:[]},  // 随机这一轮：顺序 + 这一轮出现过谁（见 RANDOM-ROUND）
-  curIds:{new:"",random:""},  // 两种顺序各记各的位置，来回切不会把随机这一轮作废
+  curIds:{new:"",random:"",dunno:""},  // 每种顺序各记各的位置，来回切不会把随机这一轮作废
   updatedAt:"",
 };
 let loopToken=0, loopPlaying=false, loopCount=0, playRateNow=1;
@@ -49,7 +51,6 @@ let _remoteToggleAt=0;
 let _voiceStalled=false;     // 声音被系统停了、正在重试：这时按钮不能显示「暂停」
 let _resumeOnReturn=false;   // 在后台被别的应用打断，回到前台要自动接着播
 let _runningLoop=1;          // 正在播的这一条按几遍播（播放中途改「每条重复」，下一条才生效）
-let _revealCnId="";
 const _audioSlots=new Map();
 
 const $=id=>document.getElementById(id);
@@ -94,8 +95,9 @@ button{font:inherit;color:inherit;touch-action:manipulation;cursor:pointer}
 .en.short{font-size:34px}
 .ipa{margin-top:8px;font-size:15px;color:var(--muted)}
 .cn{margin-top:16px;font-size:17px;line-height:1.55}
-.cn.hide{color:var(--faint);font-size:14px;border:1px dashed var(--line);border-radius:12px;padding:9px 12px;text-align:center}
-.card-foot{margin-top:auto;padding-top:18px;display:flex;justify-content:flex-end}
+.card-foot{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dunno-btn{border:1px solid var(--line);background:var(--surface);color:var(--warn);border-radius:999px;padding:8px 16px;font-size:15px;font-weight:600}
+.dunno-btn.marked{background:rgba(180,83,9,.1);border-color:transparent}
 .note-btn{border:0;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:9px 16px;font-size:15px;font-weight:600}
 .transport{margin-top:18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
 .transport .side{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 0;font-size:15px}
@@ -169,7 +171,7 @@ function buildShell(){
         <button data-f="all">全部</button><button data-f="word">单词</button><button data-f="sentence">句子</button>
       </div>
       <div class="seg" id="orderSeg">
-        <button data-o="new">最新</button><button data-o="random">随机</button>
+        <button data-o="new">最新</button><button data-o="random">随机</button><button data-o="dunno">常不会</button>
       </div>
     </div>
     <div class="card" id="card">
@@ -177,7 +179,7 @@ function buildShell(){
       <div class="en" id="en"></div>
       <div class="ipa" id="ipa"></div>
       <div class="cn" id="cn"></div>
-      <div class="card-foot"><button class="note-btn" id="noteBtn">看解析</button></div>
+      <div class="card-foot"><button class="dunno-btn" id="dunnoBtn">不会</button><button class="note-btn" id="noteBtn">看解析</button></div>
     </div>
     <div class="transport">
       <button class="side" id="prevBtn">上一个</button>
@@ -188,7 +190,6 @@ function buildShell(){
     <div class="row">
       <div class="tools">
         <button class="ghost" id="slowBtn">慢速</button>
-        <button class="ghost" id="cnBtn">中文</button>
         <button class="ghost" id="firstBtn">从头</button>
       </div>
     </div>
@@ -228,11 +229,14 @@ function loadPrefs(){
     const p=JSON.parse(localStorage.getItem(PREFS_KEY)||"null");
     if(!p) return;
     if(["all","word","sentence"].includes(p.filter)) state.filter=p.filter;
-    if(["new","random"].includes(p.order)) state.order=p.order;
+    if(["new","random","dunno"].includes(p.order)) state.order=p.order;
     if(LOOP_OPTIONS.includes(p.loop)) state.loop=p.loop;
-    state.showCn=!!p.showCn;
     if(p.round&&Array.isArray(p.round.order)) state.round={order:p.round.order, heard:Array.isArray(p.round.heard)?p.round.heard:[]};
-    if(p.curIds) state.curIds={new:p.curIds.new||"",random:p.curIds.random||""};
+    if(p.curIds) state.curIds={new:p.curIds.new||"",random:p.curIds.random||"",dunno:p.curIds.dunno||""};
+  }catch(e){}
+  try{
+    const d=JSON.parse(localStorage.getItem(DUNNO_KEY)||"null");
+    if(d&&typeof d==="object") state.dunno=d;
   }catch(e){}
 }
 function savePrefs(){
@@ -240,7 +244,7 @@ function savePrefs(){
   if(cur) state.curIds[state.order]=cur.id;
   try{
     localStorage.setItem(PREFS_KEY, JSON.stringify({
-      filter:state.filter, order:state.order, loop:state.loop, showCn:state.showCn,
+      filter:state.filter, order:state.order, loop:state.loop,
       round:state.round, curIds:state.curIds,
     }));
   }catch(e){}
@@ -349,8 +353,13 @@ function passId(id){
   const it=state.byId.get(id);
   return !!it && passFilter(it);
 }
+function dunnoCount(id){ return +state.dunno[id]||0; }
+/* 「常不会」的顺序只在进这个模式 / 换筛选 / 打开时排一次；在里面点「不会」只加次数，不重排，
+   不然当前位置会跟着跳，下一个就会漏掉或重复。 */
 function baseOrder(){
   if(state.order==="random") return state.round.order.map(id=>state.byId.get(id)).filter(Boolean);
+  if(state.order==="dunno") return state.items.filter(x=>dunnoCount(x.id)>0)
+    .sort((a,b)=>dunnoCount(b.id)-dunnoCount(a.id));   // 次数一样的，sort 稳定 → 保持最新在前
   return state.items;
 }
 /* 重建当前列表并停在 targetId。最新模式下 targetId 被筛掉了，就停在它后面最近的一条；
@@ -1091,7 +1100,6 @@ function updatePlayUI(){
   document.querySelectorAll("#loopSeg button").forEach(b=>b.classList.toggle("on", +b.dataset.loop===state.loop));
   document.querySelectorAll("#filterSeg button").forEach(b=>b.classList.toggle("on", b.dataset.f===state.filter));
   document.querySelectorAll("#orderSeg button").forEach(b=>b.classList.toggle("on", b.dataset.o===state.order));
-  $("cnBtn").classList.toggle("on", state.showCn);
   // 随机模式没有「从头」：回到这一轮开头会让前面几条反复出现、后面的一直轮不到
   $("firstBtn").style.display = state.order==="random" ? "none" : "";
   updateMediaSession();
@@ -1102,14 +1110,16 @@ function render(){
   $("counts").textContent = total ? `${total} 条 · 单词 ${words} · 句子 ${total-words}` : "";
   const s=current();
   if(!s){
-    $("en").textContent = total ? "这个筛选下没有内容" : "还没有收藏";
+    $("en").textContent = !total ? "还没有收藏"
+      : state.order==="dunno" ? "还没有点过「不会」的" : "这个筛选下没有内容";
     ["kind","pos","ipa","cn"].forEach(id=>{ $(id).textContent=""; });
-    $("cn").className="cn";
     $("noteBtn").style.visibility="hidden";
+    $("dunnoBtn").style.visibility="hidden";
     updatePlayUI();
     return;
   }
   $("noteBtn").style.visibility = s.note ? "visible" : "hidden";
+  renderDunno(s);
   $("kind").textContent=KIND_LABEL[s.kind]||"";
   if(state.order==="random"){
     // 成为当前这一条 = 这一轮出现过了；马上存，免得关掉重开又算没出现
@@ -1121,13 +1131,15 @@ function render(){
   $("en").textContent=s.en;
   $("en").classList.toggle("short", s.en.length<=18);
   $("ipa").textContent = s.kind!=="sentence" && s.ipa ? s.ipa : "";
-  const showCn=state.showCn || _revealCnId===s.id;
-  const cn=$("cn");
-  if(!s.cn){ cn.className="cn"; cn.textContent=""; }
-  else if(showCn){ cn.className="cn"; cn.textContent=s.cn; }
-  else{ cn.className="cn hide"; cn.textContent="轻点看中文"; }
+  $("cn").textContent=s.cn||"";
   refreshAudioWindow();
   updatePlayUI();
+}
+function renderDunno(s){
+  const b=$("dunnoBtn"), n=dunnoCount(s.id);
+  b.style.visibility="visible";
+  b.textContent = n ? `不会 ×${n}` : "不会";
+  b.classList.toggle("marked", n>0);
 }
 
 /* 豆包解析是 Markdown：先整体转义，再按行认标题 / 列表 / 引用 / 表格，最后处理行内粗体。 */
@@ -1224,16 +1236,14 @@ function bindUi(){
     state.idx=0;
     afterMove(wasPlaying, playRateNow||1);
   });
-  $("cnBtn").addEventListener("click", ()=>{
-    state.showCn=!state.showCn;
-    savePrefs();
-    render();
-  });
-  $("cn").addEventListener("click", ()=>{
+  // 「不会」只记次数，不打断播放、不换位置
+  $("dunnoBtn").addEventListener("click", ()=>{
     const s=current();
-    if(!s||state.showCn) return;
-    _revealCnId = _revealCnId===s.id ? "" : s.id;
-    render();
+    if(!s) return;
+    state.dunno[s.id]=dunnoCount(s.id)+1;
+    try{ localStorage.setItem(DUNNO_KEY, JSON.stringify(state.dunno)); }catch(e){}
+    renderDunno(s);
+    toast(`记了一次不会 · 共 ${state.dunno[s.id]} 次`);
   });
   $("noteBtn").addEventListener("click", openNote);
   $("listBtn").addEventListener("click", openList);
