@@ -9,7 +9,7 @@
 (function(){
 "use strict";
 
-const APP_BUILD="20261026-2";
+const APP_BUILD="20261026-3";
 window.APP_BUILD=APP_BUILD;
 const AUDIO_PROFILE="kokoro-82m-v1.0-q8f16|af_heart|en-us|1.00";
 const AUDIO_BASE="../audio/";       // 和 Speak Right 共用同一套声音 A 音频
@@ -99,7 +99,7 @@ button{font:inherit;color:inherit;touch-action:manipulation;cursor:pointer}
 .card-foot{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .dunno-btn{border:1px solid var(--line);background:var(--surface);color:var(--warn);border-radius:999px;padding:8px 16px;font-size:15px;font-weight:600}
 .dunno-btn.marked{background:rgba(180,83,9,.1);border-color:transparent}
-.unfav-btn{border:0;background:transparent;color:var(--faint);font-size:14px;padding:8px 4px;margin-left:auto}
+.unfav-btn{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 14px;font-size:15px;margin-left:auto}
 .note-btn{border:0;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:9px 16px;font-size:15px;font-weight:600}
 .transport{margin-top:18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
 .transport .side{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 0;font-size:15px}
